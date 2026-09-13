@@ -1,0 +1,1696 @@
+/* ============================================================
+   Alex Rajcoomar: portfolio
+   One script for every page. Hand-written, no dependencies.
+
+   Everything here is an enhancement: with JavaScript off the
+   pages are still complete documents and every link still works.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Single-key shortcuts (/, ?, g, j, k) can be turned off from the
+     keyboard sheet. On unless the reader has said otherwise; the guarded
+     read matches every other storage access in this file. */
+  var SINGLES = "keys.singles";
+  function singlesOn() {
+    try { return localStorage.getItem(SINGLES) !== "off"; } catch (e) { return true; }
+  }
+
+  /* ---------------------------------------------------- theme -----
+     Two named states, Obsidian and Archival light, as a group of two
+     buttons: the pressed one is the theme in force, the other is the
+     offer. On the first visit only the offer pulses once, so a reader
+     learns the site has two faces without a tour; the flag is kept in
+     this browser and the pulse never repeats. A switch is an exposure
+     change: a view transition where the browser has one, a synchronised
+     transition of the colour properties elsewhere, 320ms decelerating
+     into the new state, and nothing moving once it has settled. */
+  var themesel = document.getElementById("themesel");
+  var picks = themesel ? [].slice.call(themesel.querySelectorAll(".tsel")) : [];
+  function isDark() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  function paintTheme() {
+    var dark = isDark();
+    for (var i = 0; i < picks.length; i++) {
+      var on = (picks[i].getAttribute("data-pick") === "dark") === dark;
+      picks[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+  function setTheme(next) {
+    document.documentElement.setAttribute("data-theme", next);
+    /* Guarded: some embedded contexts throw on storage access, and the
+       switch must still work when they do. */
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    paintTheme();
+  }
+  var switching = 0;
+  function switchTheme(next) {
+    if (next === (isDark() ? "dark" : "light")) return;
+    var root = document.documentElement;
+    if (!reduced && typeof document.startViewTransition === "function") {
+      document.startViewTransition(function () { setTheme(next); });
+      return;
+    }
+    if (!reduced) {
+      root.classList.add("theme-switching");
+      clearTimeout(switching);
+      switching = setTimeout(function () { root.classList.remove("theme-switching"); }, 380);
+    }
+    setTheme(next);
+  }
+  if (themesel) {
+    for (var pi = 0; pi < picks.length; pi++) {
+      picks[pi].addEventListener("click", function () { switchTheme(this.getAttribute("data-pick")); });
+    }
+    paintTheme();
+    if (window.matchMedia) {
+      var mq = matchMedia("(prefers-color-scheme: dark)");
+      if (mq.addEventListener) mq.addEventListener("change", paintTheme);
+    }
+    /* the pressed chip follows the attribute however it is set */
+    new MutationObserver(paintTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    /* the first visit's one pulse, and the flag that ends it */
+    var SEEN = "theme.seen", first = false;
+    try { first = !localStorage.getItem(SEEN); localStorage.setItem(SEEN, "1"); } catch (e) { first = false; }
+    if (first && !reduced) {
+      themesel.setAttribute("data-pulse", "1");
+      var endPulse = function () { themesel.removeAttribute("data-pulse"); };
+      themesel.addEventListener("animationend", endPulse, { once: true });
+      setTimeout(endPulse, 2600);
+    }
+  }
+
+  /* The flat library-filter block that used to sit here targeted a
+     #list element no page has carried since the library moved to
+     grouped sections; the grouped filter below is the live one, and
+     both bound listeners to the same #q. Removed rather than kept as a
+     trap for the next editor. */
+
+  /* -------------------------------------------- command palette ----
+     Search every piece from any page. Opened by the header button,
+     by "/" and by Cmd or Ctrl + K. Fully keyboard operable, and it
+     returns focus to whatever opened it. */
+  var work = window.WORK || [];
+  var pal = document.getElementById("cmdk");
+  var input = document.getElementById("cmdk-input");
+  var results = document.getElementById("cmdk-list");
+  var openBtn = document.getElementById("searchbtn");
+  if (pal && input && results && work.length) {
+    var cur = 0, items = [];
+
+    function score(it, t) {
+      if (!t) return 1;
+      var title = it.t.toLowerCase(), sub = (it.s || "").toLowerCase();
+      var other = ((it.c || "") + " " + it.k + " " + (it.d || "")).toLowerCase();
+      if (title.indexOf(t) === 0) return 100;
+      if (title.indexOf(t) > -1) return 70;
+      if (sub.indexOf(t) > -1) return 45;
+      if (other.indexOf(t) > -1) return 30;
+      /* every word of the query present somewhere */
+      var all = title + " " + sub + " " + other, parts = t.split(/\s+/);
+      for (var i = 0; i < parts.length; i++) if (all.indexOf(parts[i]) < 0) return 0;
+      return 15;
+    }
+    function render() {
+      var term = input.value.trim().toLowerCase();
+      var t = term;
+      var hits = work.map(function (it) { return { it: it, s: score(it, t) }; })
+                     .filter(function (r) { return r.s > 0; })
+                     .sort(function (a, b) { return b.s - a.s; })
+                     .slice(0, 9);
+      /* An empty box leads with what this reader opened last. These are
+         marked as their own band rather than folded into the kind groups,
+         where a recently opened tool would sink to the bottom. */
+      var recentSet = {};
+      if (!term) {
+        var rec = readRecent();
+        if (rec.length) {
+          var byUrl = {};
+          work.forEach(function (it) { byUrl[it.u] = it; });
+          var lead = rec.map(function (u) { return byUrl[u]; }).filter(Boolean)
+                        .map(function (it) { recentSet[it.u] = 1; return { it: it, s: 999 }; });
+          hits = lead.concat(hits.filter(function (r) { return !recentSet[r.it.u]; })).slice(0, 9);
+        }
+      }
+      results.textContent = "";
+      if (!hits.length) {
+        var empty = el("li", "cmdk-empty");
+        empty.textContent = "Nothing matches that. Try a course code, or a word from a title.";
+        results.appendChild(empty);
+        items = [];
+        return;
+      }
+      /* Built as nodes, not as a string of HTML. Titles and subtitles come from
+         content/pieces.json, which is written by the editor, so an ampersand or
+         an angle bracket typed into a title used to land in this markup
+         unescaped. textContent cannot be talked into becoming an element. */
+      /* Grouped by what the piece is, so nine results read as three short
+         lists rather than one undifferentiated one. */
+      var order = ["Essay", "Reference", "Tool"], n = 0;
+      var bands = [["__recent", "Recently opened"], ["Essay", "Essays"],
+                   ["Reference", "References"], ["Tool", "Tools"], ["", "Other"]];
+      bands.forEach(function (pair) {
+        var kind = pair[0];
+        var band = hits.filter(function (r) {
+          if (kind === "__recent") return recentSet[r.it.u];
+          if (recentSet[r.it.u]) return false;          // already shown above
+          return kind ? r.it.k === kind : order.indexOf(r.it.k) === -1;
+        });
+        if (!band.length) return;
+        var head = el("li", "cmdk-group");
+        head.setAttribute("role", "presentation");
+        head.textContent = pair[1];
+        results.appendChild(head);
+        band.forEach(function (r) {
+          var it = r.it;
+          var li = el("li");
+          li.setAttribute("role", "option");
+          li.id = "cmdk-o" + n;
+          li.setAttribute("aria-selected", n === 0 ? "true" : "false");
+          if (n === 0) li.className = "on";
+          n++;
+
+          var a = el("a");
+          a.setAttribute("href", it.u);
+
+          var left = el("span");
+          var t = el("span", "t");
+          /* Nodes, never a string of HTML: the title is content the editor
+             writes, so it is placed as text and only the matched run is
+             wrapped. */
+          markInto(t, it.t, term);
+          left.appendChild(t);
+          if (it.s) {
+            var sub = el("span", "s");
+            sub.appendChild(document.createTextNode(" \u2014 "));
+            markInto(sub, it.s, term);
+            left.appendChild(sub);
+          }
+
+          var right = el("span", "s");
+          right.textContent = it.c ? it.c : it.d || "";
+
+          a.appendChild(left);
+          a.appendChild(right);
+          li.appendChild(a);
+          results.appendChild(li);
+        });
+      });
+      items = [].slice.call(results.querySelectorAll("li[role=option]"));
+      cur = 0;
+      /* the combobox names its selection on every render, not only after
+         an arrow key; an emptied list clears the stale reference */
+      if (items.length) input.setAttribute("aria-activedescendant", items[0].id);
+      else input.removeAttribute("aria-activedescendant");
+    }
+
+    /* Puts `text` into `host`, wrapping the first case-insensitive run of
+       `needle` in a <mark>. Everything is a text node, so a title that
+       contains an angle bracket stays a title. */
+    function markInto(host, text, needle) {
+      if (!needle) { host.appendChild(document.createTextNode(text)); return; }
+      var i = text.toLowerCase().indexOf(needle);
+      if (i < 0) { host.appendChild(document.createTextNode(text)); return; }
+      host.appendChild(document.createTextNode(text.slice(0, i)));
+      var m = document.createElement("mark");
+      m.textContent = text.slice(i, i + needle.length);
+      host.appendChild(m);
+      host.appendChild(document.createTextNode(text.slice(i + needle.length)));
+    }
+    function el(tag, cls) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      return n;
+    }
+    function move(d) {
+      if (!items.length) return;
+      items[cur].classList.remove("on");
+      items[cur].setAttribute("aria-selected", "false");
+      cur = (cur + d + items.length) % items.length;
+      items[cur].classList.add("on");
+      items[cur].setAttribute("aria-selected", "true");
+      input.setAttribute("aria-activedescendant", items[cur].id);
+      var a = items[cur], top = a.offsetTop, h = a.offsetHeight, box = results;
+      if (top < box.scrollTop) box.scrollTop = top;
+      else if (top + h > box.scrollTop + box.clientHeight) box.scrollTop = top + h - box.clientHeight;
+    }
+    /* What the reader opened last, so an empty box is a shortcut rather
+       than an arbitrary first nine. Stored per browser, never sent
+       anywhere, and the list falls back to the ordinary ranking if the
+       browser refuses storage. */
+    var RECENT = "portfolio.recent";
+    function readRecent() {
+      try { return JSON.parse(localStorage.getItem(RECENT) || "[]"); }
+      catch (e) { return []; }
+    }
+    function noteRecent(u) {
+      try {
+        var r = readRecent().filter(function (x) { return x !== u; });
+        r.unshift(u);
+        localStorage.setItem(RECENT, JSON.stringify(r.slice(0, 5)));
+      } catch (e) {}
+    }
+    results.addEventListener("click", function (e) {
+      var a = e.target.closest("a[href]");
+      if (a) noteRecent(a.getAttribute("href"));
+    });
+
+    /* A native dialog: showModal() traps focus, Escape closes it, and focus
+       goes back to whatever opened it, all without a line here. The page
+       behind it is inert while it is open, and CSS stops the scroll. */
+    function open() {
+      if (pal.open) return;
+      pal.showModal();
+      input.setAttribute("aria-expanded", "true");
+      input.value = "";
+      render();
+      input.focus();
+    }
+    function close() { if (pal.open) pal.close(); }
+    pal.addEventListener("close", function () { input.setAttribute("aria-expanded", "false"); });
+    if (openBtn) openBtn.addEventListener("click", open);
+    input.addEventListener("input", render);
+    /* a click on the backdrop reaches the dialog element itself */
+    pal.addEventListener("mousedown", function (e) { if (e.target === pal) close(); });
+    pal.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+      else if (e.key === "Enter") {
+        if (items.length) { e.preventDefault(); items[cur].querySelector("a").click(); }
+      } else if (e.key === "Tab") {
+        /* The dialog is modal, so focus stays inside it. Tab is given the
+           useful meaning instead of none: it moves the selection. */
+        e.preventDefault();
+        move(e.shiftKey ? -1 : 1);
+      }
+    });
+    results.addEventListener("mousemove", function (e) {
+      var li = e.target.closest("li[role=option]");
+      if (!li || !items.length) return;
+      var n = items.indexOf(li);
+      if (n > -1 && n !== cur) { move(n - cur); }
+    });
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault(); pal.open ? close() : open();
+      } else if (typing || pal.open || !singlesOn()) {
+        /* single-key routes only: the modified Cmd/Ctrl+K above stays on */
+      } else if (e.key === "/") {
+        e.preventDefault(); open();
+      } else if (e.key === "?") {
+        e.preventDefault(); keys(true);
+      } else if (e.key === "g" || e.key === "G") {
+        /* g then a letter: the two-stroke jump every reader of a long site
+           already knows from mail clients and code hosts. */
+        goArmed = Date.now();
+      } else if (!typing && !pal.open && goArmed && Date.now() - goArmed < 1200) {
+        var to = { h: "index.html", r: "research.html", c: "coursework.html",
+                   t: "tools.html", l: "library.html", a: "about.html" }[e.key.toLowerCase()];
+        goArmed = 0;
+        if (to) { e.preventDefault(); location.href = to; }
+      }
+    });
+  }
+
+  /* --------------------------------------------- the shortcuts sheet --
+     The header already advertises "/" . Everything else was undiscoverable,
+     which is the same as absent. */
+  var goArmed = 0;
+  /* The sheet is a native dialog: the modal trap, Escape and the return of
+     focus are the browser's, and the Close button is a method="dialog"
+     form submit, so closing needs no script at all. */
+  function keys(on) {
+    var sheet = document.getElementById("keysheet");
+    if (!sheet) return;
+    if (on) {
+      if (!sheet.open) sheet.showModal();
+      var c = sheet.querySelector(".close");
+      if (c) c.focus();
+    } else if (sheet.open) {
+      sheet.close();
+    }
+  }
+  (function () {
+    var sheet = document.getElementById("keysheet");
+    if (!sheet) return;
+    sheet.addEventListener("click", function (e) { if (e.target === sheet) keys(false); });
+    var opener = document.getElementById("keysbtn");
+    if (opener) opener.addEventListener("click", function () { keys(true); });
+    /* Single-key shortcuts can be turned off, for speech input and for
+       anyone whose stray key press keeps opening things (WCAG 2.1.4).
+       The choice stays in this browser, like the theme. */
+    var toggle = document.getElementById("keysingles");
+    if (toggle) {
+      toggle.checked = singlesOn();
+      toggle.addEventListener("change", function () {
+        try { localStorage.setItem(SINGLES, toggle.checked ? "on" : "off"); } catch (e) {}
+      });
+    }
+  })();
+
+  /* --------------------------------------- grouped library lists --
+     The library is split by what asked for the work, so the filter has
+     to walk several lists and hide a whole group when nothing in it
+     survives. Without this a filter leaves empty headers behind. */
+  (function () {
+    var groups = [].slice.call(document.querySelectorAll(".lgroup"));
+    if (!groups.length) return;
+    var qq = document.getElementById("q"),
+        chipsEl = document.getElementById("chips"),
+        surfEl = document.getElementById("chips-surface"),
+        noteEl = document.getElementById("resultnote"),
+        none = document.getElementById("noresults"),
+        f = "all", fs = "all", total = 0;
+    var sets = groups.map(function (g) {
+      /* the head row and the subtotal are the statement's furniture, not
+         pieces: never counted, and shown only while the list is whole */
+      var r = [].slice.call(g.querySelectorAll("ol.index > li:not(.sr-head):not(.sr-sub)"));
+      total += r.length;
+      return { g: g, rows: r };
+    });
+    /* The standing readout in the hero. The filters already walk every row,
+       so the shares are summed on the pass that is happening anyway rather
+       than on a pass of their own; nothing is scheduled and nothing runs once
+       the pointer stops, so the page still requests no frame while idle. The
+       totals rendered by the build are the resting state and the denominator,
+       which is what a reader with scripts off keeps. */
+    var denomEl = document.querySelector(".denom");
+    var TOT = {}, cell = {}, ofCell = {};
+    if (denomEl) {
+      ["n", "w", "f", "t"].forEach(function (k) {
+        cell[k] = denomEl.querySelector('[data-d="' + k + '"]');
+        ofCell[k] = denomEl.querySelector('[data-of="' + k + '"]');
+        TOT[k] = cell[k] ? +String(cell[k].textContent).replace(/[^0-9]/g, "") : 0;
+      });
+    }
+    var denomNote = denomEl && denomEl.querySelector(".denom-n");
+    function num(li, a) { return +(li.getAttribute(a) || 0) || 0; }
+    function readout(vis, whole) {
+      var sum = { n: vis.length, w: 0, f: 0, t: 0 };
+      vis.forEach(function (li) {
+        sum.w += num(li, "data-words");
+        sum.f += num(li, "data-figs");
+        sum.t += num(li, "data-tabs");
+      });
+      if (!denomEl) return sum;
+      ["n", "w", "f", "t"].forEach(function (k) {
+        if (cell[k]) cell[k].textContent = sum[k].toLocaleString("en-CA");
+        if (ofCell[k]) ofCell[k].textContent = whole ? "" : " of " + TOT[k].toLocaleString("en-CA");
+      });
+      if (denomNote) {
+        denomNote.textContent = whole
+          ? denomNote.getAttribute("data-rest")
+          : (TOT.w ? (sum.w / TOT.w * 100).toFixed(1) + "% of the measured words" : "");
+      }
+      return sum;
+    }
+
+    function run() {
+      var term = (qq && qq.value || "").trim().toLowerCase(), shown = 0, vis = [];
+      sets.forEach(function (s) {
+        var seen = 0;
+        s.rows.forEach(function (li) {
+          var ok = (f === "all" || li.getAttribute("data-kind") === f) &&
+                   (fs === "all" || li.getAttribute("data-surface") === fs) &&
+                   (!term || (li.getAttribute("data-search") || "").indexOf(term) > -1);
+          li.hidden = !ok; if (ok) { seen++; vis.push(li); }
+        });
+        s.g.hidden = seen === 0; shown += seen;
+        var whole = f === "all" && fs === "all" && !term;
+        [].forEach.call(s.g.querySelectorAll(".sr-head,.sr-sub"), function (el) { el.hidden = !whole; });
+      });
+      var everything = f === "all" && fs === "all" && !term;
+      var sum = readout(vis, everything);
+      if (noteEl) {
+        /* one live region for the whole control, so a filter is announced
+           once and carries its own denominator rather than twice. The words
+           clause is added only where the hero renders the totals to be a
+           denominator; without it the line reads as it always did. */
+        var whole = TOT.w ? ", " + TOT.w.toLocaleString("en-CA") + " words." : ".";
+        var part = TOT.w ? ", " + sum.w.toLocaleString("en-CA") + " of " +
+                           TOT.w.toLocaleString("en-CA") + " words." : ".";
+        noteEl.textContent = shown === total
+          ? "Showing all " + total + " pieces" + whole
+          : shown === 0
+            ? "Nothing matches" + (term ? ' "' + qq.value.trim() + '"' : " that filter") + "."
+            : "Showing " + shown + " of " + total + " pieces" +
+              (term ? ' matching "' + qq.value.trim() + '"' : "") + part;
+      }
+      if (none) none.hidden = shown !== 0;
+    }
+    if (qq) qq.addEventListener("input", run);
+    function chipGroup(box, set) {
+      if (!box) return;
+      box.addEventListener("click", function (e) {
+        var b = e.target.closest(".chip"); if (!b) return;
+        set(b.getAttribute("data-f"));
+        [].slice.call(box.querySelectorAll(".chip")).forEach(function (c) {
+          c.setAttribute("aria-pressed", c === b ? "true" : "false");
+        });
+        run();
+      });
+    }
+    chipGroup(chipsEl, function (v) { f = v; });
+    chipGroup(surfEl, function (v) { fs = v; });
+
+    /* A tag that looks like a filter should behave like one. Clicking one
+       puts it in the search box, which is the control the reader already
+       understands, rather than inventing a second filtering state. */
+    groups.forEach(function (g) {
+      g.addEventListener("click", function (e) {
+        var tag = e.target.closest(".tag");
+        if (!tag || !qq) return;
+        e.preventDefault();
+        var word = tag.textContent.trim();
+        qq.value = (qq.value.trim().toLowerCase() === word.toLowerCase()) ? "" : word;
+        run();
+        qq.focus();
+        qq.setSelectionRange(qq.value.length, qq.value.length);
+      });
+    });
+
+    /* j and k walk the visible rows, matching the g-then-letter vocabulary
+       the rest of the site uses. Enter opens whichever row is marked. */
+    var here = -1;
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || e.target.isContentEditable) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (!singlesOn()) return;
+      var pal = document.getElementById("cmdk");
+      if (pal && pal.open) return;
+      var vis = [];
+      sets.forEach(function (s) {
+        s.rows.forEach(function (li) { if (!li.hidden) vis.push(li); });
+      });
+      if (!vis.length) return;
+      if (e.key === "j" || e.key === "k") {
+        e.preventDefault();
+        if (here > -1 && vis[here]) vis[here].classList.remove("cursor");
+        here = e.key === "j" ? Math.min(vis.length - 1, here + 1) : Math.max(0, here - 1);
+        var li = vis[here];
+        li.classList.add("cursor");
+        var a = li.querySelector("a"); if (a) a.focus({ preventScroll: true });
+        li.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
+      }
+    });
+
+    /* Reordering. The published order is a grouping, which is the right
+       default and the wrong one for "what is the longest thing here".
+       Sorting moves the rows inside their own group rather than across
+       groups, so the split the page is built on survives the sort. */
+    var sortEl = document.getElementById("sort");
+    if (sortEl) {
+      var original = sets.map(function (s) { return s.rows.slice(); });
+      sortEl.addEventListener("change", function () {
+        var mode = sortEl.value;
+        sets.forEach(function (s, i) {
+          var list = s.g.querySelector("ol.index");
+          if (!list) return;
+          var rows = original[i].slice();
+          var n = function (li, a) { return +(li.getAttribute(a) || 0); };
+          if (mode === "long")  rows.sort(function (a, b) { return n(b,"data-words") - n(a,"data-words"); });
+          if (mode === "short") rows.sort(function (a, b) { return n(a,"data-words") - n(b,"data-words"); });
+          if (mode === "figs")  rows.sort(function (a, b) { return n(b,"data-figs") - n(a,"data-figs"); });
+          if (mode === "az")    rows.sort(function (a, b) {
+            return (a.getAttribute("data-title") || "").localeCompare(b.getAttribute("data-title") || "");
+          });
+          var frag = document.createDocumentFragment();
+          rows.forEach(function (li) { frag.appendChild(li); });
+          list.appendChild(frag);
+          /* a reordered list is no longer the statement: its head and its
+             subtotal step aside, and come back with the published order */
+          var head = list.querySelector(".sr-head"), sub = list.querySelector(".sr-sub");
+          if (mode === "default") {
+            if (head) list.insertBefore(head, list.firstChild);
+            if (sub) list.appendChild(sub);
+          }
+          [head, sub].forEach(function (el) { if (el) el.hidden = mode !== "default"; });
+          /* the leading numeral is a position in the list, so it is
+             renumbered rather than travelling with its row */
+          rows.forEach(function (li, k) {
+            var num = li.querySelector(".num");
+            if (num) num.textContent = (k + 1 < 10 ? "0" : "") + (k + 1);
+          });
+        });
+      });
+    }
+  })();
+
+  /* -------------------------------------------- the corpus readout --
+     Every document in the drawing is a link carrying its own numbers.
+     Pointing at one, or tabbing to it, fills the rail beside the figure
+     and shows its share of the whole. */
+  (function () {
+    var fig = document.querySelector(".corpusfig");
+    var box = document.getElementById("corpusread");
+    if (!fig || !box) return;
+    var rest = box.querySelector(".cf-rest"),
+        out  = box.querySelector(".cf-out"),
+        name = box.querySelector(".cf-name"),
+        meta = box.querySelector(".cf-meta"),
+        bar  = box.querySelector(".cf-bar i"),
+        share = box.querySelector(".cf-share");
+    var rows = [].slice.call(fig.querySelectorAll(".cf-row"));
+    if (!rows.length) return;
+    var widest = 0, total = 0;
+    rows.forEach(function (r) {
+      var w = +(r.getAttribute("data-w") || 0);
+      total += w; if (w > widest) widest = w;
+    });
+    var hold = null;
+    function show(r) {
+      clearTimeout(hold);
+      var w = +(r.getAttribute("data-w") || 0);
+      var mins = +(r.getAttribute("data-m") || 0);
+      var f = +(r.getAttribute("data-f") || 0), t = +(r.getAttribute("data-b") || 0);
+      name.textContent = r.getAttribute("data-t") || "";
+      var bits = [w.toLocaleString("en-CA") + " words"];
+      if (mins) bits.push(mins + " min");
+      if (f) bits.push(f + (f === 1 ? " figure" : " figures"));
+      if (t) bits.push(t + (t === 1 ? " table" : " tables"));
+      meta.textContent = bits.join("  ·  ");
+      share.textContent = r.getAttribute("data-k") + "  ·  " + r.getAttribute("data-c") +
+        "  ·  " + (w / total * 100).toFixed(1) + "% of the words drawn here";
+      rest.hidden = true; out.hidden = false;
+      /* Set directly rather than inside requestAnimationFrame: rAF does not
+         run in a background tab, and a proportion bar that never arrives is
+         worse than one that arrives without its transition. */
+      if (bar) bar.style.width = (w / widest * 100).toFixed(1) + "%";
+    }
+    function clear() {
+      /* a short hold, so crossing a gap between two rows does not make
+         the rail flicker back to its resting state */
+      hold = setTimeout(function () {
+        out.hidden = true; rest.hidden = false;
+        if (bar) bar.style.width = "0";
+      }, 260);
+    }
+    rows.forEach(function (r) {
+      r.addEventListener("mouseenter", function () { show(r); });
+      r.addEventListener("focus", function () { show(r); });
+      r.addEventListener("mouseleave", clear);
+      r.addEventListener("blur", clear);
+    });
+  })();
+
+  /* --------------------------------------------- linkable sections --
+     Every band on these pages is worth pointing someone at. The heading
+     gets an anchor that appears on hover or focus, gives the section an id
+     if the build did not, and copies the address rather than only moving
+     to it. */
+  (function () {
+    var heads = [].slice.call(document.querySelectorAll(".band .sechead h2, .hero .sechead h2"));
+    if (!heads.length) return;
+    /* one polite live region for the copy confirmations, because the CSS
+       pseudo-content the anchor flashes is not reliably announced */
+    var live = document.createElement("span");
+    live.className = "sr";
+    live.setAttribute("aria-live", "polite");
+    document.body.appendChild(live);
+    heads.forEach(function (h) {
+      var sec = h.closest("section");
+      if (!sec) return;
+      if (!sec.id) {
+        sec.id = (h.textContent || "section").toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+      }
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + sec.id;
+      a.setAttribute("aria-label", "Link to this section: " + (h.textContent || "").trim());
+      a.innerHTML = "&#167;";
+      a.addEventListener("click", function () {
+        /* the link navigates as a link promises to; the copy is the extra,
+           and it is announced rather than only flashed */
+        if (!navigator.clipboard) return;
+        var url = location.href.split("#")[0] + "#" + sec.id;
+        navigator.clipboard.writeText(url).then(function () {
+          a.classList.add("copied");
+          live.textContent = "";
+          setTimeout(function () { live.textContent = "Link copied"; }, 30);
+          setTimeout(function () { a.classList.remove("copied"); }, 1400);
+        }, function () {});
+      });
+      h.appendChild(a);
+    });
+  })();
+
+  /* ------------------------------------------------ back to the top --
+     Only on pages long enough to need it, and only once the reader has
+     gone far enough that the header is out of reach. */
+  (function () {
+    if (document.documentElement.scrollHeight < 3400) return;
+    if (document.querySelector(".docbar")) return;   // documents carry their own
+    var b = document.createElement("button");
+    b.className = "totop"; b.type = "button";
+    b.innerHTML = '<span aria-hidden="true">&#8593;</span> Top';
+    b.setAttribute("aria-label", "Back to the top of the page");
+    b.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      var skip = document.querySelector("h1");
+      if (skip) { skip.setAttribute("tabindex", "-1"); skip.focus({ preventScroll: true }); }
+    });
+    document.body.appendChild(b);
+    var tick = false;
+    function run() {
+      tick = false;
+      b.classList.toggle("on", (window.scrollY || document.documentElement.scrollTop) > 900);
+    }
+    addEventListener("scroll", function () {
+      if (!tick) { tick = true; requestAnimationFrame(run); }
+    }, { passive: true });
+    run();
+  })();
+
+  /* --------------------------------------------- the nav edge fade --
+     On narrow screens the nav scrolls sideways behind a mask fade that
+     signals more content. The CSS hook that lifts the fade at scroll end
+     was never driven by anything, so the last item stayed dimmed even
+     when fully in view. */
+  (function () {
+    var nav = document.querySelector("nav.main");
+    if (!nav) return;
+    function edge() {
+      nav.classList.toggle("scrolled-end",
+        nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 4);
+    }
+    nav.addEventListener("scroll", edge, { passive: true });
+    addEventListener("resize", edge);
+    edge();
+  })();
+
+  /* ------------------------------------------------ the nav underline
+     The rule under the current page slides to whichever item the pointer
+     is over and returns when it leaves, so the header reads as one
+     control rather than six. */
+  (function () {
+    var nav = document.querySelector("nav.main");
+    if (!nav || reduced) return;
+    var links = [].slice.call(nav.querySelectorAll("a"));
+    var current = nav.querySelector('a[aria-current="page"]');
+    if (!current) return;
+    var ink = document.createElement("span");
+    ink.className = "navink";
+    nav.appendChild(ink);
+    function moveTo(a) {
+      if (!a) return;
+      ink.style.width = a.offsetWidth + "px";
+      ink.style.transform = "translateX(" + a.offsetLeft + "px)";
+    }
+    function home() { moveTo(current); }
+    links.forEach(function (a) {
+      a.addEventListener("mouseenter", function () { moveTo(a); });
+      a.addEventListener("focus", function () { moveTo(a); });
+    });
+    nav.addEventListener("mouseleave", home);
+    nav.addEventListener("focusout", function (e) {
+      if (!nav.contains(e.relatedTarget)) home();
+    });
+    addEventListener("resize", home);
+    /* the webfont lands after first paint and changes every width */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(home);
+    setTimeout(home, 0);
+  })();
+})();
+
+  /* --------------------------------------- a number you can open --
+     Every counted number on a generated page is a <data> element carrying
+     its raw value, the id of the definition it was counted under and, when
+     it belongs to one piece, that piece. Pointing at it or pressing it
+     opens the definition, the file it was measured from, the script and
+     the record. The data is the build's, printed into #defs; the text is
+     the colophon's; the dialog is the browser's. With scripts off the
+     number is plain text and the colophon holds the definitions. */
+  (function () {
+    var box = document.getElementById("defs"), dlg = document.getElementById("prov");
+    if (!box || !dlg || !dlg.showModal) return;
+    var D; try { D = JSON.parse(box.textContent); } catch (e) { return; }
+    var nums = [].slice.call(document.querySelectorAll("data.m"));
+    if (!nums.length) return;
+    var kEl = document.getElementById("prov-k"), hEl = document.getElementById("prov-h"),
+        defEl = document.getElementById("prov-def"), srcEl = document.getElementById("prov-src"),
+        lnEl = document.getElementById("prov-links");
+    function fmt(v) { var x = Number(v); return isFinite(x) ? x.toLocaleString("en-CA") : String(v); }
+    function a(href, text) { var l = document.createElement("a"); l.href = href; l.textContent = text; return l; }
+    function open(el) {
+      var kind = el.getAttribute("data-m"), of = el.getAttribute("data-of"), val = el.getAttribute("value");
+      var def = D.defs[kind]; if (!def) return;
+      var piece = of && D.pieces[of];
+      kEl.textContent = def.t;
+      hEl.textContent = fmt(val) + (kind === "mins" ? " minutes" : " " + def.t.toLowerCase());
+      defEl.textContent = def.d;
+      srcEl.textContent = "";
+      lnEl.textContent = "";
+      var meas = D.meas;
+      if (piece) {
+        srcEl.appendChild(document.createTextNode("Measured from "));
+        srcEl.appendChild(a(piece.u, piece.t));
+        srcEl.appendChild(document.createTextNode(" in a headless browser by " + meas.tool + ", and held in " + meas.record + " (digest " + meas.digest + ")" +
+          (kind === "mins" ? ", then divided by the rate the definition states." : ".")));
+      } else if (kind === "pieces") {
+        srcEl.textContent = "Counted from content/pieces.json: " + fmt(val) + " listed entries, each with a file behind it, checked on every build.";
+      } else {
+        srcEl.textContent = "The sum over the " + meas.pieces + " listed pieces of what " + meas.tool + " measured for each, held in " + meas.record + " (digest " + meas.digest + "); the " + meas.transcripts + " transcripts are measured there too but not summed here.";
+      }
+      lnEl.appendChild(a("colophon.html#def-" + kind, "The definition on the colophon"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.record, "The record"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.tool, "The script"));
+      dlg.showModal();
+    }
+    /* the totals join the Tab order; a number inside a row opens with a
+       pointer only, so a keyboard reader is not made to stop at every figure
+       of every row (the home page would gain over a hundred stops), and what
+       its dialog would add is the row's own link and the definition the
+       colophon lists */
+    nums.forEach(function (el) {
+      var total = !el.hasAttribute("data-of");
+      el.setAttribute("title", "What was counted, and where");
+      el.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); open(el); });
+      if (!total) return;
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-haspopup", "dialog");
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(el); }
+      });
+    });
+  })();
+
+  /* --------------------------------------------- the atlas, in miniature
+     The same sphere the atlas page draws, at a size where it is a picture
+     rather than an instrument: no labels, no hit testing, no second copy of
+     the headings. Only the positions and the encoding travel, two decimals
+     each, because that is all a small radius can show.
+
+     Mark area follows the apportioned word weight, as it does on the atlas,
+     and the sphere idles at zero frames, as the atlas does. The two used
+     to disagree: the atlas said in its first wall label that size carries
+     level, and the home page drew all 1,247 marks the same size directly
+     underneath a paragraph making the same claim. The ratios below are the
+     atlas's own (atlas.js:448, `0.75 + (4 - level) * 0.3`), scaled so that
+     an ordinary third-level heading lands on the 0.7px radius this teaser
+     already used and nothing else has to move. */
+  (function () {
+    var host = document.getElementById("atlasmini");
+    if (!host || !host.getAttribute("data-pts")) return;
+    /* Every visual channel this sphere draws, by the id its key entry carries
+       on the Atlas page, which is this sphere's key; check 27 holds the two
+       lists to each other. A channel drawn here and not listed there fails
+       the build, and so does a key entry nothing draws. */
+    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor"];
+
+    /* This block sits outside the file's main closure, so it reads the motion
+       preference for itself rather than borrowing a variable that is not in
+       scope here. */
+    var reduced = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* The fourth field is the kind letter, optionally followed by the
+       heading level. A missing digit means level 3, which is what 743 of
+       the points are, so the common case costs nothing on the wire. */
+    var raw = host.getAttribute("data-pts").split(";");
+    var pts = [];
+    for (var i = 0; i < raw.length; i++) {
+      var f = raw[i].split(",");
+      if (f.length < 4) continue;
+      var mark = f[3];
+      var band = mark.length > 1 ? +mark.charAt(1) : 0;
+      if (!(band >= 0 && band <= 9)) band = 0;
+      var P = { x: +f[0], y: +f[1], z: +f[2], k: mark.charAt(0), b: band };
+      /* the atlas stands its six tool marks off the sphere; the teaser
+         makes the same claim about the same points */
+      if (P.k === "t") { P.x *= 1.13; P.y *= 1.13; P.z *= 1.13; }
+      pts.push(P);
+    }
+    if (pts.length < 8) return;
+
+    /* The connective layer, from the same harvest the Atlas draws: the
+       documents with their centroids, which document each mark belongs to,
+       and the links between documents that edges() found in prose. Without
+       it the sphere still draws; with it, pointing at a mark draws the
+       chords its document records, as the Atlas does, on demand. */
+    var docs = [], own = [], lk = [];
+    /* the two parallels that bound the origins' zones, as y, from the build */
+    var zonesY = (host.getAttribute("data-zones") || "").split(",").map(Number)
+      .filter(function (v) { return isFinite(v) && v > -1 && v < 1; });
+    try {
+      var dj = JSON.parse(document.getElementById("atlasmini-docs").textContent);
+      docs = dj.docs || [];
+      (dj.own || "").split(",").forEach(function (tok) {
+        var m = tok.split("*"), i = +m[0], n = m.length > 1 ? +m[1] : 1;
+        for (var r = 0; r < n; r++) own.push(i);
+      });
+      docs.forEach(function (d) { d.lk = []; d.marks = 0; });
+      for (var oi = 0; oi < own.length && oi < pts.length; oi++) {
+        if (docs[own[oi]]) docs[own[oi]].marks++;
+      }
+      (dj.lk || []).forEach(function (e) {
+        var a = docs[e[0]], b = docs[e[1]];
+        if (!a || !b || a === b) return;
+        var have = null, li;
+        for (li = 0; li < a.lk.length; li++) if (a.lk[li].g === b) { have = a.lk[li]; break; }
+        if (have) have.out = true; else a.lk.push({ g: b, out: true, into: false });
+        var back = null;
+        for (li = 0; li < b.lk.length; li++) if (b.lk[li].g === a) { back = b.lk[li]; break; }
+        if (back) back.into = true; else b.lk.push({ g: a, out: false, into: true });
+      });
+    } catch (e) { docs = []; own = []; }
+    if (own.length !== pts.length) { docs = []; own = []; }
+    var card = document.getElementById("atlasmini-card");
+    var cardT = card && card.querySelector(".gc-t"), cardD = card && card.querySelector(".gc-d");
+    /* A fine pointer hovers; a coarse one taps. A tap locks the document it
+       lands on, so the chords and the card hold until the next tap, and the
+       card's name is the link that opens it. */
+    var fine = !!(window.matchMedia && window.matchMedia("(pointer:fine)").matches);
+    var locked = false;
+
+    /* atlas.js draws 0.55 + 0.028 * sqrt(words) plus a depth term. The
+       payload carries sqrt(words) quantised to ten bands of 13, so the
+       teaser draws the same rule at the band's centre, scaled by 0.55 for
+       a sphere a third the size. */
+    var BAND_R = [];
+    for (var bi = 0; bi < 10; bi++) BAND_R.push(0.55 * (0.55 + 0.028 * (13 * bi + 6.5)));
+
+    var cv = document.createElement("canvas");
+    cv.setAttribute("aria-hidden", "true");
+    host.appendChild(cv);
+    var ctx = cv.getContext && cv.getContext("2d");
+    if (!ctx) return;
+
+    var C = {}, DK = false;
+    function colours() {
+      var s = getComputedStyle(document.documentElement);
+      C.i = s.getPropertyValue("--accent").trim() || "#14509b";
+      C.c = s.getPropertyValue("--ink-3").trim() || "#66635a";
+      C.t = s.getPropertyValue("--tool").trim() || "#0f6b58";
+      C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
+      C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
+      C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
+      C.k = s.getPropertyValue("--ink").trim() || "#16150f";
+      /* the second accent: a link the prose records, and nothing else */
+      C.l = s.getPropertyValue("--link").trim() || C.k;
+      DK = dark();
+    }
+    function dark() {
+      var h = C.p.replace("#", "");
+      if (h.length === 3) h = h[0] + h[0];
+      return parseInt(h.slice(0, 2), 16) < 128;
+    }
+    colours();
+    new MutationObserver(function () { colours(); _cc = {}; paint(); })
+      .observe(document.documentElement,
+        { attributes: true, attributeFilter: ["data-theme"] });
+
+    function rgba(hex, a) {
+      var h = hex.replace("#", "");
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      var n = parseInt(h, 16);
+      return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," +
+        (n & 255) + "," + a.toFixed(3) + ")";
+    }
+
+    var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = 0.3;
+    /* the reader's own turn (drag) rides on top of the descent's camera */
+    var offYaw = 0, offPitch = 0, curDoc = -1;
+    /* the camera may tip to just short of the pole: the placement puts real
+       documents there (the lattice's first point is the pole itself), and a
+       camera that cannot face them cannot keep the descent's promise */
+    var PITCH_MAX = Math.PI / 2 - 0.02;
+    /* The light: a halo outside the limb, the way the Atlas page's
+       silhouette is drawn, and a broader, fainter one on the ground behind.
+       Both sit outside the disc on purpose: a gradient laid over the marks
+       would darken the ground every mark is measured against. Lighting,
+       not data; data-light="off" removes it. */
+    var lit = host.getAttribute("data-light") !== "off";
+    function size() {
+      var r = host.getBoundingClientRect();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      /* The host is a real box now. It used to be styled by nothing at
+         all, so getBoundingClientRect returned a height of zero, this
+         floor caught it, and a 140px sphere was drawn in the middle of a
+         1,168px canvas. The floor stays as a floor and is no longer the
+         thing deciding the size. */
+      W = Math.max(160, r.width);
+      H = Math.max(160, r.height);
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      cv.style.width = W + "px";
+      cv.style.height = H + "px";
+      R = Math.min(W, H) * (+host.getAttribute("data-fill") || 0.44);
+      /* The marks were drawn for a 350px box (R = 154). At hero scale the
+         same rule is drawn proportionally, so a bigger sphere is the same
+         picture larger and not the same dots further apart. */
+      S = Math.max(1, R / 154);
+    }
+
+    /* The depth alpha is quantised to twelve steps and the colour strings
+       cached, because building 1,247 rgba strings per frame was most of the
+       frame, and a twelfth of the alpha range is invisible at this size. */
+    var _cc = {};
+    function tone(k, q) {
+      var key = k + q;
+      var s = _cc[key];
+      if (s) return s;
+      /* on paper the far side needs a higher floor than on the dark ground,
+         or the back of the sphere reads as empty */
+      var a = DK ? 0.08 + 0.72 * (q / 12) : 0.18 + 0.66 * (q / 12);
+      s = k === "c" ? rgba(C.c, a)
+        : k === "t" ? rgba(C.t, a)
+        : k === "p" ? rgba(C.i, a * 0.55)
+        : k === "a" ? rgba(C.k, Math.min(1, a + 0.2))
+        : rgba(C.i, a);
+      return (_cc[key] = s);
+    }
+    /* Every mark's screen position and depth from the last paint, kept so a
+       pointer can be matched to a mark without projecting the sphere again. */
+    var SX = new Float32Array(pts.length), SY = new Float32Array(pts.length),
+        SZ = new Float32Array(pts.length);
+    var cx = 0, cy = 0, _cy1 = 1, _sy1 = 0, _cp1 = 1, _sp1 = 0;
+    function project(v) {
+      var x1 = v[0] * _cy1 + v[2] * _sy1;
+      var z1 = -v[0] * _sy1 + v[2] * _cy1;
+      var y2 = v[1] * _cp1 - z1 * _sp1;
+      var z2 = v[1] * _sp1 + z1 * _cp1;
+      return [cx + x1 * R, cy - y2 * R, z2];
+    }
+    function nrm(v) {
+      var l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) || 1;
+      return [v[0] / l, v[1] / l, v[2] / l];
+    }
+    /* A chord between two documents the corpus links: the great circle
+       between their centroids, with a tick at 0.72 of the way toward the
+       document being linked, so a mutual pair reads as one chord ticked at
+       both ends. The Atlas draws the same chord the same way. */
+    function chordTick(A, B, om, so, t) {
+      var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
+      var k3 = Math.sin((1 - t - 0.02) * om) / so, k4 = Math.sin((t + 0.02) * om) / so;
+      var s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+      if (s[2] < -0.02) return;
+      var s2 = project([A[0] * k3 + B[0] * k4, A[1] * k3 + B[1] * k4, A[2] * k3 + B[2] * k4]);
+      var dx = s2[0] - s[0], dy = s2[1] - s[1];
+      var dl = Math.sqrt(dx * dx + dy * dy) || 1;
+      var px = -dy / dl * 4 * Math.max(1, S * 0.8), py = dx / dl * 4 * Math.max(1, S * 0.8);
+      ctx.beginPath();
+      ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
+      ctx.strokeStyle = rgba(C.l, 0.95);
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    function drawChord(a, b, tickAB, tickBA, prog) {
+      var A = nrm(a.p), B = nrm(b.p);
+      var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
+      var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
+      var upto = prog === undefined ? 48 : Math.round(48 * Math.max(0, Math.min(1, prog)));
+      var started = false, seen = false, i, t, k1, k2, s;
+      /* the halo under the line, then the line, each drawn to the same point */
+      for (var pass = 0; pass < 2; pass++) {
+        ctx.strokeStyle = pass ? rgba(C.l, 0.92) : rgba(C.l, DK ? 0.16 : 0.2);
+        ctx.lineWidth = pass ? 1.35 : 4.5;
+        started = false;
+        ctx.beginPath();
+        for (i = 0; i <= upto; i++) {
+          t = i / 48;
+          k1 = Math.sin((1 - t) * om) / so; k2 = Math.sin(t * om) / so;
+          s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+          if (s[2] < -0.02) { started = false; continue; }
+          seen = true;
+          if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+          else ctx.lineTo(s[0], s[1]);
+        }
+        ctx.stroke();
+      }
+      if (upto >= 48) {
+        if (tickAB) chordTick(A, B, om, so, 0.72);
+        if (tickBA) chordTick(A, B, om, so, 0.28);
+      }
+      return seen;
+    }
+    /* One curve for everything that settles here: the response of a
+       critically damped spring, 1 - (1 + wt) e^(-wt). No overshoot, zero
+       velocity at the start, and it decelerates into the end state the way
+       a weight settles rather than the way a panel slides. w = 17 settles
+       the camera within 1% by 390ms; w = 30 draws a chord within 1% by
+       220ms. */
+    function damped(t, w) { if (t <= 0) return 0; var x = w * t; return 1 - (1 + x) * Math.exp(-x); }
+    var SPRING_W = 17, CHORD_W = 30;
+    var chordT0 = 0, corT0 = 0;
+    /* The corona: the light behind the sphere takes the hue of the faced
+       document's recorded origin, the field the statement sorts by. On
+       the dark ground independent work reads indigo over slate, coursework
+       cobalt, personal interest bronze over slate; on paper the same
+       origins read parchment, ivory and bone. Nothing faced: the accent,
+       as the sphere is lit at rest. The pair is the ground glow and the
+       limb halo. */
+    var CORONA = {
+      dark:  { independent: ["#6d5ce0", "#6b7aa6"], course: ["#2e6fe0", "#4a68a8"], personal: ["#b98a4c", "#6b7aa6"], author: ["#f3f3f0", "#6b7aa6"] },
+      light: { independent: ["#c9b27a", "#b8a374"], course: ["#e6dcbc", "#cfc39c"], personal: ["#c9bfa6", "#b3a88c"], author: ["#8a847c", "#8a847c"], none: ["#ddd9cf", "#bfb9aa"] }
+    };
+    var corOrigin = "none", corFrom = null, corTo = null;
+    function hexRgb(h) { h = h.replace("#", ""); if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; var n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+    function rgbaArr(c, a) { return "rgba(" + Math.round(c[0]) + "," + Math.round(c[1]) + "," + Math.round(c[2]) + "," + a.toFixed(3) + ")"; }
+    function coronaPair(origin) {
+      /* at rest on paper the light is the paper's own rule tones; on the
+         dark ground it is the accent, as the sphere has always been lit */
+      var tab = CORONA[DK ? "dark" : "light"][origin];
+      return tab ? [hexRgb(tab[0]), hexRgb(tab[1])] : [hexRgb(C.i), hexRgb(C.e)];
+    }
+    function setCorona(origin) {
+      if (origin === corOrigin) return;
+      var nowPair = coronaNow();
+      corOrigin = origin;
+      corFrom = nowPair; corTo = coronaPair(origin);
+      corT0 = reducedM ? 0 : performance.now();
+      host.setAttribute("data-corona", origin);
+    }
+    function coronaNow() {
+      var to = corTo || coronaPair(corOrigin);
+      if (!corT0 || !corFrom) return to;
+      var p = damped((performance.now() - corT0) / 1000, SPRING_W);
+      if (p >= 0.999) { corT0 = 0; return to; }
+      return [[corFrom[0][0] + (to[0][0] - corFrom[0][0]) * p, corFrom[0][1] + (to[0][1] - corFrom[0][1]) * p, corFrom[0][2] + (to[0][2] - corFrom[0][2]) * p],
+              [corFrom[1][0] + (to[1][0] - corFrom[1][0]) * p, corFrom[1][1] + (to[1][1] - corFrom[1][1]) * p, corFrom[1][2] + (to[1][2] - corFrom[1][2]) * p]];
+    }
+    /* A small circle on the sphere: a document's disc, or a zone parallel
+       (a disc about the pole). Only the part facing the viewer is drawn. */
+    function ring(c, rad, colour, alpha, width, dash) {
+      var up = Math.abs(c[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+      var e1 = nrm([up[1] * c[2] - up[2] * c[1], up[2] * c[0] - up[0] * c[2], up[0] * c[1] - up[1] * c[0]]);
+      var e2 = nrm([c[1] * e1[2] - c[2] * e1[1], c[2] * e1[0] - c[0] * e1[2], c[0] * e1[1] - c[1] * e1[0]]);
+      var ca = Math.cos(rad), sa = Math.sin(rad), n = rad > 0.5 ? 96 : 48;
+      var started = false, seen = false;
+      if (dash) ctx.setLineDash(dash);
+      ctx.strokeStyle = rgba(colour, alpha);
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      for (var i = 0; i <= n; i++) {
+        var th = i / n * Math.PI * 2, cp = Math.cos(th), sp = Math.sin(th);
+        var s = project([c[0] * ca + (e1[0] * cp + e2[0] * sp) * sa,
+                         c[1] * ca + (e1[1] * cp + e2[1] * sp) * sa,
+                         c[2] * ca + (e1[2] * cp + e2[2] * sp) * sa]);
+        if (s[2] < -0.02) { started = false; continue; }
+        seen = true;
+        if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+        else ctx.lineTo(s[0], s[1]);
+      }
+      ctx.stroke();
+      if (dash) ctx.setLineDash([]);
+      return seen;
+    }
+    /* A sparse frame stays on the instrument at rest. Twelve six-pixel
+       registrations establish bearing, the equator establishes attitude,
+       and the two real poles receive five-pixel crosshairs only when they
+       face the reader. All three are projections of the current camera. */
+    function drawReferenceFrame() {
+      ring([0, 1, 0], Math.PI / 2, C.e, DK ? 0.42 : 0.5, 1);
+      ctx.save();
+      ctx.strokeStyle = C.e;
+      ctx.lineWidth = 1;
+      for (var i = 0; i < 12; i++) {
+        var a = i * Math.PI / 6, ca = Math.cos(a), sa = Math.sin(a);
+        ctx.beginPath();
+        ctx.moveTo(cx + ca * (R - 6), cy + sa * (R - 6));
+        ctx.lineTo(cx + ca * R, cy + sa * R);
+        ctx.stroke();
+      }
+      for (var pole = -1; pole <= 1; pole += 2) {
+        var s = project([0, pole, 0]);
+        if (s[2] < 0.02) continue;
+        ctx.beginPath();
+        ctx.moveTo(s[0] - 5, s[1]); ctx.lineTo(s[0] + 5, s[1]);
+        ctx.moveTo(s[0], s[1] - 5); ctx.lineTo(s[0], s[1] + 5);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    /* The selected mark reports its screen coordinates to the limb. The
+       four short ticks are the endpoints of those two measured axes, not
+       decorative compass marks. A hover change calls paint once. */
+    function drawTargetAxes(i, hd) {
+      if (i < 0 || !pts[i]) return;
+      var p = pts[i], s = project([p.x, p.y, p.z]);
+      var dx = s[0] - cx, dy = s[1] - cy;
+      if (s[2] <= 0 || dx * dx + dy * dy >= R * R) return;
+      var xSpan = Math.sqrt(Math.max(0, R * R - dy * dy));
+      var ySpan = Math.sqrt(Math.max(0, R * R - dx * dx));
+      var depth = (s[2] + 1) / 2;
+      var rad = (BAND_R[p.b] + 1.5 * depth) * S;
+      if (hd >= 0 && own[i] === hd) rad += 0.6 * S;
+      rad += 6.9;
+      var left = cx - xSpan, right = cx + xSpan;
+      var top = cy - ySpan, bottom = cy + ySpan;
+      ctx.save();
+      ctx.strokeStyle = rgba(C.k, DK ? 0.34 : 0.28);
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 4]);
+      ctx.beginPath();
+      if (s[0] - rad > left) { ctx.moveTo(left, s[1]); ctx.lineTo(s[0] - rad, s[1]); }
+      if (s[0] + rad < right) { ctx.moveTo(s[0] + rad, s[1]); ctx.lineTo(right, s[1]); }
+      if (s[1] - rad > top) { ctx.moveTo(s[0], top); ctx.lineTo(s[0], s[1] - rad); }
+      if (s[1] + rad < bottom) { ctx.moveTo(s[0], s[1] + rad); ctx.lineTo(s[0], bottom); }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = C.e;
+      ctx.beginPath();
+      ctx.moveTo(left, s[1] - 3); ctx.lineTo(left, s[1] + 3);
+      ctx.moveTo(right, s[1] - 3); ctx.lineTo(right, s[1] + 3);
+      ctx.moveTo(s[0] - 3, top); ctx.lineTo(s[0] + 3, top);
+      ctx.moveTo(s[0] - 3, bottom); ctx.lineTo(s[0] + 3, bottom);
+      ctx.stroke();
+      ctx.restore();
+    }
+    var hover = -1;
+    function paint() {
+      cx = W / 2; cy = H / 2;
+      _cy1 = Math.cos(yaw); _sy1 = Math.sin(yaw);
+      _cp1 = Math.cos(pitch); _sp1 = Math.sin(pitch);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      if (lit) {
+        var isDark = dark();
+        /* the corona: the ground glow and the limb halo in the faced
+           document's origin hue (see CORONA), blending on the spring's
+           curve when the origin changes. Fades to nothing at the box edge,
+           so the canvas boundary never shows as a line through the light. */
+        var cp = coronaNow(), g0c = cp[0], g1c = cp[1];
+        var edge = Math.min(W, H) / 2;
+        var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, Math.max(R * 1.05, edge));
+        g0.addColorStop(0, rgbaArr(g0c, isDark ? 0.11 : 0.3));
+        g0.addColorStop(0.55, rgbaArr(g0c, isDark ? 0.035 : 0.1));
+        g0.addColorStop(1, rgbaArr(g0c, 0));
+        ctx.fillStyle = g0;
+        ctx.fillRect(0, 0, W, H);
+        var g1 = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.13);
+        g1.addColorStop(0, rgbaArr(g1c, isDark ? 0.24 : 0.42));
+        g1.addColorStop(0.45, rgbaArr(g1c, isDark ? 0.08 : 0.14));
+        g1.addColorStop(1, rgbaArr(g1c, 0));
+        ctx.fillStyle = g1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 1.13, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
+      /* the body of the sphere: a faint limb shading inside the disc, so
+         the ball reads as a ball on paper as well as on the dark ground.
+         It is at most a twentieth of the ink at the very edge, under the
+         marks, and it carries no data. */
+      if (lit) {
+        var g2 = ctx.createRadialGradient(cx, cy, R * 0.58, cx, cy, R);
+        g2.addColorStop(0, rgba(DK ? C.i : C.k, 0));
+        g2.addColorStop(1, rgba(DK ? C.i : C.k, DK ? 0.07 : 0.05));
+        ctx.fillStyle = g2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = lit ? C.e : C.r;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      /* the document under the pointer: its marks come forward, the rest
+         hold; the chords its prose records are drawn under the marks */
+      var hd = hover >= 0 && own.length ? own[hover] : curDoc;
+      drawReferenceFrame();
+      drawTargetAxes(hover, hd);
+      /* the chords of a newly faced document draw outward over 220ms on
+         the same curve the camera settles on; a pointed document's chords
+         are drawn whole, one paint per change */
+      var chordP = 1;
+      if (hd === curDoc && chordT0) {
+        chordP = damped((performance.now() - chordT0) / 1000, CHORD_W);
+        if (chordP >= 0.995) { chordP = 1; chordT0 = 0; }
+      }
+      /* the rule, drawn: the two parallels that bound the zones, and every
+         document's disc as a hairline; the document the sphere is showing
+         has its disc drawn in the chord colour, so the cluster the marks
+         make is also the boundary the rule gave it */
+      for (var zi = 0; zi < zonesY.length; zi++) {
+        ring([0, 1, 0], Math.acos(zonesY[zi]), C.k, DK ? 0.2 : 0.16, 1, [3, 5]);
+      }
+      for (var di = 0; di < docs.length; di++) {
+        var dd = docs[di];
+        if (!(dd.r > 0) || di === hd) continue;
+        ring(nrm(dd.p), dd.r, C.k, DK ? 0.18 : 0.14, 1);
+      }
+      if (hd >= 0 && docs[hd] && docs[hd].r > 0) {
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, DK ? 0.28 : 0.22, 5);
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, 0.85, 1.2);
+      }
+      var drawn = 0;
+      if (hd >= 0 && docs[hd]) {
+        var D = docs[hd];
+        for (var lc = 0; lc < D.lk.length; lc++) {
+          if (drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into, chordP)) drawn++;
+        }
+      }
+      /* the sphere says what it is showing: the chords with a visible
+         segment in this paint, readable by anything that wants to check */
+      if (hd >= 0) host.setAttribute("data-chords", drawn); else host.removeAttribute("data-chords");
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        var x1 = p.x * _cy1 + p.z * _sy1;
+        var z1 = -p.x * _sy1 + p.z * _cy1;
+        var y2 = p.y * _cp1 - z1 * _sp1;
+        var z2 = p.y * _sp1 + z1 * _cp1;
+        var sx = cx + x1 * R, sy = cy - y2 * R;
+        SX[i] = sx; SY[i] = sy; SZ[i] = z2;
+        var t = (z2 + 1) / 2;
+        var q = (t * 12) | 0;
+        var rad = (BAND_R[p.b] + 1.5 * t) * S;
+        var kin = hd >= 0 && own[i] === hd;
+        if (kin) { q = Math.min(12, q + 4); rad += 0.6 * S; }
+        if (i === hover) rad += 2.4;
+        ctx.beginPath();
+        ctx.arc(sx, sy, rad, 0, Math.PI * 2);
+        if (p.k === "c") {
+          ctx.strokeStyle = tone("c", q);
+          ctx.lineWidth = Math.max(1, 0.9 * S);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = tone(p.k, q);
+          ctx.fill();
+        }
+        /* the faced document's marks on the near side carry a ring in the
+           chord violet, so the region the sphere has turned to reads as one
+           lit constellation rather than a scatter of brighter dots */
+        if (kin && z2 > 0) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, rad + 2.2, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(C.l, 0.22 + 0.33 * t); ctx.lineWidth = 1; ctx.stroke();
+        }
+        if (i === hover) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, rad + 4.5, 0, Math.PI * 2);
+          ctx.strokeStyle = C.k; ctx.lineWidth = 1; ctx.stroke();
+        }
+      }
+    }
+    /* the nearest front-facing mark within reach of the pointer */
+    function hit(mx, my) {
+      var best = -1, bd = 16 * 16;
+      for (var i = 0; i < pts.length; i++) {
+        if (SZ[i] <= 0) continue;
+        var dx = SX[i] - mx, dy = SY[i] - my, d = dx * dx + dy * dy;
+        if (d < bd) { bd = d; best = i; }
+      }
+      return best;
+    }
+    function placeCard() {
+      if (!card || hover < 0) return;
+      var w = card.offsetWidth || 240, h = card.offsetHeight || 50;
+      var x = SX[hover] + 16, y = SY[hover] - h / 2;
+      if (x + w > W - 4) x = SX[hover] - w - 16;
+      /* never off the box: a mark near the limb puts the card beside the
+         sphere on whichever side has room, clamped inside the canvas */
+      x = Math.max(4, Math.min(W - w - 4, x));
+      y = Math.max(4, Math.min(H - h - 4, y));
+      card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
+    }
+    function setHover(i, lock) {
+      locked = !!lock && i >= 0;
+      if (i === hover) { if (card && i >= 0) card.hidden = false; return; }
+      hover = i;
+      var hd = i >= 0 && own.length ? own[i] : -1;
+      if (hd < 0 || !docs[hd]) {
+        hover = -1;
+        if (card) card.hidden = true;
+        host.removeAttribute("data-doc");
+        host.removeAttribute("data-locked");
+        host.style.cursor = fine ? "grab" : "";
+        setCorona(curDoc >= 0 && docs[curDoc].o ? docs[curDoc].o : "none");
+        if (corT0) kick(); else paint();
+        return;
+      }
+      /* the corona takes the pointed document's origin while it is pointed at */
+      setCorona(docs[hd].o || "none");
+      var D = docs[hd], out = 0, into = 0;
+      for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
+      if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
+      if (cardD && D.card) {
+        /* the author's anchor: the recorded standing, the co-op window the
+           build computed from the recorded term, and the featured pieces'
+           subtotal; all of it from the build, none of it typed here */
+        cardD.textContent = D.card;
+      } else if (cardD) {
+        cardD.textContent = D.k + "  \u00b7  " + D.marks + (D.marks === 1 ? " section" : " sections") + "  \u00b7  ";
+        var lk = document.createElement("span");
+        lk.className = "gc-l";
+        lk.textContent = (out ? "links " + out : "") + (out && into ? "  \u00b7  " : "") +
+          (into ? "linked by " + into : "") + (!out && !into ? "no links recorded" : "");
+        cardD.appendChild(lk);
+      }
+      if (card) card.hidden = false;
+      host.setAttribute("data-doc", D.t);
+      if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
+      host.style.cursor = "pointer";
+      if (corT0) kick(); else paint();
+      placeCard();
+    }
+
+    /* Idle contract, the same one the Atlas keeps: the sphere paints once
+       when the main thread is free and then draws nothing until it is
+       turned. A drag carries a little inertia that drains to zero within a
+       second, so the loop reschedules only while something is moving. The
+       old version turned by itself for as long as it was on screen, sixty
+       frames a second on a page whose claim is that nothing moves without a
+       reason. On a touch screen at the top of the page a drag surface would
+       eat the scroll, so there the sphere holds still and a tap opens the
+       Atlas. */
+    var raf = 0, lastT = 0, vy = 0, vp = 0, dragT = false, lxT = 0, lyT = 0, movedT = 0;
+    /* the camera's spring: the target the descent sets, the velocity it
+       carries, and whether it is still settling. The step is the exact
+       solution of a critically damped spring over dt, so it is stable at
+       any frame rate and never overshoots. */
+    var sYawT = null, sPitchT = null, sVy = 0, sVp = 0, springOn = false;
+    function springStep(dt) {
+      var e = Math.exp(-SPRING_W * dt), settled = true;
+      var x = yaw - sYawT, b = sVy + SPRING_W * x;
+      var nx = (x + b * dt) * e, nv = (b - SPRING_W * (x + b * dt)) * e;
+      yaw = sYawT + nx; sVy = nv;
+      if (Math.abs(nx) > 2e-4 || Math.abs(nv) > 2e-3) settled = false;
+      x = pitch - sPitchT; b = sVp + SPRING_W * x;
+      nx = (x + b * dt) * e; nv = (b - SPRING_W * (x + b * dt)) * e;
+      pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, sPitchT + nx)); sVp = nv;
+      if (Math.abs(nx) > 2e-4 || Math.abs(nv) > 2e-3) settled = false;
+      if (settled) { yaw = sYawT; pitch = sPitchT; sVy = sVp = 0; springOn = false; }
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+    function frame(now) {
+      raf = 0;
+      var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
+      lastT = now;
+      if (!dragT) {
+        yaw += vy * dt; offYaw += vy * dt;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + vp * dt)); offPitch += vp * dt;
+        vy *= 0.94; vp *= 0.94;
+        if (Math.abs(vy) < 0.0006) vy = 0;
+        if (Math.abs(vp) < 0.0006) vp = 0;
+        if (springOn && vy === 0 && vp === 0) springStep(dt);
+      }
+      paint();
+      host.setAttribute("data-yaw", yaw.toFixed(3));
+      host.setAttribute("data-pitch", pitch.toFixed(3));
+      /* one more frame while anything is still settling; none once it has */
+      if (dragT || vy !== 0 || vp !== 0 || springOn || chordT0 || corT0) kick(); else lastT = 0;
+    }
+
+    /* The box is sized by CSS before this deferred script runs, so the first
+       layout can paint the complete instrument without a delayed swap. */
+    function bootTeaser() { host.setAttribute("data-corona", "none"); size(); paint(); }
+    bootTeaser();
+    var t0;
+    window.addEventListener("resize", function () {
+      clearTimeout(t0);
+      t0 = setTimeout(function () { size(); paint(); }, 140);
+    });
+    if (window.matchMedia && window.matchMedia("(pointer:fine)").matches) {
+      cv.addEventListener("pointerdown", function (e) {
+        dragT = true; movedT = 0; vy = vp = 0; lxT = e.clientX; lyT = e.clientY;
+        springOn = false; sVy = sVp = 0;
+        try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+        host.style.cursor = "grabbing";
+        kick();
+      });
+      cv.addEventListener("pointermove", function (e) {
+        if (!dragT) {
+          /* pointing, not turning: match the pointer to a mark and draw
+             what its document records. One paint per change, no loop. */
+          if (!docs.length) return;
+          var rr = cv.getBoundingClientRect();
+          setHover(hit(e.clientX - rr.left, e.clientY - rr.top));
+          return;
+        }
+        if (hover >= 0) setHover(-1);
+        var dx = e.clientX - lxT, dy = e.clientY - lyT;
+        movedT += Math.abs(dx) + Math.abs(dy);
+        yaw += dx * 0.006; offYaw += dx * 0.006;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + dy * 0.005)); offPitch += dy * 0.005;
+        vy = dx * 0.09; vp = dy * 0.07;
+        lxT = e.clientX; lyT = e.clientY;
+        kick();
+      });
+      var endT = function (e) {
+        if (!dragT) return;
+        dragT = false; host.style.cursor = "grab";
+        try { cv.releasePointerCapture(e.pointerId); } catch (x) {}
+        kick();
+      };
+      cv.addEventListener("pointerup", endT);
+      cv.addEventListener("pointercancel", endT);
+      /* leaving the canvas for the card keeps the card, so its link can be reached */
+      cv.addEventListener("pointerleave", function (e) {
+        if (dragT || locked) return;
+        if (e.relatedTarget && card && card.contains(e.relatedTarget)) return;
+        setHover(-1);
+      });
+      if (card) card.addEventListener("pointerleave", function (e) {
+        if (locked) return;
+        if (e.relatedTarget === cv) return;
+        setHover(-1);
+      });
+    }
+    /* ---- the descent ----------------------------------------------
+       The statement's featured rows are documents on the sphere. As each
+       row reaches the reading line the camera turns to face that document's
+       centroid (the same rotation the Atlas uses to face a mark), its marks
+       come forward and the chords its prose records are drawn. The scroll
+       position sets where the camera should be; a critically damped spring
+       carries it there, so a change of document reads as a weight settling
+       and not a panel sliding, and once it has settled (within half a
+       second) no frame is requested until the next scroll. With reduced
+       motion the camera holds and only the lighting follows the rows. */
+    var wrap = host.closest(".descent-globe");
+    var hdrEl = document.querySelector("header.top"), lastPin = "";
+    var rowsD = [];
+    (function () {
+      if (!docs.length) return;
+      var byUrl = {};
+      docs.forEach(function (d, i) { byUrl[d.u] = i; });
+      var trs = document.querySelectorAll("#statement table.st tr.item");
+      for (var r = 0; r < trs.length; r++) {
+        var a = trs[r].querySelector("th a");
+        var u = a && a.getAttribute("href");
+        if (u && (u in byUrl)) rowsD.push({ el: trs[r], doc: byUrl[u] });
+      }
+    })();
+    var homeYaw = yaw, homePitch = pitch;
+    var facingEl = wrap && wrap.querySelector(".facing");
+    var reducedM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function facingOf(v) {
+      var n = nrm(v);
+      return { yaw: Math.atan2(-n[0], n[2]), pitch: Math.atan2(n[1], Math.sqrt(n[0] * n[0] + n[2] * n[2])) };
+    }
+    function shortest(a, b) {
+      var d = (b - a) % (Math.PI * 2);
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      return a + d;
+    }
+    var sraf = 0, lastStuck = false;
+    function descend() {
+      sraf = 0;
+      if (!rowsD.length) return;
+      /* the reading line. With the sphere beside the rows (a wide viewport)
+         a row is faced when its middle reaches mid-viewport. With the pinned
+         block (sphere, caption, facing line) above the rows, a row is faced
+         when its top clears the block, so the row faced is the row in view
+         and never one under the block. Which layout holds is read off the
+         boxes, not off a breakpoint. */
+      /* the block pins at the header's lower edge, wherever its rows wrapped to */
+      if (wrap && hdrEl) {
+        var pin = hdrEl.offsetHeight + "px";
+        if (pin !== lastPin) { lastPin = pin; wrap.style.setProperty("--pin-top", pin); }
+      }
+      var wr = (wrap || host).getBoundingClientRect();
+      var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
+      var sr = tr0.getBoundingClientRect();
+      var beside = wr.left >= sr.right - 1 || wr.right <= sr.left + 1;
+      var line = beside ? innerHeight * 0.5 : wr.bottom + 12;
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var anchors = [];
+      for (var i = 0; i < rowsD.length; i++) {
+        var rr = rowsD[i].el.getBoundingClientRect();
+        var f = facingOf(docs[rowsD[i].doc].p);
+        var at = beside ? rr.top + rr.height / 2 : rr.top;
+        anchors.push({ s: y + at - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+      }
+      /* the row nearest the line is the document faced, once the first row
+         is within three quarters of a row of it; the camera's target is that
+         document's centre, or home above the first row */
+      var byaw, bpitch, cur = -1, near = -1;
+      var bestD = Infinity, gap = anchors.length > 1 ? (anchors[1].s - anchors[0].s) : 400;
+      for (var c = 0; c < anchors.length; c++) {
+        var d = Math.abs(y - anchors[c].s);
+        if (d < bestD) { bestD = d; near = c; }
+      }
+      if (bestD <= gap * 0.75) cur = near;
+      if (y <= 0 || y < anchors[0].s - gap * 0.75) { byaw = homeYaw; bpitch = homePitch; }
+      else { byaw = anchors[near].yaw; bpitch = anchors[near].pitch; }
+      var changed = false;
+      if (!reducedM) {
+        /* the target is named relative to the last target, so a yaw that has
+           wound past a turn is never asked to unwind it */
+        var ny = shortest(sYawT === null ? yaw : sYawT, byaw + offYaw), np = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, bpitch + offPitch));
+        if (sYawT === null || Math.abs(ny - sYawT) > 1e-4 || Math.abs(np - sPitchT) > 1e-4) {
+          sYawT = ny; sPitchT = np;
+          if (Math.abs(ny - yaw) > 1e-4 || Math.abs(np - pitch) > 1e-4) springOn = true;
+        }
+      }
+      var nd = cur >= 0 ? anchors[cur].doc : -1;
+      if (nd !== curDoc) {
+        curDoc = nd; changed = true;
+        if (!reducedM && curDoc >= 0) chordT0 = performance.now(); else chordT0 = 0;
+        setCorona(curDoc >= 0 && docs[curDoc].o ? docs[curDoc].o : "none");
+        for (var q = 0; q < rowsD.length; q++) rowsD[q].el.classList.toggle("cur", rowsD[q].doc === curDoc);
+        if (facingEl) {
+          facingEl.textContent = "";
+          if (curDoc >= 0) {
+            facingEl.appendChild(document.createTextNode("Facing "));
+            var bb = document.createElement("b"); bb.textContent = docs[curDoc].t; facingEl.appendChild(bb);
+          }
+        }
+        if (curDoc >= 0) host.setAttribute("data-facing", docs[curDoc].t); else host.removeAttribute("data-facing");
+      }
+      /* pinned on a phone: the sphere steps back to make room for the rows */
+      if (wrap) {
+        var top = parseFloat(getComputedStyle(wrap).top) || 0;
+        var stuck = y > 0 && wrap.getBoundingClientRect().top <= top + 1;
+        if (stuck !== lastStuck) { lastStuck = stuck; wrap.classList.toggle("stuck", stuck); }
+      }
+      if (springOn || chordT0 || corT0) { if (!dragT) kick(); }
+      else if (changed && !dragT) {
+        paint();
+        host.setAttribute("data-yaw", yaw.toFixed(3));
+        host.setAttribute("data-pitch", pitch.toFixed(3));
+      }
+    }
+    if (rowsD.length) {
+      window.addEventListener("scroll", function () { if (!sraf) sraf = requestAnimationFrame(descend); }, { passive: true });
+      window.addEventListener("resize", function () { if (!sraf) sraf = requestAnimationFrame(descend); });
+      /* the box changes size when it pins on a phone; the canvas follows */
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(function () { size(); paint(); }).observe(host);
+      }
+      if ("requestIdleCallback" in window) requestIdleCallback(descend, { timeout: 1500 });
+      else setTimeout(descend, 300);
+    }
+    host.addEventListener("click", function (e) {
+      if (movedT > 8) { movedT = 0; return; }
+      if (!fine) {
+        /* touch: a tap on a mark locks its document and draws what it
+           records; a tap on the void clears the lock, or with nothing
+           locked opens the Atlas. Each tap paints once. */
+        var rr = cv.getBoundingClientRect();
+        var i = docs.length ? hit(e.clientX - rr.left, e.clientY - rr.top) : -1;
+        if (i >= 0) { setHover(i, true); return; }
+        if (hover >= 0) { setHover(-1); return; }
+        window.location.href = "atlas.html";
+        return;
+      }
+      /* a fine pointer: a mark opens its document; the void opens the Atlas */
+      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      window.location.href = (hd >= 0 && docs[hd] && docs[hd].u) ? docs[hd].u : "atlas.html";
+    });
+  })();
+
+/* ------------------------------------------------------------ trail ----
+   Which passages this browser has opened. The atlas reads it and rings
+   them; the record lives in localStorage and never leaves the machine. */
+(function () {
+  try {
+    var k = "atlas.trail";
+    var u = location.pathname.split("/").pop() || "index.html";
+    if (u === "atlas.html" || u === "admin.html") return;
+    var t = JSON.parse(localStorage.getItem(k) || "{}");
+    var key = u + location.hash;
+    if (t[key] || Object.keys(t).length < 500) {
+      t[key] = (t[key] || 0) + 1;
+      localStorage.setItem(k, JSON.stringify(t));
+    }
+  } catch (e) {}
+})();
+
+/* ------------------------------------------------ offline, site-wide ----
+   Every shell page registers the worker, so the offline claim does not
+   depend on which page a reader arrived at. The colophon's two controls
+   talk to it over postMessage: one fetches the build's offline manifest and
+   stores the whole site, the other removes that copy. */
+(function () {
+  if (!("serviceWorker" in navigator) || location.protocol.indexOf("http") !== 0) return;
+  /* after load and an idle beat, so the worker's first install never taxes
+     the paint the budgets are measured on */
+  addEventListener("load", function () {
+    setTimeout(function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    }, 6000);
+  });
+
+  var save = document.getElementById("offline-save");
+  var drop = document.getElementById("offline-drop");
+  var status = document.getElementById("offline-status");
+  if (!save || !drop || !status) return;
+
+  function say(t) { status.textContent = t; }
+  /* what this device holds, read from the cache by the worker rather than
+     remembered by the page: the count of listed files present, the version
+     they were synced against, and whether that is the live version */
+  function held(m) {
+    if (!m.of) return "";
+    var n = m.held + " of " + m.of + " files";
+    if (m.held === 0) return "";
+    if (m.held < m.of) return n + " are on this device.";
+    if (m.live && m.version && m.live !== m.version) return "The whole site is on this device: " + n + ", one publish behind; it refreshes when opened online.";
+    return "The whole site is on this device: " + n + (m.live ? ", current." : ".");
+  }
+  navigator.serviceWorker.addEventListener("message", function (e) {
+    var m = e.data || {};
+    if (m.type === "cache-all-progress") {
+      say("Saving… " + m.done + " of " + m.total + " files");
+    } else if (m.type === "cache-all-done") {
+      if (m.failed === -1) { say("Could not read the file list; try again online."); return; }
+      say(m.failed
+        ? "Saved " + m.ok + " of " + m.total + " files; " + m.failed + " failed. Press again to retry the rest."
+        : held({ held: m.held, of: m.of, version: m.version, live: m.version }) || ("Saved " + m.ok + " files."));
+      save.disabled = false;
+    } else if (m.type === "status") {
+      say(held(m));
+    } else if (m.type === "drop-all-done") {
+      say("Offline copy removed. Pages you visit will still cache as you read.");
+      drop.disabled = false;
+    }
+  });
+  navigator.serviceWorker.ready.then(function (reg) {
+    if (reg.active) reg.active.postMessage({ type: "status" });
+  });
+  save.addEventListener("click", function () {
+    save.disabled = true;
+    say("Saving…");
+    /* ask the browser to protect this storage from being reclaimed; on an
+       installed app this is usually granted, and it is what makes the copy
+       durable rather than merely cached */
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().catch(function () {});
+    }
+    navigator.serviceWorker.ready.then(function (reg) {
+      if (reg.active) reg.active.postMessage({ type: "cache-all" });
+      else { say("The offline worker is still starting; try again in a moment."); save.disabled = false; }
+    });
+  });
+  drop.addEventListener("click", function () {
+    drop.disabled = true;
+    navigator.serviceWorker.ready.then(function (reg) {
+      if (reg.active) reg.active.postMessage({ type: "drop-all" });
+      else drop.disabled = false;
+    });
+  });
+})();

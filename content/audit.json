@@ -1,0 +1,2263 @@
+{
+ "note": "Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the controls page prints these results; a page whose inputs moved since is not yet measured for that build. meta.runs is appended by build/claims.py --record-run on every publish.",
+ "meta": {
+  "tool": "build/audit.js",
+  "browser": "Chromium 141.0.7390.37",
+  "date": "2026-09-13",
+  "commit": "45853c1",
+  "runs": [
+   {
+    "commit": "21aacf2",
+    "date": "2026-09-04",
+    "audit": "kept"
+   },
+   {
+    "commit": "d0dd487",
+    "date": "2026-09-04",
+    "audit": "kept"
+   },
+   {
+    "commit": "c7cc767",
+    "date": "2026-09-04",
+    "audit": "kept"
+   },
+   {
+    "commit": "9e220a1",
+    "date": "2026-09-04",
+    "audit": "kept"
+   },
+   {
+    "commit": "c1c434e",
+    "date": "2026-09-04",
+    "audit": "kept"
+   },
+   {
+    "commit": "ec309d4",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "ec309d4",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "6749022",
+    "date": "2026-09-05",
+    "audit": "kept"
+   },
+   {
+    "commit": "10b705a",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "4358988",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "6dd1106",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "5695406",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "1ced695",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "7b3fecd",
+    "date": "2026-09-06",
+    "audit": "ran"
+   },
+   {
+    "commit": "cfd8b47",
+    "date": "2026-09-06",
+    "audit": "kept"
+   },
+   {
+    "commit": "3be0dc7",
+    "date": "2026-09-06",
+    "audit": "ran"
+   },
+   {
+    "commit": "557a5fa",
+    "date": "2026-09-06",
+    "audit": "ran"
+   },
+   {
+    "commit": "747cec5",
+    "date": "2026-09-06",
+    "audit": "kept"
+   },
+   {
+    "commit": "26414c8",
+    "date": "2026-09-07",
+    "audit": "kept"
+   },
+   {
+    "commit": "e0b8a21",
+    "date": "2026-09-07",
+    "audit": "ran"
+   },
+   {
+    "commit": "b6a3785",
+    "date": "2026-09-08",
+    "audit": "ran"
+   },
+   {
+    "commit": "5fafc96",
+    "date": "2026-09-08",
+    "audit": "kept"
+   },
+   {
+    "commit": "bcc9114",
+    "date": "2026-09-09",
+    "audit": "kept"
+   },
+   {
+    "commit": "9a67c9e",
+    "date": "2026-09-12",
+    "audit": "ran"
+   },
+   {
+    "commit": "a89052e",
+    "date": "2026-09-13",
+    "audit": "ran"
+   }
+  ]
+ },
+ "pages": {
+  "404.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 89,
+    "b": 44
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 26,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "7db73da69e22",
+   "measured": "2026-09-13"
+  },
+  "about.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1278,
+    "b": 1233
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 1,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 46,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "fe21c46c43df",
+   "measured": "2026-09-13"
+  },
+  "admin.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "admin": {
+    "errors": 0,
+    "failed": 0,
+    "requests": 5,
+    "external": 0,
+    "stubbed": 2,
+    "writes": 0,
+    "idleFrames": 0,
+    "tabs": 4,
+    "switched": 4,
+    "threwUnconnected": 0,
+    "themeSwitched": true,
+    "themeStored": true,
+    "cfgSaved": true,
+    "tokenInSession": true,
+    "tokenInLocal": false,
+    "rows": 67,
+    "pieces": 67,
+    "searched": 25,
+    "searchExpected": 25,
+    "editorOpened": true,
+    "editEnabledPublish": true,
+    "promptShown": true,
+    "forgotten": true,
+    "guardHeld": true,
+    "files": 130,
+    "filesExpected": 130,
+    "siteFields": 13,
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "7eb7ebafa024",
+   "measured": "2026-09-13"
+  },
+  "afm241-cheat-sheet.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 644,
+    "b": 644
+   },
+   "fit": {
+    "scrollWidth": 342,
+    "overflow": true
+   },
+   "inputs": "3ab689361a57",
+   "measured": "2026-09-13"
+  },
+  "afm241-study-reference.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3141,
+    "b": 3141
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d6684536bbbf",
+   "measured": "2026-09-13"
+  },
+  "afm274-capital-structure.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1230,
+    "b": 1230
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "3416abbdccee",
+   "measured": "2026-09-13"
+  },
+  "afm274-financial-distress.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 958,
+    "b": 958
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "53b54ce23710",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch1-theory-and-analytics.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 11099,
+    "b": 11099
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "8d1f1c22c9ae",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch10-fair-value.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 19010,
+    "b": 19010
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "a68257f1debc",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch2-conceptual-frameworks.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 13383,
+    "b": 13383
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "fb6876ef8840",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch3-accrual-accounting.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 12438,
+    "b": 12438
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "0f8dd72cd7e6",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch4-revenue-recognition.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 11917,
+    "b": 11917
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d01d398f2a3f",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch6-inventories.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 14106,
+    "b": 14106
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "5ebc642ba5ea",
+   "measured": "2026-09-13"
+  },
+  "afm291-ch9-intangibles-and-goodwill.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 12749,
+    "b": 12749
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "3260624fbb43",
+   "measured": "2026-09-13"
+  },
+  "afm291-field-manual.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2470,
+    "b": 2470
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "16ac3e85d6e8",
+   "measured": "2026-09-13"
+  },
+  "afm291-inventory-gap-map.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 7032,
+    "b": 7032
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "a2bfc3dbf4c8",
+   "measured": "2026-09-13"
+  },
+  "afm291-journal-entries.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1329,
+    "b": 1329
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "95956cab73c9",
+   "measured": "2026-09-13"
+  },
+  "afm291-key-takeaways.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 14480,
+    "b": 14480
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "173c81ef6799",
+   "measured": "2026-09-13"
+  },
+  "afm291-reconciliation.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3932,
+    "b": 3932
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "ee43b766d5b2",
+   "measured": "2026-09-13"
+  },
+  "afm291-study-plan.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4000,
+    "b": 4000
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "8a158b48fdc9",
+   "measured": "2026-09-13"
+  },
+  "afm291-study-system.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 14135,
+    "b": 14135
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "56d615be82e7",
+   "measured": "2026-09-13"
+  },
+  "afm291-w7-cases.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3121,
+    "b": 3121
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "b22e4ae0637b",
+   "measured": "2026-09-13"
+  },
+  "afm291-w7-financial-assets.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3959,
+    "b": 3959
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "a3a04571baee",
+   "measured": "2026-09-13"
+  },
+  "afm291-w8-cases.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3368,
+    "b": 3368
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "204004b901f9",
+   "measured": "2026-09-13"
+  },
+  "afm291-w8-financial-assets.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4507,
+    "b": 4507
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "9141b02b53f4",
+   "measured": "2026-09-13"
+  },
+  "afm291-w9-cases.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3547,
+    "b": 3547
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "3d4555f99bbd",
+   "measured": "2026-09-13"
+  },
+  "afm291-w9-ppe.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4442,
+    "b": 4442
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "0b3afdbe7c78",
+   "measured": "2026-09-13"
+  },
+  "afm291-workbook.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4287,
+    "b": 4287
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "e354bcdbac35",
+   "measured": "2026-09-13"
+  },
+  "afm291.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1154,
+    "b": 1154
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "cc59de98087a",
+   "measured": "2026-09-13"
+  },
+  "atlas.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 14501,
+    "b": 14456
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 33,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "1acb591cc54c",
+   "measured": "2026-09-13"
+  },
+  "brittle-network.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 9237,
+    "b": 9237
+   },
+   "fit": {
+    "scrollWidth": 405,
+    "overflow": true
+   },
+   "inputs": "f789bc369f5d",
+   "measured": "2026-09-13"
+  },
+  "business-law-primer.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 10196,
+    "b": 10196
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "ca1443686c51",
+   "measured": "2026-09-13"
+  },
+  "canadian-dcf-cca.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5781,
+    "b": 5781
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "12bb9519b5f8",
+   "measured": "2026-09-13"
+  },
+  "colophon.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4142,
+    "b": 4097
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 53,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "a8a7625794d8",
+   "measured": "2026-09-13"
+  },
+  "controls.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4568,
+    "b": 4523
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 113,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "08a976abc6bf",
+   "measured": "2026-09-13"
+  },
+  "coursework.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1284,
+    "b": 1239
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 71,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "a2441da5b8a6",
+   "measured": "2026-09-13"
+  },
+  "crucible-cockpit.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 612,
+    "b": 612
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "6600a97e2ff0",
+   "measured": "2026-09-13"
+  },
+  "crucible-run-0-transcript.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 1,
+   "chrome": {
+    "a": 22248,
+    "b": 22248
+   },
+   "fit": {
+    "scrollWidth": 644,
+    "overflow": true
+   },
+   "inputs": "3e6d8245a3ec",
+   "measured": "2026-09-12"
+  },
+  "crucible-run-0.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 18597,
+    "b": 18597
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "6d73da47d9aa",
+   "measured": "2026-09-13"
+  },
+  "crucible-run-b-transcript.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 74118,
+    "b": 74118
+   },
+   "fit": {
+    "scrollWidth": 590,
+    "overflow": true
+   },
+   "inputs": "7a43acd74be4",
+   "measured": "2026-09-12"
+  },
+  "crucible-run-b.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 60153,
+    "b": 60153
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "031809d8c6ca",
+   "measured": "2026-09-13"
+  },
+  "crucible-run-c-transcript.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 70442,
+    "b": 70442
+   },
+   "fit": {
+    "scrollWidth": 951,
+    "overflow": true
+   },
+   "inputs": "15e775db7df1",
+   "measured": "2026-09-12"
+  },
+  "crucible-run-c.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 53066,
+    "b": 53066
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "20861c62e6e3",
+   "measured": "2026-09-13"
+  },
+  "daily-learning-cockpit.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 251,
+    "b": 251
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "a3b6e1a6ae1c",
+   "measured": "2026-09-13"
+  },
+  "econ102-exam-trainer.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2614,
+    "b": 2614
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "b6535284a347",
+   "measured": "2026-09-13"
+  },
+  "econ102-visual-reference.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5908,
+    "b": 5908
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "c672af3a32d5",
+   "measured": "2026-09-13"
+  },
+  "epistemic-quality-directive.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2549,
+    "b": 2549
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "f7f3ba63c37f",
+   "measured": "2026-09-13"
+  },
+  "exam-day-final-load.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 476,
+    "b": 476
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "a5a6bc409e94",
+   "measured": "2026-09-13"
+  },
+  "five-shall-paragraphs.html": {
+   "ext": {
+    "requests": 8,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 19112,
+    "b": 19112
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d32d77cd16a2",
+   "measured": "2026-09-13"
+  },
+  "flagged-in-hindsight.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5008,
+    "b": 5008
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "bf74b8759d0b",
+   "measured": "2026-09-13"
+  },
+  "french-a1-cafe.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4675,
+    "b": 4675
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "8c78cc6856aa",
+   "measured": "2026-09-13"
+  },
+  "global-spending-and-wealth.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 6521,
+    "b": 6521
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "935a5c76a153",
+   "measured": "2026-09-13"
+  },
+  "heartbeat-budget.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1434,
+    "b": 1434
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "e56f094bda5f",
+   "measured": "2026-09-13"
+  },
+  "how-to-judge-a-president.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 7043,
+    "b": 7043
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "54880a573f2a",
+   "measured": "2026-09-13"
+  },
+  "hype-cycle.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 830,
+    "b": 830
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "92bf5229bcf4",
+   "measured": "2026-09-13"
+  },
+  "ifrs15-judgment-trainer.html": {
+   "ext": {
+    "requests": 7,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3946,
+    "b": 3946
+   },
+   "fit": {
+    "scrollWidth": 328,
+    "overflow": true
+   },
+   "inputs": "2add2f449541",
+   "measured": "2026-09-13"
+  },
+  "ifrs15-verification-memo.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2986,
+    "b": 2986
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "5ae81a755d42",
+   "measured": "2026-09-13"
+  },
+  "index.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2393,
+    "b": 2348
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 3,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "descent": {
+    "wide": {
+     "rows": 6,
+     "aimed": 6,
+     "faced": 6,
+     "framesSettle": 0,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    },
+    "phone": {
+     "rows": 6,
+     "aimed": 6,
+     "faced": 6,
+     "framesSettle": 0,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    }
+   },
+   "corona": {
+    "wide": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    },
+    "phone": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    }
+   },
+   "keyboard": {
+    "stops": 145,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "d1a5afbb8aae",
+   "measured": "2026-09-13"
+  },
+  "kennedy-dossier.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 712,
+    "b": 712
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "9ce9eac07e12",
+   "measured": "2026-09-13"
+  },
+  "law-arena.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 316,
+    "b": 316
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "6e7924b9ff51",
+   "measured": "2026-09-13"
+  },
+  "leadership-evaluation-kit.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4241,
+    "b": 4241
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "83a1edc41417",
+   "measured": "2026-09-13"
+  },
+  "library.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2724,
+    "b": 2679
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 103,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "82a673316bba",
+   "measured": "2026-09-13"
+  },
+  "monroe-case-file.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 332,
+    "b": 332
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "3410b2b8dba8",
+   "measured": "2026-09-13"
+  },
+  "not-significant.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 6319,
+    "b": 6319
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "3d23bb9bbd59",
+   "measured": "2026-09-13"
+  },
+  "positive-vs-normative.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 597,
+    "b": 597
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "ba01b45b5c5c",
+   "measured": "2026-09-13"
+  },
+  "practice-arena.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 221,
+    "b": 221
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "029a8701302b",
+   "measured": "2026-09-13"
+  },
+  "predictive-history-archive.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 11697,
+    "b": 11697
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "74f246a177de",
+   "measured": "2026-09-13"
+  },
+  "predictive-history.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 9621,
+    "b": 9621
+   },
+   "fit": {
+    "scrollWidth": 333,
+    "overflow": true
+   },
+   "inputs": "c92836b4b1e9",
+   "measured": "2026-09-13"
+  },
+  "price-of-divergence.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 11964,
+    "b": 11964
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "851cff8ddc72",
+   "measured": "2026-09-13"
+  },
+  "research.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2475,
+    "b": 2430
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 4,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 76,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "73af4f0dafce",
+   "measured": "2026-09-13"
+  },
+  "resume.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 820,
+    "b": 775
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 62,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "560fda5271bf",
+   "measured": "2026-09-13"
+  },
+  "revenue-recognition.html": {
+   "ext": {
+    "requests": 7,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5323,
+    "b": 5323
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "89c123dca2fc",
+   "measured": "2026-09-13"
+  },
+  "selected.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2995,
+    "b": 2950
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 37,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "edbdeaa2385d",
+   "measured": "2026-09-13"
+  },
+  "skill-forge.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 375,
+    "b": 375
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "e14666797250",
+   "measured": "2026-09-13"
+  },
+  "spanish-a1-cafe.html": {
+   "ext": {
+    "requests": 1,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 3000,
+    "b": 3000
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "c532e8bbebec",
+   "measured": "2026-09-13"
+  },
+  "the-calibrated-mind.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1876,
+    "b": 1876
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "66e623b5f17b",
+   "measured": "2026-09-13"
+  },
+  "the-delayed-test.html": {
+   "ext": {
+    "requests": 6,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5377,
+    "b": 5377
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d73b800434cf",
+   "measured": "2026-09-13"
+  },
+  "the-trillion-dollar-vintage.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 18610,
+    "b": 18610
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d76dd31a0f61",
+   "measured": "2026-09-13"
+  },
+  "tools.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 412,
+    "b": 367
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 35,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "efd523ab9f48",
+   "measured": "2026-09-13"
+  },
+  "transformers-study-guide.html": {
+   "ext": {
+    "requests": 10,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 2100,
+    "b": 2100
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "537715dccdb4",
+   "measured": "2026-09-13"
+  },
+  "us-canada-legal-architecture.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1342,
+    "b": 1342
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "5c6e5d1c8f32",
+   "measured": "2026-09-13"
+  },
+  "whose-losses-count.html": {
+   "ext": {
+    "requests": 4,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 6960,
+    "b": 6960
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "d0cad7e2f5bd",
+   "measured": "2026-09-13"
+  },
+  "zakaria-putin-audited.html": {
+   "ext": {
+    "requests": 8,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 4145,
+    "b": 4145
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "44925a204657",
+   "measured": "2026-09-13"
+  }
+ },
+ "offline": {
+  "before": 185,
+  "of": 185,
+  "after": 185,
+  "refreshed": true,
+  "editor": {
+   "stored": false,
+   "fresh": true
+  },
+  "inputs": "4743e020054b",
+  "measured": "2026-09-05"
+ }
+}

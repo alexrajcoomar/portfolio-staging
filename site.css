@@ -1,0 +1,3894 @@
+/* ============================================================
+   Alex Rajcoomar: portfolio
+   One stylesheet for every page. Change a token here and the
+   whole site changes.
+
+   Direction: editorial archive. Warm paper, near-black ink,
+   hairline rules, one accent, oversized numerals. No cards with
+   drop shadows, no gradients, no framework.
+   ============================================================ */
+
+/* Inter Variable 4.1.1, self-hosted and subset to the characters the corpus
+   uses (the colophon prints the measured count and byte size), with a
+   metric-matched fallback so the page does not reflow when the webfont
+   lands. If the file fails to load the site keeps working on the system
+   stack. */
+@font-face{
+  font-family:"InterVar";
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url("InterVariable-sub.woff2") format("woff2");
+}
+@font-face{
+  font-family:"InterFallback";
+  font-style:normal;
+  font-weight:100 900;
+  src:local("Helvetica Neue"),local("Arial"),local("Liberation Sans");
+  size-adjust:107%;
+  ascent-override:90%;
+  descent-override:22%;
+  line-gap-override:0%;
+}
+
+/* ------------------------------ tokens ------------------------------ */
+:root{
+  --paper:        #faf9f6;
+  --panel:        #f2f0e9;
+  --panel-2:      #ebe8df;
+  --ink:          #16150f;   /* 18.4:1 on paper */
+  --ink-2:        #55524a;   /*  7.5:1 on paper */
+  --ink-3:        #66635a;   /*  5.7:1 on paper, 5.3 on panel, 4.9 on panel-2: the smallest text clears the floor on every surface a panel can stand on */
+  --rule:         #ddd9cf;
+  --rule-strong:  #bfb9aa;
+  /* --edge is the border of anything interactive: inputs, filter chips,
+     header buttons. It has to clear 3:1 against both the paper and the
+     panel, because on a control the border is the only thing telling the
+     reader where the control is (WCAG 2.2 SC 1.4.11). --rule-strong is
+     1.9:1 and is therefore decorative only. */
+  --edge:         #8a847c;   /*  3.5:1 on paper, 3.3:1 on panel */
+  --logo-chip:    transparent; /* behind the university mark; cream in dark */
+  --accent:       #14509b;   /*  7.4:1 on paper */
+  /* the other face's paper, ink and accent, for the selector's preview swatch */
+  --alt-paper:    #0d0e11;
+  --alt-ink:      #f3f3f0;
+  --alt-accent:   #8fb6ee;
+  --accent-2:     #1a5fb4;
+  /* The second accent means one thing: a link one document's prose makes
+     to another. It is the colour of the chords on both spheres, of the key
+     entry that names them, and of the link counts in the sphere's card,
+     and it appears nowhere else. Violet because no figure on the site has
+     spent it: blue is inside the number and red outside it in Whose Losses
+     Count, orange and blue are the two anchors of the Trillion-Dollar
+     Vintage, green is the tools and the investment share, amber is a
+     heading carried by several documents. 7.1:1 on paper. */
+  --link:         #5a36c9;
+  /* A third hue, and it means one thing too: two capabilities evidenced by
+     the same piece. It is not the violet above, because that is reserved
+     for a link one document's prose makes to another and a shared piece is
+     not a citation; and it is not the accent, because the accent is already
+     the independent work and every link on the site. Cobalt, 8.0:1 on paper
+     and 7.4:1 on the panel, so it clears the same floor the accent does. */
+  --cobalt:       #0047ab;
+  --tool:         #0f6b58;   /*  5.9:1 on paper */
+  --ref:          #8a5410;   /*  5.4:1 on paper */
+  --selection:    #cfe0f6;
+  /* --- the two lights ------------------------------------------------
+     The cool field belongs to the instrument wrapper; the tighter warm
+     pool belongs to the reading column. Each holds a compressed shoulder
+     before falling to zero inside its existing box, leaving the perimeter
+     unlit. RGB values come from the existing palette. Geometry, stops and
+     alpha are declared here; no image or additional layer supplies light.
+     Check 36 inventories every declaration and measures the full alpha
+     range over paper for text and control borders in both themes. */
+  --lamp-cool:    radial-gradient(62% 56% at 51% 44%,
+    rgba(20,80,155,.085) 0%, rgba(20,80,155,.038) 36%,
+    rgba(20,80,155,.018) 62%, rgba(20,80,155,0) 88%);
+  --lamp-warm:    radial-gradient(62% 58% at 38% 45%,
+    rgba(190,168,120,.22) 0%, rgba(190,168,120,.10) 34%,
+    rgba(190,168,120,.045) 62%, rgba(190,168,120,0) 88%);
+
+  --shell:        76rem;
+  --measure:      38rem;
+  --gap:          clamp(1.25rem, 4vw, 3rem);
+  --radius:       0px;       /* editorial: no rounded corners */
+  --stick:        3.75rem;
+
+  /* --- the four contracts the Atlas sets -------------------------
+     Read off the Atlas block at the end of this file rather than
+     invented here, so a component that adopts one belongs to the
+     system instead of resembling it. Where that block hard-codes the
+     same number, the literal there should become the token here when
+     the two patches merge. */
+
+  /* metadata line, from .areg-m: the facts about an item, joined by a
+     middot. The site had been saying this seven different ways. */
+  --meta-size:    .72rem;
+  --meta-track:   .08em;
+  --meta-weight:  560;
+  /* A column head is not a metadata line: it holds against the rows
+     under it, so it keeps its weight and gives up nothing else. */
+  --thead-weight: 670;
+
+  /* plate, from .plate-h and .plate p */
+  --plate-h:      clamp(1.15rem, 1.85vw, 1.45rem);
+  --plate-h-w:    650;
+  --plate-h-tr:   -.012em;
+  --plate-body:   .93rem;
+  --plate-lh:     1.58;
+  --plate-measure:34em;
+
+  /* button pair, from .pbtn and .pbtn-go */
+  --btn-size:     .85rem;
+  --btn-weight:   560;
+  --btn-pad:      .5rem .8rem;
+
+  /* motion: things arrive in 300ms and change colour in 180ms. The one
+     camera on these pages, the home sphere's, is driven by the scroll
+     position and has no clock of its own; the 550ms weight below is for
+     the few things that settle rather than switch (the sphere pinning on
+     a phone, a dialog arriving). */
+  --t-fast:       .18s;
+  --t-in:         .3s;
+  --t-weight:     .55s;
+  --ease-move:    cubic-bezier(.22,1,.36,1);
+  /* a curve with mass: it leaves quickly and takes its time settling, the
+     way a turned object comes to rest, rather than the symmetric ease of
+     a default transition */
+  --ease-weight:  cubic-bezier(.16,.84,.24,1);
+}
+/* Dark is a deeper, cooler ground than the warm paper it replaces: a
+   near-black the sphere and the panels can stand off, rather than a dim
+   brown. Every pairing measured (WCAG 2.x, on --paper / --panel / --panel-2):
+   ink 17.4 / 16.3 / 15.1, ink-2 10.1 / 9.4 / 8.8, ink-3 6.2 / 5.8 / 5.4,
+   accent 9.3 / 8.7 / 8.1, tool 9.0, ref 9.2, edge 4.0 / 3.8 / 3.5, so the
+   smallest text and every control border clear their floors with more room
+   than before. Both blocks are required: keyed to the media query alone, a
+   component stays light when the reader presses the theme button. */
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    --paper:       #0d0e11;
+    --panel:       #15161a;
+    --panel-2:     #1c1d22;
+    --ink:         #f3f3f0;
+    --ink-2:       #b9bbc1;
+    --ink-3:       #8f929a;
+    --rule:        #26282d;
+    --rule-strong: #3c3e45;
+    --edge:        #6f727b;
+    --logo-chip:   #faf9f6;
+    --accent:      #8fb6ee;
+    --accent-2:    #b2ccf5;
+    --alt-paper:   #faf9f6;
+    --alt-ink:     #16150f;
+    --alt-accent:  #14509b;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
+    --cobalt:      #7fb0e8;   /* 8.5:1 on paper, 8.0 on panel */
+    --tool:        #4fc4a6;
+    --ref:         #dbab5d;
+    --selection:   #223b5c;
+    --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
+      rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
+      rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
+    --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
+      rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
+      rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:       #0d0e11;
+  --panel:       #15161a;
+  --panel-2:     #1c1d22;
+  --ink:         #f3f3f0;
+  --ink-2:       #b9bbc1;
+  --ink-3:       #8f929a;
+  --rule:        #26282d;
+  --rule-strong: #3c3e45;
+  --edge:        #6f727b;
+  --logo-chip:   #faf9f6;
+  --accent:      #8fb6ee;
+  --accent-2:    #b2ccf5;
+  --alt-paper:   #faf9f6;
+  --alt-ink:     #16150f;
+  --alt-accent:  #14509b;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
+  --cobalt:      #7fb0e8;   /* 8.5:1 on paper, 8.0 on panel */
+  --tool:        #4fc4a6;
+  --ref:         #dbab5d;
+  --selection:   #223b5c;
+  --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
+    rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
+    rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
+  --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
+    rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
+    rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
+}
+
+/* ------------------------------ base ------------------------------ */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:1.0625rem;
+  line-height:1.6;
+  font-variant-numeric:proportional-nums;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--selection);color:var(--ink)}
+img,svg{max-width:100%;height:auto}
+
+h1,h2,h3,h4{margin:0 0 .5rem;line-height:1.12;font-weight:640;letter-spacing:-.02em}
+p{margin:0 0 1rem}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.18em}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+hr{border:0;border-top:1px solid var(--rule);margin:2.5rem 0}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+kbd{
+  border:1px solid var(--edge);padding:.05em .38em;
+  font-size:.78em;color:var(--ink-2);white-space:nowrap
+}
+.shell{max-width:var(--shell);margin:0 auto;padding-inline:var(--gap)}
+.measure{max-width:var(--measure)}
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:60;
+  background:var(--paper);color:var(--ink);padding:.7rem 1rem;
+  border:1px solid var(--ink)
+}
+.skip:focus{left:1rem;top:1rem}
+/* The visually-hidden helper. The name is taken: a rule that only sets the
+   properties it cares about inherits position:absolute and clip-path from
+   here and disappears. The shelf row is .srow for exactly that reason. */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* --------------------------- type utilities --------------------------- */
+.display{
+  font-size:clamp(2.4rem,6.4vw,4.9rem);
+  font-weight:660;letter-spacing:-.035em;line-height:.98;
+  margin:0 0 1.1rem;text-wrap:balance;
+}
+.display em{font-style:normal;color:var(--accent)}
+.h1{font-size:clamp(1.9rem,4.6vw,3.1rem);letter-spacing:-.03em;line-height:1.04;margin:0 0 .9rem}
+.lede{font-size:clamp(1.06rem,1.6vw,1.22rem);color:var(--ink-2);max-width:42rem;line-height:1.55}
+.eyebrow{
+  font-size:.76rem;font-weight:680;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 1rem
+}
+.eyebrow.accent{color:var(--accent)}
+.small{font-size:.9rem;color:var(--ink-2)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* --------------------------- the metadata line ---------------------
+   One rule, because it is one contract. The Atlas states it as .areg-m
+   and the six pages had been saying it seven ways: .78rem at .09em,
+   .75rem at .08em, .6875rem at .06em, .8rem untracked, and so on. Every
+   small uppercase label on the site is set here. The three exceptions
+   underneath say what they change and why; nothing else may restate
+   these five properties. */
+.sechead .count,.grouphead .gcount,.rail .rm,.row .side,.sig,.sig .dens,
+.surf,.kind,.pwa,.tag,.metadate,.tease-key,.spec .rule,.rail-app h3,
+.lead .demo b,.flagship .demo b,.facts dt,.facts b,.ft-cap > span,
+.docmast .kick,.cal .cw,.toc h2,.cmdk-list .cmdk-group,
+.docmeta .mchip,.pv,details.cal-q > summary::after,.sysitem .sys-m,
+.matrix thead th,.ctab thead th,.docbody thead th{
+  font-size:var(--meta-size);
+  letter-spacing:var(--meta-track);
+  text-transform:uppercase;
+  font-weight:var(--meta-weight);
+  color:var(--ink-3);
+}
+/* Zero: a date is a fact, not a label. Uppercased and set in the right
+   margin it starts competing with the title beside it, and "AUGUST 2026"
+   is louder than the piece it dates. It keeps the size, the tracking and
+   the colour of the contract, and it keeps its own case. */
+.metadate,.rail .rm,.row .side,.sysitem .sys-m{text-transform:none;letter-spacing:.01em}
+
+/* One: a chip carrying a colour-coded mark keeps its weight, because
+   the weight is what makes it read as a badge rather than a caption. */
+.kind,.pwa,.cal .cw,.docmeta .mchip,.pv{font-weight:700}
+.surf{font-weight:660}
+/* Two: a column head is not a metadata line. It has to hold against
+   the rows under it. */
+.matrix thead th,.ctab thead th,.docbody thead th{font-weight:var(--thead-weight)}
+/* Three: a tag is a filter value, a name rather than a fact about the
+   item, so it keeps its own case. */
+.tag{text-transform:none}
+
+/* The dossier register uses the existing metadata measure and palette.
+   Only recorded facts receive a stamp; the author's prose keeps its case.
+   The build copies this flat block into the standalone header, scoped to
+   its existing bar, so an essay does not need the whole site stylesheet.
+   The nominal .72rem at 16px is a floor: a legacy document's smaller root
+   size must not shrink the register below the shared metadata measure. */
+/* dossier-type:start */
+.dossier{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .75rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);
+  font-weight:var(--meta-weight);line-height:1.5;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);
+  border-top:1px solid var(--rule);padding-top:.5rem;
+}
+.dossier > *{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.dossier .dossier-origin,.dossier .dossier-counts{color:var(--ink-2)}
+.dossier .kind,.dossier .surf{font-family:inherit;color:var(--ink-2)}
+.dossier .tag,.dossier .metadate{text-transform:none;letter-spacing:.01em}
+.dossier .dossier-status{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .4rem;color:var(--ink-2);font-weight:var(--thead-weight);
+}
+/* dossier-type:end */
+
+/* ------------------------------ header ------------------------------ */
+header.top{
+  position:sticky;top:0;z-index:40;
+  /* The folder fascia is an opaque, measured surface above the paper. */
+  background:var(--panel);
+  border-bottom:1px solid var(--rule-strong);
+}
+header.top .bar{
+  max-width:var(--shell);margin:0 auto;padding:.7rem var(--gap);
+  display:flex;align-items:center;gap:1rem;justify-content:space-between
+}
+.brand{
+  font-weight:680;letter-spacing:-.02em;text-decoration:none;font-size:1.02rem;
+  display:inline-flex;align-items:baseline;gap:.5rem;white-space:nowrap;order:1
+}
+/* The marks. Each is inline SVG in currentColor, drawn at the size its
+   thinnest stroke clears one device pixel (rendered weight is stroke x size
+   / 64), so none of them is resized here: a mark scaled by CSS would break
+   the threshold that check 34 holds it to. */
+.mk{flex:none;display:block}
+.brand .mk-brand{align-self:center;margin-right:-.12rem}
+.markhead{display:flex;align-items:center;gap:1rem}
+.markhead .mk{color:var(--ink-2)}
+.markhead h1{margin:0}
+.atlas-mark{margin:0 0 .9rem}
+.atlas-mark .mk{color:var(--ink-2)}
+.namerow .h1{display:flex;align-items:center;gap:.75rem}
+.namerow .h1 .mk{color:var(--ink-2)}
+/* The header mark holds two layers. At rest it is the letters; point at it or
+   reach it with a keyboard and it draws the construction they were measured
+   from, which is the claim the mark makes about itself. Opacity only: nothing
+   moves, nothing reflows, no frame is scheduled after the transition ends, and
+   a reader who asked for no motion gets the state with no transition at all. */
+.mk-ins{opacity:0;transition:opacity 220ms cubic-bezier(.2,.6,.2,1)}
+.brand:hover .mk-ins,.brand:focus-visible .mk-ins{opacity:1}
+@media (prefers-reduced-motion:reduce){.mk-ins{transition:none}}
+@media print{.mk-ins{display:none}}
+/* neither light survives onto paper: a gradient prints as a grey field */
+@media print{:root,:root[data-theme="dark"]{--lamp-cool:none;--lamp-warm:none}}
+
+/* The six verification glyphs. Authored on a 24 unit grid at stroke 1.25,
+   which renders over one device pixel at both sizes this site draws them, so
+   unlike the brand marks they carry no factor and are never resized here. */
+.gl{flex:none;display:block;color:var(--ink-3)}
+.stcol{display:inline-flex;flex-direction:column;gap:.28rem}
+.sr-head .sr-n .stcol{align-items:flex-end}
+.stlab{display:block}
+.glcell{display:inline-flex;align-items:center;gap:.6rem;white-space:nowrap}
+.glcell .gl{color:var(--ink-2)}
+/* On a lifted figure the glyph says what kind of claim the drawing makes,
+   which is the one thing the drawing cannot say about itself. */
+.glrule{display:flex;align-items:center;gap:.5rem;margin:0 0 .35rem}
+.gllab{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;font-weight:600;color:var(--ink-3)}
+.scaleread{display:flex;align-items:flex-start;gap:.7rem}
+.scaleread .gl{margin-top:.15rem}
+
+/* The figure on every statement row: the row's own four measured values,
+   drawn. Held at 56px because that is the size its finest stroke was scaled
+   for; a row that is pointed at brings it up to the ink of the title. */
+.sr-f{grid-column:3;align-self:center;justify-self:end}
+.fp{flex:none;display:block;color:var(--ink-3);transition:color 180ms cubic-bezier(.2,.6,.2,1)}
+.stmt-list > li:hover .fp,.stmt-list > li:focus-within .fp{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.fp{transition:none}}
+.stmt-list .sr-head .sr-f,.stmt-list .sr-sub .sr-f{justify-self:end;align-self:center}
+
+/* The seal. Its own grid is 128 units and it is drawn at 128px, so every
+   coordinate the colophon prints is one device pixel on the page. */
+.sl{flex:none;display:block}
+.sealrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.6rem 2.4rem;align-items:start}
+.sealbox{margin:0;display:flex;flex-direction:column;gap:.7rem;max-width:15rem}
+.sealbox figcaption{font-size:.82rem;line-height:1.5;color:var(--ink-2)}
+@media (max-width:52rem){
+  .sealrow{grid-template-columns:minmax(0,1fr)}
+  .sealbox{max-width:none}
+}
+
+/* A graduation under each corpus figure: a calibration mark, not a reading.
+   The long tick is the datum the scale starts from. */
+.corpusline dt{position:relative;padding-top:.55rem}
+.corpusline dt::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:5px;
+  background:repeating-linear-gradient(90deg,var(--rule-strong) 0 1px,transparent 1px 6px)
+}
+.corpusline dt::after{content:"";position:absolute;top:0;left:0;width:1px;height:9px;background:var(--edge)}
+.brand span.sub{color:var(--ink-3);font-weight:500;font-size:.86rem;letter-spacing:0}
+nav.main{display:flex;align-items:center;gap:.15rem;order:2;min-width:0}
+.hbtns{display:flex;align-items:center;order:3;flex:none}
+nav.main a{
+  text-decoration:none;font-size:.92rem;font-weight:560;color:var(--ink-2);
+  padding:.42rem .62rem;border-bottom:2px solid transparent
+}
+nav.main a:hover{color:var(--ink);background:var(--paper)}
+nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.iconbtn{
+  font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);line-height:1;cursor:pointer;
+  background:none;color:var(--ink-2);border:1px solid var(--edge);border-radius:var(--radius);
+  padding:.4rem .55rem;margin-left:.35rem
+}
+.iconbtn:hover{color:var(--ink);border-color:var(--ink)}
+.searchbtn{display:inline-flex;align-items:center;gap:.45rem}
+.searchbtn kbd{border:0;padding:0;font-size:.72em;color:var(--ink-3)}
+/* Below this the six links plus two buttons cannot share one row. The
+   brand and the buttons keep the first row; the links move to a second
+   row that scrolls sideways if it has to. No JavaScript, nothing hidden
+   behind a menu the reader has to discover. */
+@media (max-width:56rem){
+  header.top .bar{flex-wrap:wrap;row-gap:.15rem;gap:.5rem;padding-bottom:.35rem}
+  .brand{flex:1 1 auto}
+  .hbtns{order:2}
+  nav.main{
+    order:3;flex:1 0 100%;overflow-x:auto;overscroll-behavior-x:contain;
+    scrollbar-width:none;margin-inline:calc(-1 * var(--gap));
+    padding-inline:var(--gap);padding-bottom:.1rem
+  }
+  nav.main::-webkit-scrollbar{display:none}
+  nav.main a{white-space:nowrap;padding:.4rem .5rem}
+}
+@media (max-width:26rem){
+  nav.main a{padding:.4rem .34rem;font-size:.84rem}
+}
+@media (max-width:44rem){
+  nav.main a{padding:.4rem .45rem;font-size:.88rem}
+  /* Seven links do not fit a 390px row. The row already scrolls; what was
+     missing was any sign that it does, so the last item was simply cut off
+     with nothing to suggest more. The fade is the affordance. */
+  nav.main{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 1.6rem),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 1.6rem),transparent);
+  }
+  .brand span.sub{display:none}
+  .searchbtn span.lbl{display:none}
+}
+/* The nav scrolls sideways rather than hiding behind a menu, but a strip that
+   scrolls with no scrollbar and no cut-off edge reads as a strip that ends:
+   at 390px "About" was clipped mid-word and looked like a layout fault. The
+   mask fades the last few pixels, which is the conventional signal that there
+   is more, and it lifts as soon as the reader reaches the end. */
+@media (max-width:56rem){
+  nav.main{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent 100%);
+    mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent 100%);
+  }
+  nav.main:has(a:last-child:target),
+  nav.main.scrolled-end{-webkit-mask-image:none;mask-image:none}
+  /* The site's focus ring sits 3px outside the element. Inside a strip
+     that scrolls sideways and is masked at its right edge, 3px outside
+     is 3px the reader cannot see: tabbing to the first or last link
+     showed part of a ring or none of it. Drawn inside instead, so the
+     ring is whole at every scroll position. Recorded as a deliberate
+     difference from the site-wide offset, not as drift. */
+  nav.main a:focus-visible{outline-offset:-2px}
+}
+@media (max-width:26rem){
+  /* one notch tighter, so the last item is at least partly in view to start */
+  nav.main{gap:0}
+  nav.main a{padding:.4rem .34rem;font-size:.85rem}
+}
+
+/* ------------------------------- hero ------------------------------- */
+.hero{padding-block:clamp(3rem,7vw,6rem) clamp(2rem,4vw,3rem)}
+/* Six pages carried this same padding as an inline style attribute.
+   A value repeated six times in the markup is a rule that has not
+   been written down yet. */
+.hero.tight{padding-block:clamp(2.5rem,5vw,4rem) 1rem}
+
+/* the standing call to action, previously four different inline style
+   attributes saying the same four declarations */
+a.open,.openlink{
+  font-size:var(--btn-size);font-weight:var(--btn-weight);color:var(--accent);text-decoration:none
+}
+a.open:hover,.openlink:hover{text-decoration:underline}
+.stack-end{padding-bottom:4rem}
+
+/* ---- the hero readout on the library ---------------------------------
+   The page states a total and then hands the reader a filter, and the one
+   number that says where they now are was a small grey line under the
+   controls. The readout stands in the hero beside the lede: the whole
+   statement at rest, and the selected share with its denominator once a
+   chip or the search box narrows the shelf. The build renders the resting
+   figures, so with scripts off the readout is still true. */
+.herowrap{display:grid;gap:var(--gap);align-items:end}
+@media (min-width:64rem){ .herowrap{grid-template-columns:minmax(0,1fr) 17rem} }
+.herolead{min-width:0}
+.denom{border-top:1px solid var(--ink);padding-top:.6rem}
+.denom-h{
+  margin:0 0 .35rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.denom-l{margin:0;display:grid;gap:0}
+.denom-l > div{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:baseline;
+  padding:.3rem 0;border-bottom:1px solid var(--rule)
+}
+.denom-l > div:last-child{border-bottom:0}
+.denom-l dt{font-size:.82rem;color:var(--ink-2)}
+.denom-l dd{
+  margin:0;font-variant-numeric:tabular-nums;font-size:.88rem;
+  text-align:right;white-space:nowrap
+}
+.denom-l dd b{color:var(--ink);font-weight:660}
+.denom-l dd span{color:var(--ink-3);font-size:.8rem}
+.denom-n{
+  margin:.45rem 0 0;font-size:.78rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;min-height:1.2em
+}
+
+/* ---- the shape as a field, on selected work --------------------------
+   Six pieces across, eight slots down, forty-eight cells. The page states
+   the completion in one line of prose and then makes a reader walk six
+   tables to see where the gaps are; the field puts them in the hero. The
+   mark in a cell differs in shape as well as in fill, so the grid does not
+   depend on colour, and every cell carries its own sentence for a screen
+   reader. */
+.slotwrap{border-top:1px solid var(--ink);padding-top:.6rem}
+.slots-h{
+  margin:0 0 .55rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.slotscroll{overflow-x:auto}
+.slots{border-collapse:collapse;font-size:.7rem;width:100%}
+.slots th,.slots td{padding:0;border:0}
+.slots thead td{width:auto}
+.slots thead th{
+  font-weight:var(--meta-weight);color:var(--ink-3);font-size:.64rem;
+  letter-spacing:.04em;text-align:center;padding-bottom:.25rem;
+  font-variant-numeric:tabular-nums
+}
+.slots thead th abbr{text-decoration:none;border-bottom:1px dotted var(--edge);cursor:help}
+.slots tbody th{
+  text-align:left;font-weight:500;color:var(--ink-2);white-space:nowrap;
+  padding:.1rem .5rem .1rem 0;font-size:.7rem
+}
+.slots tbody td{text-align:center;padding:.1rem}
+/* the four states: filled, half-filled, outlined, open */
+.slots .sk{display:inline-block;width:11px;height:11px;vertical-align:-1px}
+.sk-sec .sk{background:var(--accent);border:1px solid var(--accent)}
+.sk-doc .sk{
+  background:linear-gradient(135deg,var(--accent) 0 50%,transparent 50% 100%);
+  border:1px solid var(--accent)
+}
+.sk-rec .sk{background:none;border:1px solid var(--accent)}
+.sk-gap .sk{background:none;border:1px dashed var(--ink-3);opacity:.75}
+.slotkey{
+  list-style:none;margin:.6rem 0 0;padding:0;display:grid;gap:.15rem;
+  font-size:.7rem;color:var(--ink-3)
+}
+.slotkey li{display:flex;align-items:center;gap:.4rem}
+.slotkey b{margin-left:auto;color:var(--ink);font-weight:640;font-variant-numeric:tabular-nums}
+
+/* ---- the capability sets, and where they overlap ---------------------
+   The about page says in prose that the four sets overlap and that their
+   subtotals therefore do not add to the corpus line. This draws that
+   sentence. A chord is cobalt, which here means two capabilities resting
+   on the same piece; it is deliberately not the violet reserved for a link
+   one document's prose makes to another, because a shared piece is not a
+   citation. Every value is restated in the table under the drawing. */
+.ovwrap{border-top:1px solid var(--ink);padding-top:.9rem;min-width:0}
+.ovwrap h3{
+  margin:0 0 .5rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.ovfig{display:block;width:100%;height:auto;max-width:17rem;margin:0 auto}
+.ovfig .ov-c{fill:none;stroke:var(--cobalt);stroke-linecap:round;opacity:.85}
+.ovfig .ov-n{fill:var(--panel);stroke:var(--ink-2);stroke-width:1.2}
+.ovfig .ov-t{
+  fill:var(--ink);font-size:11px;font-weight:660;font-variant-numeric:tabular-nums
+}
+.ovkey{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.3rem;font-size:.8rem}
+.ovkey li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.45rem;color:var(--ink-2)}
+.ovkey b{
+  color:var(--ink);font-weight:660;font-variant-numeric:tabular-nums;font-size:.75rem;
+  padding-top:.08rem
+}
+.ovkey .ovn{
+  grid-column:2;color:var(--ink-3);font-size:.72rem;font-variant-numeric:tabular-nums
+}
+.ovnote{margin:.7rem 0 0;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
+.ovtw{margin-top:1.6rem}
+.ovtab{font-size:.8rem}
+.ovtab th[scope="row"]{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:640}
+.ovtab .tnum{text-align:right;font-variant-numeric:tabular-nums}
+.spaced{margin-top:1rem}
+.facts.wide{max-width:46rem}
+.fnote{max-width:26rem;color:var(--ink-2)}
+/* One rule for a link that has to carry the accent outside .prose,
+   replacing seven inline style attributes that each said the same
+   thing and one that also said font-weight:620. */
+.inlink{color:var(--accent)}
+.rail-app a{color:var(--accent)}
+/* the date beside a kind chip: the same metadata line as everywhere else */
+.metadate{font-variant-numeric:tabular-nums}
+/* 404 keeps the deeper hero padding it had and states its own display
+   size, both previously inline */
+.hero.lost{padding-block:clamp(3rem,8vw,6rem) 2rem}
+.lost-h{font-size:clamp(2rem,5vw,3.4rem)}
+/* on a phone the sphere follows the name: identity, then the proof of it */
+@media (max-width:60rem){
+  .hero-grid{grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"head" "globe" "body" "rail"}
+}
+.globe-cap{margin:.3rem 0 0;font-size:.85rem;line-height:1.5;color:var(--ink-2);max-width:26em}
+.globe-cap .inlink{color:inherit}
+.globe-cap .inlink:hover{color:var(--accent)}
+
+/* --------------------------- section headers --------------------------- */
+section.band{padding-block:clamp(2.75rem,5vw,4.5rem)}
+section.band + section.band{border-top:1px solid var(--rule)}
+.sechead{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem 1.5rem;
+  align-items:end;margin-bottom:2rem;padding-bottom:.9rem;border-bottom:1px solid var(--ink)
+}
+.sechead h2{font-size:clamp(1.45rem,3vw,2.05rem);letter-spacing:-.028em;margin:0}
+.sechead .note{grid-column:1;color:var(--ink-2);font-size:.95rem;margin:.15rem 0 0;max-width:44rem}
+.sechead .count{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ------------------------------- kinds ------------------------------- */
+.kind{display:inline-flex;align-items:center;gap:.36rem;color:var(--ink-2);white-space:nowrap}
+.kind::before{content:"";width:.5rem;height:.5rem;flex:none;background:currentColor}
+.kind-essay{color:var(--accent)}
+.kind-tool{color:var(--tool)}
+.kind-tool::before{border-radius:50%}
+.kind-reference{color:var(--ref)}
+.kind-reference::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.tag{white-space:nowrap}
+.tag + .tag::before{content:"·";margin-right:.42rem;color:var(--rule-strong)}
+/* ---------------------------- feature cards ---------------------------- */
+
+.feature{
+  display:flex;flex-direction:column;text-decoration:none;
+  padding:1.5rem 1.6rem 1.4rem 0;border-top:1px solid var(--rule);
+  position:relative
+}
+.feature::after{
+  content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--accent);
+  transition:width var(--t-in) var(--ease-move)
+}
+.feature:hover::after,.feature:focus-within::after{width:100%}
+/* The card is an article whose title link stretches over it, so the card
+   stays one click target while the accessible name stays the title. */
+.feature h3 a.cardlink,.feature h4 a.cardlink{text-decoration:none;color:inherit}
+.feature h3 a.cardlink::after,.feature h4 a.cardlink::after{content:"";position:absolute;inset:0}
+/* Focus draws around the whole card where :has() exists; elsewhere the
+   link's own ring stays, so focus is never invisible. */
+@supports selector(:has(a)){
+  .feature:has(a.cardlink:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
+  .feature a.cardlink:focus-visible{outline:none}
+}
+.feature .kindrow{display:flex;gap:.7rem;align-items:center;margin-bottom:.85rem}
+/* Below the plate heading at every width, which it was not: at 390px
+   the tile title was 1.18rem against a 1.15rem group head above it. */
+.feature h3,.feature h4{font-size:clamp(1.02rem,1.5vw,1.18rem);letter-spacing:var(--plate-h-tr);
+  font-weight:var(--plate-h-w);margin:0 0 .45rem;max-width:22ch}
+.feature p{font-size:.94rem;color:var(--ink-2);margin:0 0 1.1rem;line-height:1.52}
+.feature .go{
+  margin-top:auto;font-size:.84rem;font-weight:660;color:var(--accent);
+  display:inline-flex;gap:.4rem;align-items:center
+}
+.feature .arrow{transition:transform var(--t-fast) var(--ease-move)}
+.feature:hover .arrow{transform:translateX(3px)}
+/* ------------------------- the system band ------------------------
+   Four artifacts of one system in a row: the hub and its runs. The
+   same hairline grammar as the feature grid, one line of title and
+   one measured metadata line each. */
+
+/* ----------------------------- index rows ----------------------------- */
+ol.index{list-style:none;margin:0;padding:0;counter-reset:row}
+ol.index li{border-top:1px solid var(--rule)}
+ol.index li:last-child{border-bottom:1px solid var(--rule)}
+.row{
+  display:grid;grid-template-columns:3.4rem minmax(0,1fr) auto;gap:0 1.4rem;
+  align-items:start;text-decoration:none;padding:1.15rem 0;position:relative
+}
+.row:hover{background:linear-gradient(to right,var(--panel),transparent 70%)}
+.row .num{
+  font-size:.86rem;font-weight:620;color:var(--ink-3);font-variant-numeric:tabular-nums;
+  padding-top:.15rem;letter-spacing:.02em
+}
+.row .title{display:block;font-size:1.08rem;font-weight:620;letter-spacing:-.015em}
+.row:hover .title{color:var(--accent)}
+.row .sub{color:var(--ink-3);font-weight:450;letter-spacing:0}
+.row .blurb{font-size:.92rem;color:var(--ink-2);margin:.3rem 0 .45rem;max-width:52rem;line-height:1.5}
+.row .meta{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center}
+.row .side{
+  display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;
+  white-space:nowrap;padding-top:.15rem;font-variant-numeric:tabular-nums
+}
+.row .side .arrow{font-size:1rem;letter-spacing:0;color:var(--accent);opacity:0;
+  transition:opacity var(--t-in),transform var(--t-in)}
+.row:hover .side .arrow{opacity:1;transform:translateX(2px)}
+@media (max-width:44rem){
+  .row{grid-template-columns:2.2rem minmax(0,1fr);gap:0 .8rem}
+  .row .side{grid-column:2;flex-direction:row;align-items:center;gap:.6rem;padding-top:.4rem}
+  .row .side .arrow{opacity:1}
+}
+/* ---------------------------- course groups ---------------------------- */
+
+/* ------------------------------- filters ------------------------------- */
+.tools-bar{
+  display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;
+  padding:1rem 0 1.25rem;border-bottom:1px solid var(--rule);margin-bottom:.5rem
+}
+/* Set as the Atlas sets its own search field (.atlas-controls input):
+   same size, same padding, same 1px focus offset, because on a control
+   with a hairline border the ring has to sit against the border rather
+   than float away from it. */
+.tools-bar input[type=search]{
+  font:inherit;font-size:.92rem;padding:.55rem .75rem;flex:1 1 16rem;min-width:0;
+  background:var(--paper);color:var(--ink);border:1px solid var(--edge);
+  border-radius:var(--radius)
+}
+.tools-bar input[type=search]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.chipset{display:flex;gap:.4rem;flex-wrap:wrap}
+/* The Atlas draws its Globe and List toggles with this same .chip
+   class, and its plate buttons with .pbtn / .pbtn-go, at a different
+   size and weight. They are one control, so they are set once here
+   from the button contract; the Atlas block at the end of this file
+   holds the same literals and should join this rule at merge. */
+.chip{
+  font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);cursor:pointer;
+  background:none;color:var(--ink);border:1px solid var(--edge);padding:var(--btn-pad);
+  border-radius:var(--radius);
+  transition:color var(--t-fast) ease,border-color var(--t-fast) ease,background var(--t-fast) ease
+}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip:hover{color:var(--ink);border-color:var(--ink)}
+/* color:var(--paper), not #fff: in dark mode the accent is a light blue
+   and white on it reads 2.3:1; dark paper on it reads 8.1:1. */
+.chip[aria-pressed="true"]:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.resultnote{font-size:.85rem;color:var(--ink-3);padding:.9rem 0 0}
+
+/* ------------------------- command palette ------------------------- */
+/* .cmdk[hidden] and .keys[hidden] stood here, one line each, because
+   both set display and a display rule beats the hidden attribute. The
+   Atlas pass made that a global reset, so both are dead and gone. The
+   sweep for the same latent bug: site.js sets `hidden` on eight other
+   things and none of them carries a display rule, so these two were
+   the only components that ever had it. */
+/* a native dialog: the element is the full-screen layer, the backdrop is
+   the browser's, and the page behind it is inert while it is open */
+dialog.cmdk{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;
+  padding:clamp(2rem,10vh,7rem) 1rem 1rem;
+}
+dialog.cmdk[open]{display:grid;place-items:start center}
+dialog.cmdk::backdrop{background:rgba(10,10,8,.45)}
+.cmdk-panel{
+  width:min(44rem,100%);background:var(--paper);border:1px solid var(--ink);
+  display:flex;flex-direction:column;max-height:70vh
+}
+.cmdk-panel input{
+  font:inherit;font-size:1.05rem;padding:1rem 1.1rem;border:0;border-bottom:1px solid var(--rule);
+  background:transparent;color:var(--ink);width:100%
+}
+/* The default ring is dropped because it boxes the whole panel head, but
+   the focused control still shows where it is: the rule under the input
+   thickens and takes the accent. */
+.cmdk-panel input:focus{outline:none;border-bottom:2px solid var(--accent);padding-bottom:calc(1rem - 1px)}
+.cmdk-list{list-style:none;margin:0;padding:.35rem;overflow-y:auto}
+.cmdk-list a{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;
+  text-decoration:none;padding:.6rem .75rem
+}
+.cmdk-list li.on a,.cmdk-list a:hover{background:var(--panel)}
+.cmdk-list .t{font-weight:600;font-size:.98rem}
+.cmdk-list .s{font-size:.8rem;color:var(--ink-3)}
+.cmdk-foot{
+  border-top:1px solid var(--rule);padding:.6rem .9rem;font-size:.78rem;color:var(--ink-3);
+  display:flex;gap:1rem;flex-wrap:wrap
+}
+.cmdk-empty{padding:1.5rem;color:var(--ink-2);font-size:.95rem}
+
+/* ------------------------------- prose ------------------------------- */
+.prose{max-width:var(--measure)}
+.prose h2{font-size:1.3rem;letter-spacing:-.02em;margin:2.4rem 0 .6rem;padding-top:1rem;border-top:1px solid var(--rule)}
+.prose h3{font-size:1.05rem;margin:1.6rem 0 .4rem}
+.prose p,.prose li{color:var(--ink-2)}
+.prose strong{color:var(--ink);font-weight:620}
+.prose ul,.prose ol{padding-left:1.15rem;margin:0 0 1rem}
+.prose li{margin-bottom:.5rem}
+/* ---- list hierarchy, from .areg-l -------------------------------
+   The Atlas carries heading level into size, weight and indent with a
+   data-l attribute, so a list is never 1,250 items at one size. The
+   same ladder is stated here at the Atlas's own ratios (1.10, 1.03,
+   1.00, 0.955 of the base, with a 0.7rem indent at the deepest level)
+   so any list on any page can use it.
+
+   It is deliberately not applied anywhere on the six shell pages: none
+   of their lists has levels. The research page's four rules are four
+   siblings, the about page's three sections are three siblings, and
+   inventing a hierarchy for them would be a redesign rather than a
+   ripple. The one list on the site that does carry levels, the
+   contents rail on the study documents, already implements this exact
+   ladder through .toc .l3 at 0.96 of the base and a 0.75rem indent;
+   the two are the same system reached twice, and are left as they are
+   rather than renamed. */
+.prose li[data-l="1"],.docbody li[data-l="1"]{font-size:1.102em;font-weight:600;
+  color:var(--ink);margin-top:.5rem}
+.prose li[data-l="2"],.docbody li[data-l="2"]{font-size:1.034em}
+.prose li[data-l="4"],.docbody li[data-l="4"]{font-size:.955em;padding-left:.7rem}
+/* :not(.pbtn) matters. A solid button dropped into a prose block kept
+   the accent text this rule sets, at a specificity .pbtn-go cannot
+   beat, and 2.3:1 accent on ink is not a readable button. A link in
+   prose takes the accent unless it is a button. */
+.prose a:not(.pbtn){color:var(--accent)}
+.prose blockquote{
+  margin:1.5rem 0;padding-left:1.1rem;border-left:2px solid var(--accent);
+  color:var(--ink-2);font-size:1.02rem
+}
+
+/* capability grid, set as the Atlas sets a plate: a hairline rule
+   above, a tabular index, a tight heading, a body on a 34em measure.
+   The minimum track goes from 15rem to 24rem because the plate body
+   is set on a 34em measure and a column narrower than that is not a
+   plate. Four 15rem columns broke every title across three lines;
+   the same four now sit two by two, each on its own measure. */
+.caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));
+  gap:0 var(--gap);margin:1.5rem 0 0}
+.caps div{border-top:1px solid var(--ink);padding:.85rem 0 1.4rem}
+.caps .plate-n{margin:0 0 .5rem;font-size:var(--meta-size);letter-spacing:.14em;
+  color:var(--ink-3);font-variant-numeric:tabular-nums}
+.caps .plate-n b{color:var(--ink);font-weight:660}
+.caps h3{font-size:var(--plate-h);font-weight:var(--plate-h-w);letter-spacing:var(--plate-h-tr);
+  line-height:1.18;margin:0 0 .7rem;max-width:20em}
+.caps p{font-size:var(--plate-body);color:var(--ink-2);margin:0;line-height:var(--plate-lh);
+  max-width:var(--plate-measure)}
+
+/* fact list, for about */
+.facts{border-top:1px solid var(--ink);margin:0 0 2rem}
+.facts div{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--rule);font-size:.95rem}
+.facts dt,.facts b{padding-top:.18rem}
+.facts span{color:var(--ink-2)}
+@media (max-width:38rem){ .facts div{grid-template-columns:minmax(0,1fr);gap:.1rem} }
+
+/* ------------------------------- reader ------------------------------- */
+.reader{max-width:44rem;margin:0 auto;padding-block:2.5rem 5rem}
+.reader-meta{
+  display:flex;gap:1rem;flex-wrap:wrap;align-items:center;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:.7rem 0;margin-bottom:2.5rem;font-size:.82rem;color:var(--ink-3)
+}
+.md h1{font-size:clamp(1.9rem,4.4vw,2.9rem);letter-spacing:-.03em;margin:0 0 1rem}
+.md h2{font-size:1.45rem;margin:2.6rem 0 .7rem;padding-top:1.1rem;border-top:1px solid var(--rule);letter-spacing:-.02em}
+.md h3{font-size:1.12rem;margin:1.8rem 0 .5rem}
+.md h4{font-size:1rem;margin:1.4rem 0 .4rem;color:var(--ink-2)}
+.md p,.md li{color:var(--ink-2);line-height:1.65}
+.md strong{color:var(--ink);font-weight:620}
+.md ul,.md ol{padding-left:1.2rem}
+.md li{margin-bottom:.45rem}
+.md blockquote{margin:1.6rem 0;padding-left:1.1rem;border-left:2px solid var(--accent);color:var(--ink-2)}
+.md pre{
+  background:var(--panel);border:1px solid var(--rule);padding:.9rem 1rem;overflow-x:auto;
+  font-size:.86rem;line-height:1.5
+}
+.md :not(pre) > code{background:var(--panel);border:1px solid var(--rule);padding:.1em .32em}
+.md table{border-collapse:collapse;width:100%;font-size:.9rem;margin:1.5rem 0}
+.md th,.md td{border:1px solid var(--rule);padding:.5rem .65rem;text-align:left;vertical-align:top}
+.md th{background:var(--panel);font-weight:660}
+.md hr{margin:2.5rem 0}
+.md img{border:1px solid var(--rule)}
+.md a:not(.pbtn){color:var(--accent)}
+.mdstate{
+  border:1px solid var(--edge);padding:1.25rem 1.4rem;font-size:.95rem;color:var(--ink-2)
+}
+.mdstate h2{margin-top:0;border-top:0;padding-top:0;font-size:1.15rem;color:var(--ink)}
+
+/* ------------------------------- footer ------------------------------- */
+footer.site{border-top:1px solid var(--ink);margin-top:3rem;padding-block:2.25rem 3rem}
+footer.site .cols{
+  max-width:var(--shell);margin:0 auto;padding-inline:var(--gap);
+  display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:2rem
+}
+/* h2, not h4: the footer columns are siblings of the page's sections, and
+   jumping h2 to h4 breaks heading navigation for anyone using it. */
+/* An eyebrow at the same rank, and it was .01em and twenty weight off
+   being one. Set from the eyebrow rather than beside it. */
+footer.site h2{font-size:.76rem;font-weight:680;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 .7rem}
+footer.site a{display:block;text-decoration:none;font-size:.92rem;color:var(--ink-2);padding:.16rem 0}
+footer.site a:hover{color:var(--accent)}
+footer.site .fine{
+  max-width:var(--shell);margin:2rem auto 0;padding-inline:var(--gap);
+  font-size:.82rem;color:var(--ink-3);display:flex;gap:1rem;justify-content:space-between;flex-wrap:wrap
+}
+footer.site .fine b{font-weight:600;color:var(--ink-2)}
+@media (max-width:52rem){ footer.site .cols{grid-template-columns:minmax(0,1fr)} }
+
+/* ------------------------------- motion ------------------------------- */
+/* Nothing on these pages is hidden until scrolled to: every block is
+   visible at rest, so the first frame, a thumbnail and a reader with a
+   blocked script all see the same page. The reveal-on-scroll that used to
+   hold blocks at opacity 0 until an observer fired was an interaction that
+   existed because it was possible, and it cost the home page its largest
+   contentful paint. */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .feature::after,.feature .arrow,.row .side .arrow{transition:none}
+}
+
+/* ------------------------------- print ------------------------------- */
+@media print{
+  /* the chosen or defaulted dark palette is outranked here, or a dark page prints its own near-white ink onto white paper */
+  :root,:root[data-theme="dark"]{--paper:#fff;--panel:#fff;--ink:#000;--ink-2:#333;--ink-3:#555;--rule:#ccc;--rule-strong:#999;--accent:#000}
+  header.top,.iconbtn,.themesel,.cmdk,.tools-bar,footer.site .cols{display:none !important}
+  body{font-size:10.5pt}
+  .row,.feature,.course,li,figure,.spec,.plot{break-inside:avoid}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
+  .hero{padding-block:0 1rem}
+}
+
+/* ==================================================================
+   ADDED IN THE AUGUST 2026 PASS
+   Signature lines (reading time and density), the surface split,
+   specimen figures lifted from the research pages, the corpus figure,
+   and the colophon.
+   ================================================================== */
+
+/* chips and dates on one row need real spacing between them */
+.kindrow{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+
+/* ------------------------------------------------ signature line --
+   Every readable item carries the same three facts in the same order:
+   how long it is, how much apparatus it holds, and how dense that
+   makes it. Defined in the colophon, computed from the files. */
+/* The separator is now the middot the .tag list already used, rather
+   than a second one that appeared nowhere else. */
+.sig{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;
+  margin-top:.5rem;font-variant-numeric:tabular-nums;
+}
+.sig .s-min{color:var(--ink-2)}
+.sig i{font-style:normal;opacity:.55;letter-spacing:0}
+.sig .dens{border:1px solid var(--rule-strong);padding:.05rem .35rem}
+.sig .dens-Dense{border-color:var(--edge);color:var(--ink-2)}
+
+/* ------------------------------------------------ surface marker --
+   Independent work is solid, coursework is an outline. The same
+   contract the corpus figure uses, so the two read as one system. */
+.surf{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap}
+.surf::before{
+  content:"";width:.5rem;height:.5rem;flex:none;
+  background:var(--accent);
+}
+.surf-course::before{background:none;box-shadow:inset 0 0 0 1px var(--accent)}
+.surf-personal::before{background:var(--accent);opacity:.45}
+
+/* -------------------------------------------------- group header --
+   Used on the library and the corpus table to make the split
+   structural rather than a caption. */
+.grouphead{
+  display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;
+  margin:2.75rem 0 .25rem;padding-bottom:.5rem;
+  border-bottom:2px solid var(--ink);
+}
+.grouphead:first-child{margin-top:0}
+/* A group head is a plate head: a rule above it, then a tight
+   heading. It was set smaller than the tiles underneath it, which
+   inverted the hierarchy it exists to declare. */
+.grouphead h2,.grouphead h3{
+  margin:0;font-size:var(--plate-h);letter-spacing:var(--plate-h-tr);font-weight:var(--plate-h-w)
+}
+.grouphead .gnote{margin:0;color:var(--ink-3);font-size:.8125rem;max-width:34rem}
+.grouphead .gcount{margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* ----------------------------------------------- corpus figure ---
+   One square is 500 words. The unit is declared once in the rail
+   beside the drawing and never rescaled. */
+.corpus{
+  --cf-1:#2a78d6;   /* validated categorical slot 1, light */
+  --cf-2:#86b6ef;   /* same hue, lighter ordinal step */
+  display:grid;gap:var(--gap);align-items:start;
+}
+@media (min-width:64rem){ .corpus{grid-template-columns:minmax(0,1fr) 17rem} }
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .corpus{--cf-1:#3987e5;--cf-2:#cde2fb}
+}
+:root[data-theme="dark"] .corpus{--cf-1:#3987e5;--cf-2:#cde2fb}
+.corpus .plot{overflow-x:auto;padding-bottom:.25rem}
+/* A figure that is shrunk is a figure that is not read: at 34rem the corpus
+   labels landed at 9.1px on a phone. The floor is now the artboard the figure
+   was drawn on, so the type never renders smaller than it was set, and the
+   frame scrolls sideways instead. The table under "The numbers behind the
+   figure" is the alternative for anyone who would rather not scroll. */
+.corpus .plot svg{min-width:41rem}
+.rail-app{border-top:2px solid var(--ink);padding-top:.75rem;font-size:.8125rem;color:var(--ink-2)}
+.rail-app h3{margin:0 0 .5rem}
+.rail-app p{margin:0 0 .7rem}
+.rail-app .key{display:grid;gap:.4rem;margin:0 0 .8rem}
+.rail-app .key span{display:flex;align-items:center;gap:.5rem}
+.rail-app .key i{width:.6rem;height:.6rem;flex:none;font-style:normal;background:var(--cf-1)}
+.rail-app .key .open{background:none;box-shadow:inset 0 0 0 1px var(--cf-1)}
+.rail-app .key .half{background:var(--cf-2)}
+.ctab{width:100%;border-collapse:collapse;font-size:.8125rem;margin-top:.75rem}
+.ctab caption{text-align:left;color:var(--ink-3);font-size:.75rem;margin-bottom:.5rem}
+.ctab th,.ctab td{text-align:left;padding:.35rem .5rem;border-bottom:1px solid var(--rule)}
+/* the .ctab head takes the contract unchanged */
+.ctab .grp th{padding-top:.9rem;font-weight:660;color:var(--ink)}
+.ctab .tnum{text-align:right;font-variant-numeric:tabular-nums}
+.ctab a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule-strong)}
+.ctab a:hover{border-bottom-color:var(--accent);color:var(--accent)}
+/* --------------------------------------------------- specimens ---
+   Real figures, lifted unchanged out of the pieces they belong to.
+   Each one is shown with the single rule that governs its marks. */
+
+.spec{display:block;min-width:0}
+.spec + .spec{border-top:1px solid var(--rule);padding-top:calc(var(--gap) * 1.6)}
+.spec figcaption{display:grid;gap:.4rem var(--gap);padding-top:.9rem}
+@media (min-width:56rem){.spec figcaption{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start}}
+.spec .what p{max-width:44rem}
+.spec .frame{
+  border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:1rem 0 1.1rem;overflow-x:auto;
+}
+/* min-width is set per figure, inline, from the artboard each one was drawn
+   on; 30rem is only the floor for anything that arrives without one. */
+.spec .frame svg{width:100%;height:auto;display:block;min-width:30rem;margin:0 auto}
+
+.spec .rule{margin:0 0 .35rem}
+.spec h3{margin:0 0 .45rem;font-size:var(--plate-h);letter-spacing:var(--plate-h-tr);
+  font-weight:var(--plate-h-w)}
+.spec p{margin:0 0 .8rem;font-size:var(--plate-body);line-height:var(--plate-lh);
+  color:var(--ink-2);max-width:var(--plate-measure)}
+.spec a.open{font-size:.8125rem;font-weight:560;color:var(--accent);text-decoration:none}
+.spec a.open:hover{text-decoration:underline}
+#spec-vintage{--own-1:#86b6ef;--own-3:#2a78d6;--own-4:#1c5cab;--own-5:#104281}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) #spec-vintage{--own-1:#cde2fb;--own-3:#6da7ec;--own-4:#3987e5;--own-5:#256abf}
+}
+:root[data-theme="dark"] #spec-vintage{--own-1:#cde2fb;--own-3:#6da7ec;--own-4:#3987e5;--own-5:#256abf}
+/* the lifted figures inherit the page surface rather than their own */
+.spec svg{--surface-1:var(--paper)}
+/* ------------------------------------------------ lead feature ---
+   One piece at the top of Research, at the size it earns. */
+
+/* ------------------------------------------------ section index --
+   Research, Coursework and Tools each said "Section 01", "Section
+   02", "Section 03": enough to claim a sequence, never enough to show
+   one. The Atlas answered the same problem with a guide that is
+   progress, contents and skip control at once, so .guide, .guide-h
+   and .guide-c are reused verbatim. The only rule added is the
+   current-page state: aria-current="step" marks a position in a tour,
+   "page" marks one in a site.
+
+   The eyebrow does not change. It is the one small-caps role the
+   Atlas adopted unchanged, so it is the anchor rather than the drift;
+   all that is added is the total. */
+.eyebrow .tnum{letter-spacing:.1em}
+.guide.sections{margin-top:1.6rem;max-width:26rem}
+/* Outside the Atlas's 25rem column a plate nav would stretch the whole
+   76rem shell and strand the skip link at the far edge, half a metre
+   from the buttons it belongs to. Held to the lede measure so the row
+   reads as one object. */
+.hero .plate-nav,.prose .plate-nav,.lead .plate-nav{max-width:42rem}
+.guide a[aria-current="page"]{color:var(--ink);font-weight:560}
+.guide a[aria-current="page"] b{color:var(--accent);font-weight:660}
+
+/* ---------------------------------------------------- colophon ---- */
+.colo dl{margin:0}
+.colo dt{font-weight:640;margin-top:1.15rem}
+.colo dd{margin:.2rem 0 0;color:var(--ink-2)}
+
+/* ---- the definitions: a rule you can scan, edges you can open ----------
+   The list had been nine paragraphs of statute in one column. The rule
+   that decides the ordinary case now stands on its own and the exclusions
+   and thresholds fold underneath it. The fold is a details element, not a
+   script: the text is in the page with scripts off, it prints, and the
+   site's own word count already includes collapsed text, so folding a
+   definition cannot change what any page measures. */
+.defx{margin:.35rem 0 0}
+.defx > summary{
+  display:inline-flex;align-items:center;gap:.3rem;width:auto;cursor:pointer;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);list-style:none;
+  padding:.1rem 0;border-bottom:1px dotted var(--edge)
+}
+.defx > summary::-webkit-details-marker{display:none}
+.defx > summary::before{
+  content:"+";font-weight:700;font-size:.9rem;line-height:1;color:var(--accent)
+}
+.defx[open] > summary::before{content:"\2212"}
+.defx > summary:hover{color:var(--ink)}
+.defx > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.defxb{margin:.4rem 0 0;padding-left:.85rem;border-left:1px solid var(--rule)}
+
+/* ---- the definitions band: the list, and the chain beside it ----------
+   The rail takes the width .corpus already uses for its key, so the page
+   adopts a column it had rather than inventing a second one. */
+.defwrap{display:grid;gap:var(--gap);align-items:start}
+@media (min-width:64rem){ .defwrap{grid-template-columns:minmax(0,1fr) 17rem} }
+.defrail{border-top:1px solid var(--ink);padding-top:.9rem}
+.defrail h3{
+  margin:0 0 .8rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.railnote{margin:.8rem 0 0;font-size:.82rem;line-height:1.5;color:var(--ink-2)}
+.railnote code{font-size:.85em}
+/* the chain itself: boxes, hairlines and two type sizes, no fill but the
+   panel the page already uses */
+.mchain{display:block;width:100%;height:auto;max-width:17rem}
+.mchain .mc-b{fill:var(--panel);stroke:var(--rule-strong);stroke-width:1}
+.mchain .mc-d{stroke-dasharray:3 2}
+.mchain .mc-t{
+  fill:var(--ink);font-size:11px;font-weight:640;letter-spacing:-.01em
+}
+.mchain .mc-s{fill:var(--ink-3);font-size:9.5px;font-variant-numeric:tabular-nums}
+.mchain .mc-l{stroke:var(--ink-3);stroke-width:1}
+.mchain .mc-h{fill:var(--ink-3)}
+.colo code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;
+  background:var(--panel);padding:.05rem .3rem}
+
+/* table scroll wrapper: narrow screens clip the table rather than
+   crushing the type below legibility */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw > .ctab{min-width:30rem}
+
+/* the values table under a figure, folded away by default */
+details.tv{border-top:1px solid var(--rule);padding-top:.6rem}
+details.tv > summary{
+  cursor:pointer;font-size:.8125rem;color:var(--ink-2);font-weight:560;
+  list-style:none;display:flex;align-items:center;gap:.4rem;
+}
+details.tv > summary::-webkit-details-marker{display:none}
+details.tv > summary::before{content:"+";color:var(--ink-3);font-weight:640}
+details.tv[open] > summary::before{content:"\2212"}
+details.tv > summary:hover{color:var(--accent)}
+details.tv[open]{padding-bottom:1rem}
+/* ------------------------------------------------- figure strip ----
+   Six real figures, lifted out of the pieces they belong to and shown
+   at a uniform tile height. Each keeps its own colour variables, which
+   the build writes into a scope named for the tile. */
+
+/* ------------------------------------------------ hero globe ---
+   The sphere sits in the hero now, first thing on every screen. The
+   .tease-globe box is the same instrument the retired teaser section
+   used; the caption under it is the invitation that section spent
+   three paragraphs on. */
+.tease-globe{
+  width:100%;aspect-ratio:1/0.84;max-height:min(46vh,26rem);
+  display:block;margin-inline:auto;
+}
+.tease-globe canvas{display:block;width:100%;height:100%}
+
+/* --------------------------------------------- university mark --
+   The official mark, supplied by the owner of this site, on a chip
+   that stays cream in dark mode so the black wordmark survives the
+   ground flipping under it. The mark itself is not recoloured. */
+.namerow{display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem 2rem}
+.affil{display:flex;flex-direction:column;gap:.4rem}
+.affil-logo{display:block;width:280px;max-width:100%;height:auto;
+  background:var(--logo-chip);padding:.4rem .55rem;margin-left:-.55rem}
+.affil-school{font-size:.9rem;color:var(--ink-2);letter-spacing:.015em}
+/* ==================================================================
+   STUDY DOCUMENTS
+   Long converted notes: a sticky contents rail, a reading-progress
+   bar, callouts, and checkpoint questions that stay closed until the
+   reader commits to an answer. Table-forward rather than figure-
+   forward, because that is what this material is.
+   ================================================================== */
+
+.docbar{
+  /* Sits below the site header rather than on top of it: both are sticky,
+     and at top:0 they stack in the same 60px. */
+  position:sticky;top:var(--stick);z-index:40;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule-strong);
+}
+.docbar .inner{
+  max-width:var(--shell);margin:0 auto;padding:.5rem 1.5rem;
+  display:flex;align-items:center;gap:.85rem;font-size:.8125rem;color:var(--ink-3);
+}
+.docbar .where{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.docbar .where b{color:var(--ink-2);font-weight:560}
+.docbar .up{margin-left:auto;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:560}
+.docbar .up:hover{text-decoration:underline}
+/* The one control that keeps a tighter box: it sits inside a sticky
+   32px strip that a full-height button would burst. Size and weight
+   come from the contract, the padding does not. */
+.tocbtn{
+  appearance:none;border:1px solid var(--edge);background:var(--panel);color:var(--ink);
+  font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);
+  padding:.25rem .6rem;cursor:pointer;border-radius:var(--radius);
+  transition:border-color var(--t-fast) ease,color var(--t-fast) ease;
+}
+.tocbtn:hover{border-color:var(--ink)}
+@media (min-width:68rem){ .tocbtn{display:none} }
+#progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--accent);width:0}
+
+.doc{max-width:var(--shell);margin:0 auto;padding:0 1.5rem 5rem}
+.doc-grid{display:block}
+@media (min-width:68rem){
+  .doc-grid{display:grid;grid-template-columns:15.5rem minmax(0,1fr);gap:3rem;align-items:start}
+}
+
+/* ------------------------------------------------------- contents rail -- */
+.toc{
+  font-size:.8125rem;
+}
+@media (min-width:68rem){
+  .toc{position:sticky;top:7.25rem;max-height:calc(100vh - 9rem);overflow-y:auto;
+       padding:2.5rem 0 2rem;border-right:1px solid var(--rule)}
+}
+@media (max-width:67.999rem){
+  .toc{
+    position:fixed;inset:0 auto 0 0;width:min(20rem,86vw);z-index:60;
+    background:var(--paper);border-right:1px solid var(--rule);
+    padding:1.25rem 1.25rem 3rem;overflow-y:auto;
+    transform:translateX(-102%);transition:transform var(--t-in) var(--ease-move);
+  }
+  .toc.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.25)}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:55;opacity:0;pointer-events:none;
+    transition:opacity var(--t-in) ease}
+  .scrim.on{opacity:1;pointer-events:auto}
+}
+@media (prefers-reduced-motion:reduce){ .toc{transition:none} }
+.toc h2{margin:0 0 .75rem}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:0}
+.toc a{
+  display:block;padding:.28rem .5rem .28rem .6rem;color:var(--ink-2);text-decoration:none;
+  border-left:2px solid transparent;line-height:1.35;
+}
+.toc a:hover{color:var(--ink);background:var(--panel)}
+.toc a.on{color:var(--ink);border-left-color:var(--accent);font-weight:560;background:var(--panel)}
+.toc .l3 a{padding-left:1.35rem;font-size:.78125rem;color:var(--ink-3)}
+.toc .close{display:none}
+@media (max-width:67.999rem){
+  .toc .close{display:inline-block;margin-bottom:.75rem;border:1px solid var(--edge);
+    background:none;color:var(--ink);font:inherit;font-size:var(--btn-size);
+    font-weight:var(--btn-weight);padding:.25rem .6rem;cursor:pointer;border-radius:var(--radius)}
+}
+
+/* ------------------------------------------------------------- masthead -- */
+.docmast{padding:3rem 0 1.5rem;border-bottom:2px solid var(--ink);margin-bottom:2rem}
+.docmast .kick{color:var(--accent);margin:0 0 .9rem}
+/* .docmast-h1 is the demoted masthead title on converted notes: the build
+   turns the masthead's h1 into a paragraph so the document's own h1 stays
+   the page's only one, and this keeps it looking exactly as it did. */
+.docmast h1,.docmast .docmast-h1{
+  margin:0 0 .6rem;font-size:clamp(1.85rem,4.2vw,2.75rem);line-height:1.08;
+  letter-spacing:-.028em;font-weight:660;max-width:24ch;color:var(--ink);
+}
+.docmast .dek{margin:0 0 1.25rem;color:var(--ink-2);font-size:1.0625rem;max-width:44rem}
+.docmeta{display:flex;flex-wrap:wrap;gap:.4rem .5rem;align-items:center}
+.docmeta .mchip{
+  border:1px solid var(--rule-strong);color:var(--ink-3);padding:.12rem .45rem;white-space:nowrap;
+}
+.docmeta .mchip b{color:var(--ink-2);font-weight:620}
+/* what the note was built from, in the owner's words, written by the build from pieces.json */
+.docmast .docfrom{margin:.9rem 0 0;font-size:.875rem;line-height:1.5;color:var(--ink-3);max-width:66ch}
+.docmast .docfrom b{color:var(--ink-2);font-weight:620}
+
+/* ------------------------------------------------------------ doc body --- */
+.docbody{
+  max-width:44rem;font-size:1rem;line-height:1.68;
+  /* Long unbreakable tokens (standard references, account strings) otherwise
+     spill past the column on a phone and widen the whole document. */
+  overflow-wrap:break-word;
+}
+/* Only the first: this rule used to hide every top-level heading in the
+   document body, which silently deleted eight section headings from one piece
+   and five from another. The masthead carries the title; nothing else here is
+   a duplicate of it. */
+.docbody > h1:first-of-type{display:none}          /* the masthead already carries it */
+.docbody h2{
+  margin:2.75rem 0 .85rem;font-size:1.375rem;letter-spacing:-.02em;font-weight:640;
+  padding-top:.85rem;border-top:1px solid var(--rule);scroll-margin-top:7.25rem;
+}
+.docbody h3{margin:2rem 0 .6rem;font-size:1.0625rem;font-weight:640;letter-spacing:-.012em;scroll-margin-top:7.25rem}
+.docbody h4{margin:1.5rem 0 .5rem;font-size:.9375rem;font-weight:640;color:var(--ink-2);scroll-margin-top:7.25rem}
+/* Three documents nest a level deeper than the chapters do, because they use a
+   top-level heading for every section rather than only for the title. Without
+   a rule at this level those headings fell back to the browser default and
+   read as bold body text. */
+.docbody h5{margin:1.25rem 0 .4rem;font-size:.875rem;font-weight:640;color:var(--ink-2);letter-spacing:.01em;scroll-margin-top:7.25rem}
+/* running text holds a 66ch measure; tables, figures and code keep the
+   column's full width, because a table has the width its columns need */
+.docbody p,.docbody li,.docbody dd,.docbody blockquote{max-width:66ch}
+.docbody td p,.docbody th p,.docbody .cal .cb p{max-width:none}
+.docbody table{font-variant-numeric:tabular-nums}
+.docbody p{margin:0 0 1rem;color:var(--ink-2)}
+.docbody strong{color:var(--ink);font-weight:620}
+.docbody a:not(.pbtn){color:var(--accent);text-underline-offset:2px}
+.docbody ul,.docbody ol{margin:0 0 1rem;padding-left:1.3rem;color:var(--ink-2)}
+.docbody li{margin-bottom:.4rem}
+.docbody li > ul,.docbody li > ol{margin-top:.4rem}
+.docbody hr{border:0;border-top:1px solid var(--rule);margin:2.25rem 0}
+.docbody blockquote{
+  margin:0 0 1rem;padding:.1rem 0 .1rem 1rem;border-left:2px solid var(--rule-strong);
+  color:var(--ink-2);
+}
+.docbody code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+  background:var(--panel);padding:.06rem .3rem;color:var(--ink);
+}
+.docbody pre{
+  background:var(--panel);border:1px solid var(--rule);padding:.9rem 1rem;overflow-x:auto;
+  font-size:.8125rem;line-height:1.5;margin:0 0 1.25rem;
+}
+.docbody pre code{background:none;padding:0;font-size:inherit}
+.docbody table{width:100%;border-collapse:collapse;font-size:.875rem;margin:0 0 .35rem}
+.docbody th,.docbody td{
+  text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;
+}
+.docbody thead th{border-bottom:1px solid var(--rule-strong)}
+/* row labels are header cells for assistive technology; they keep the look of the cells they were */
+.docbody tbody th[scope="row"]{font-weight:inherit;text-align:inherit;color:inherit;background:inherit}
+.docbody tbody tr:hover{background:var(--panel)}
+.docbody .tw{overflow-x:auto;margin:0 0 1.25rem;-webkit-overflow-scrolling:touch}
+.docbody .tw table{min-width:34rem}
+.docbody img{max-width:100%;height:auto}
+
+/* -------------------------------------------------------------- callouts - */
+.cal{
+  margin:0 0 1.25rem;padding:.85rem 1rem;background:var(--panel);
+  border-left:3px solid var(--rule-strong);
+}
+.cal .ch{margin:0 0 .4rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline}
+/* .cal .cw takes the contract, keeping the badge weight */
+.cal .ct{font-weight:620;color:var(--ink);font-size:.9375rem}
+.cal .cb > *:last-child{margin-bottom:0}
+.cal .cb p{font-size:.9375rem}
+.cal-imp,.cal-warn{border-left-color:var(--ref)} .cal-imp .cw,.cal-warn .cw{color:var(--ref)}
+.cal-danger,.cal-bug{border-left-color:#c0392b} .cal-danger .cw,.cal-bug .cw{color:#c0392b}
+.cal-check,.cal-tip{border-left-color:var(--tool)} .cal-check .cw,.cal-tip .cw{color:var(--tool)}
+.cal-abstract,.cal-info,.cal-note,.cal-eg{border-left-color:var(--accent)}
+.cal-abstract .cw,.cal-info .cw,.cal-note .cw,.cal-eg .cw{color:var(--accent)}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .cal-danger,
+  :root:where(:not([data-theme="light"])) .cal-bug{border-left-color:#e66767}
+  :root:where(:not([data-theme="light"])) .cal-danger .cw,
+  :root:where(:not([data-theme="light"])) .cal-bug .cw{color:#e66767}
+}
+:root[data-theme="dark"] .cal-danger,:root[data-theme="dark"] .cal-bug{border-left-color:#e66767}
+:root[data-theme="dark"] .cal-danger .cw,:root[data-theme="dark"] .cal-bug .cw{color:#e66767}
+
+/* checkpoint questions: closed until the reader commits to an answer */
+details.cal-q{
+  padding:0;border-left-width:3px;border-left-color:var(--tool);background:var(--panel);
+}
+details.cal-q > summary{
+  cursor:pointer;list-style:none;padding:.7rem 1rem;display:flex;gap:.6rem;
+  align-items:baseline;flex-wrap:wrap;
+}
+details.cal-q > summary::-webkit-details-marker{display:none}
+details.cal-q > summary::after{
+  content:"Show answer";margin-left:auto;color:var(--accent);white-space:nowrap;
+}
+details.cal-q[open] > summary::after{content:"Hide"}
+details.cal-q > summary:hover .ct{color:var(--accent)}
+details.cal-q .cw{color:var(--tool)}
+details.cal-q .cb{padding:0 1rem .8rem;border-top:1px solid var(--rule)}
+details.cal-q .cb > *:first-child{margin-top:.8rem}
+
+/* -------------------------------------------------------- provenance ----- */
+.pv{
+  display:inline-block;padding:.02rem .35rem;border:1px solid currentColor;vertical-align:.06em;
+}
+.pv-v{color:var(--tool)}
+/* Same dark lift the danger callout already gets: #c0392b reads 3.4:1 on
+   dark paper, under AA for text, and this chip is the smallest text on
+   the site with the job of flagging unverified content. */
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .pv-u{color:#e66767}
+}
+
+/* ------------------------------------------------------------- endnote --- */
+.docend{
+  margin-top:3rem;padding-top:1.25rem;border-top:2px solid var(--ink);
+  font-size:.8125rem;color:var(--ink-3);max-width:44rem;
+}
+.docend a{color:var(--accent)}
+
+@media print{
+  .docbar,.toc,.top,.tocbtn{display:none !important}
+  .doc-grid{display:block}
+  details.cal-q{border:1px solid #999}
+  details.cal-q > summary::after{content:""}
+  /* :not([hidden]) so this cannot become the next instance of the bug
+     above: a printed page should open every answer, not defeat the
+     hidden attribute on anything that later carries it. */
+  details.cal-q .cb:not([hidden]){display:block !important}
+  .cal,.docbody table,.docbody pre{break-inside:avoid}
+  .docbody h2,.docbody h3{break-after:avoid}
+}
+
+/* The per-figure colour scopes that used to sit here are generated now.
+   They are derived from build/figures.json, which is where a lifted
+   figure actually lives, and they are written to figures.css on every
+   build. Copying them here by hand meant a newly lifted figure rendered
+   in default black with nothing to catch it. */
+
+/* ============================================================
+   Interaction layer
+   ------------------------------------------------------------
+   Added after the first published build. Nothing here changes
+   the page's structure, its type or its palette: it is the
+   behaviour that was missing around them. Every animation is
+   short, every one of them is switched off under
+   prefers-reduced-motion, and every state that a pointer can
+   reach is reachable from the keyboard.
+   ============================================================ */
+
+/* ---------------------------- cross-page transitions ---------
+   One declaration. Browsers that implement it cross-fade between
+   pages so the site reads as one surface rather than a sequence
+   of loads; the rest ignore it entirely and nothing is lost. */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+/* The masthead is the one element common to every page, so it is
+   named and stays put while the body crossfades under it. */
+.brand{view-transition-name:brand}
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+}
+
+/* ---------------------------- the corpus figure --------------
+   Each document in the drawing is a link. Hovering or tabbing to
+   one lifts it out of the field and fills the readout in the
+   rail beside it. */
+.corpusfig .cf-row{cursor:pointer;outline:none}
+.corpusfig .cf-row rect:not(.cf-hit),
+.corpusfig .cf-row text{transition:opacity var(--t-fast) ease,fill var(--t-fast) ease}
+/* dim the field, not the row: the comparison is the point, so the
+   rest stays legible rather than disappearing */
+.corpusfig:has(.cf-row:hover) .cf-row:not(:hover) rect:not(.cf-hit),
+.corpusfig:has(.cf-row:focus-visible) .cf-row:not(:focus-visible) rect:not(.cf-hit){opacity:.3}
+.corpusfig:has(.cf-row:hover) .cf-row:not(:hover) text,
+.corpusfig:has(.cf-row:focus-visible) .cf-row:not(:focus-visible) text{opacity:.45}
+.corpusfig .cf-row:hover .cf-t,
+.corpusfig .cf-row:focus-visible .cf-t{fill:var(--accent);font-weight:640}
+.corpusfig .cf-row:hover .cf-v,
+.corpusfig .cf-row:focus-visible .cf-v{fill:var(--ink)}
+.corpusfig .cf-row:focus-visible .cf-hit{
+  fill:var(--selection);stroke:var(--accent);stroke-width:1
+}
+@supports (fill:color-mix(in srgb,red 10%,transparent)){
+  .corpusfig .cf-row:focus-visible .cf-hit{fill:color-mix(in srgb,var(--accent) 9%,transparent)}
+}
+
+.cf-read{
+  border-top:1px solid var(--rule);margin:1rem 0 .25rem;padding-top:.7rem;
+  min-height:5.4rem
+}
+.cf-rest{font-size:.8125rem;color:var(--ink-3);line-height:1.5}
+.cf-out .cf-name{display:block;font-size:.9375rem;font-weight:640;letter-spacing:-.01em;line-height:1.3}
+.cf-out .cf-meta{display:block;font-size:.8125rem;color:var(--ink-2);margin-top:.25rem;font-variant-numeric:tabular-nums}
+.cf-out .cf-share{display:block;font-size:.75rem;color:var(--ink-3);margin-top:.3rem;font-variant-numeric:tabular-nums}
+.cf-bar{display:block;height:3px;background:var(--panel-2);margin-top:.5rem;overflow:hidden}
+.cf-bar i{display:block;height:100%;width:0;background:var(--accent);
+  transition:width var(--t-in) var(--ease-move)}
+/* ---------------------------- counted numerals ---------------
+   The oversized figures are the loudest thing on the page, so
+   they arrive rather than appear. They count once, on first
+   sight, and only when the reader has not asked for less motion. */
+
+/* ---------------------------- rows ---------------------------
+   The arrow already moved on hover. The rule under a row now
+   draws itself in from the left, which is the editorial version
+   of a card lifting, and the title shifts by a hair so the whole
+   row feels like one object. */
+.row{position:relative}
+.row::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform var(--t-in) var(--ease-move)
+}
+.row:hover::after,.row:focus-visible::after{transform:scaleX(1)}
+.row .title,.row .num{transition:transform var(--t-in) var(--ease-move),color var(--t-fast) ease}
+.row:hover .num{color:var(--accent)}
+@media (hover:hover) and (min-width:48rem){
+  .row:hover .title{transform:translateX(3px)}
+}
+
+/* ---------------------------- sticky group heads -------------
+   On a list this long the reader loses which block they are in.
+   The head parks under the site header instead. */
+@media (min-width:48rem){
+  .grouphead{
+    position:sticky;top:var(--stick);z-index:5;
+    background:var(--paper);
+    padding-block:.7rem;margin-block:0
+  }
+  .grouphead::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--rule)
+  }
+}
+
+/* ---------------------------- the sort control ---------------- */
+.sortset{display:flex;align-items:center}
+.sortset select{
+  font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);color:var(--ink);
+  background:var(--paper);border:1px solid var(--edge);
+  padding:.5rem 1.9rem .5rem .8rem;cursor:pointer;
+  appearance:none;border-radius:var(--radius);
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),
+                   linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 14px) 55%,calc(100% - 9px) 55%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat
+}
+.sortset select:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ---------------------------- search palette -----------------
+   Results are grouped by where the piece lives and the matched
+   run of characters is marked, so the reason a row is in the
+   list is visible rather than inferred. */
+.cmdk-list .cmdk-group{
+  padding:.55rem .9rem .3rem;position:sticky;top:0;background:var(--paper)
+}
+.cmdk-list mark{background:var(--selection);color:inherit;padding:0 .05em}
+@supports (background:color-mix(in srgb,red 10%,transparent)){
+  .cmdk-list mark{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+}
+.cmdk-list li a{align-items:center}
+
+/* ---------------------------- shortcuts sheet ---------------- */
+dialog.keys{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem
+}
+dialog.keys[open]{display:grid;place-items:center}
+dialog.keys::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+/* while a dialog is open the page does not scroll behind it */
+body:has(dialog[open]){overflow:hidden}
+/* a dialog arrives with weight: the backdrop fades in over 300ms and the
+   panel settles up into place on the weighted curve; leaving, it fades.
+   @starting-style gives the entry its from-state; allow-discrete keeps
+   the element displayed while it fades out. Browsers without either
+   simply show and hide, which is what they did before. */
+dialog.cmdk,dialog.keys{
+  transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.cmdk:not([open]),dialog.keys:not([open]){opacity:0}
+dialog.cmdk[open],dialog.keys[open]{opacity:1}
+/* the backdrop is not the dialog's descendant, so it fades out on its own */
+dialog.cmdk:not([open])::backdrop,dialog.keys:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+dialog.cmdk::backdrop,dialog.keys::backdrop{
+  transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+.cmdk-panel,.keys-panel{transition:transform var(--t-weight) var(--ease-weight)}
+@starting-style{
+  dialog.cmdk[open],dialog.keys[open]{opacity:0}
+  dialog.cmdk[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.keys[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.cmdk[open] .cmdk-panel,dialog.keys[open] .keys-panel{transform:translateY(14px)}
+}
+@media (prefers-reduced-motion:reduce){
+  dialog.cmdk,dialog.keys,dialog.cmdk::backdrop,dialog.keys::backdrop,.cmdk-panel,.keys-panel{transition:none}
+}
+.keys-panel{
+  background:var(--paper);border:1px solid var(--ink);max-width:26rem;width:100%;
+  padding:1.25rem 1.4rem 1.4rem;margin:0
+}
+.keys h2{font-size:1rem;margin:0 0 .8rem;letter-spacing:-.01em}
+.keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
+.keys dt{margin:0}
+.keys dd{margin:0;color:var(--ink-2)}
+.keys .keys-pref{
+  margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--rule);
+  font-size:.85rem;color:var(--ink-2)
+}
+.keys .keys-pref input{accent-color:var(--accent);margin-right:.4rem}
+.keys kbd{
+  font:inherit;font-size:.75rem;border:1px solid var(--edge);background:var(--panel);
+  padding:.1rem .35rem;min-width:1.5rem;display:inline-block;text-align:center
+}
+.keys .close{
+  margin-top:1rem;font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);cursor:pointer;
+  border:1px solid var(--edge);background:none;color:var(--ink);padding:var(--btn-pad);
+  border-radius:var(--radius);transition:border-color var(--t-fast) ease,color var(--t-fast) ease
+}
+.keys .close:hover{border-color:var(--ink)}
+
+/* ---------------------------- back to the top ---------------- */
+.totop{
+  position:fixed;right:14px;bottom:14px;z-index:40;
+  display:inline-flex;align-items:center;gap:.4rem;
+  font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);letter-spacing:.02em;
+  background:var(--paper);color:var(--ink);border:1px solid var(--edge);
+  padding:var(--btn-pad);cursor:pointer;border-radius:var(--radius);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity var(--t-in) ease,transform var(--t-in) ease,
+             background var(--t-fast) ease,border-color var(--t-fast) ease
+}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+@media print{
+  .totop{display:none}
+  /* a heading that sticks on screen must not float over the page break */
+  .grouphead{position:static}
+  nav.main .navink{display:none}
+}
+
+/* ---------------------------- nav underline ------------------
+   The current-page rule slides between items instead of cutting. */
+nav.main{position:relative}
+nav.main .navink{
+  position:absolute;bottom:0;height:2px;background:var(--accent);
+  transition:transform var(--t-in) var(--ease-move),width var(--t-in) var(--ease-move);
+  pointer-events:none
+}
+nav.main a[aria-current="page"]{border-bottom-color:transparent}
+
+/* ---------------------------- anchored sections --------------
+   Arriving at a fragment marks the destination briefly, so a
+   deep link lands somewhere visible. */
+:target{animation:landed 1.6s ease}
+@keyframes landed{
+  0%,12%{background:var(--selection)}
+  100%{background:transparent}
+}
+
+/* ---------------------------- the theme selector --------------
+   Two named states in one group. The pressed chip is the theme in
+   force, in ink on paper; the other chip is the offer, legible as a
+   word and carrying a dot of the palette it would bring. Hover or
+   focus the offer and the dot opens into a three-colour swatch of that
+   palette (its paper, ink and accent), so the switch says what it does
+   before it is pressed. */
+.themesel{display:inline-flex;align-items:center;margin-left:.45rem;padding:.14rem;
+  border:1px solid var(--edge);border-radius:var(--radius);background:color-mix(in srgb,var(--paper) 70%,transparent)}
+.tsel{font:inherit;font-size:.66rem;font-weight:660;letter-spacing:.1em;text-transform:uppercase;line-height:1;
+  cursor:pointer;background:none;color:var(--ink-2);border:0;border-radius:calc(var(--radius) - 2px);
+  padding:.36rem .55rem;display:inline-flex;align-items:center;gap:.42rem;white-space:nowrap;
+  transition:color var(--t-fast) ease,background var(--t-fast) ease}
+.tsel i{width:.56rem;height:.56rem;border-radius:50%;flex:none;border:1px solid var(--ink-3);
+  background:linear-gradient(90deg,var(--alt-paper) 50%,var(--alt-ink) 50%);
+  transition:width var(--t-in) var(--ease-move),border-radius var(--t-in) var(--ease-move)}
+.tsel[aria-pressed="true"]{background:var(--ink);color:var(--paper);cursor:default}
+.tsel[aria-pressed="true"] i{background:var(--paper);border-color:var(--paper);width:.4rem;height:.4rem}
+.tsel[aria-pressed="false"]:hover{color:var(--ink);background:var(--panel)}
+.tsel[aria-pressed="false"]:hover i,.tsel[aria-pressed="false"]:focus-visible i{width:1.35rem;border-radius:2px;
+  background:linear-gradient(90deg,var(--alt-paper) 0 34%,var(--alt-ink) 34% 67%,var(--alt-accent) 67%)}
+.tsel:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* the first visit: one soft glow on the offer, 1.6s, once, and never again from this browser */
+@keyframes tsel-pulse{
+  0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+  40%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 36%,transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+}
+.themesel[data-pulse="1"] .tsel[aria-pressed="false"]{animation:tsel-pulse 1.6s var(--ease-weight) .5s 1 both}
+/* the switch: an exposure change, 320ms decelerating, then still. A view
+   transition where the browser has one; elsewhere every colour property
+   moves together for the same 320ms and the class comes off. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.32s;animation-timing-function:var(--ease-weight)}
+html.theme-switching,html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{
+  transition:background-color .32s var(--ease-weight),color .32s var(--ease-weight),border-color .32s var(--ease-weight),
+  fill .32s var(--ease-weight),stroke .32s var(--ease-weight),box-shadow .32s var(--ease-weight) !important}
+/* on a narrow bar only the offer is shown: the theme in force is the page itself */
+@media (max-width:36rem){
+  .themesel{padding:0;border:0;background:none}
+  .tsel[aria-pressed="true"]{display:none}
+  .tsel[aria-pressed="false"]{border:1px solid var(--edge);padding:.4rem .5rem}
+}
+
+/* ---------------------------- feature tiles ------------------- */
+.feature{transition:background var(--t-fast) ease,border-color var(--t-fast) ease}
+.feature h3,.feature h4{transition:color var(--t-fast) ease}
+.feature:hover h3,.feature:hover h4{color:var(--accent)}
+
+/* ---------------------------- honour the setting --------------
+   One block, at the end, so it wins. Anything above that moves
+   is stilled here rather than merely shortened. */
+@media (prefers-reduced-motion:reduce){
+  .row::after,.row .title,.row .num,
+  .cf-bar i,.corpusfig .cf-row rect,.corpusfig .cf-row text,
+  nav.main .navink,.tsel,.tsel i,.totop,.feature,.feature h3,.feature h4{
+    transition:none !important
+  }
+  .themesel[data-pulse] .tsel{animation:none !important}
+  ::view-transition-old(root),::view-transition-new(root){animation:none !important}
+  :target{animation:none}
+  .totop{transition:opacity .01s}
+}
+
+/* A button that is a link in everything but mechanism. */
+.linkbtn{
+  font:inherit;font-size:inherit;color:var(--ink-2);background:none;border:0;padding:0;
+  cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--rule-strong)
+}
+.linkbtn:hover{color:var(--accent);text-decoration-color:currentColor}
+.linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------------------------- section anchors ----------------------
+   A band worth reading is a band worth linking to. The mark stays out
+   of the way until the heading is hovered or the link is tabbed to. */
+.sechead h2{position:relative}
+.sechead h2 .anchor{
+  margin-left:.45rem;font-size:.7em;font-weight:500;color:var(--ink-3);
+  text-decoration:none;opacity:0;transition:opacity var(--t-fast) ease,color var(--t-fast) ease;
+  vertical-align:.08em
+}
+.sechead h2:hover .anchor,.sechead h2 .anchor:focus-visible{opacity:1}
+.sechead h2 .anchor:hover{color:var(--accent)}
+.sechead h2 .anchor.copied{opacity:1;color:var(--tool)}
+.sechead h2 .anchor.copied::after{
+  content:"link copied";margin-left:.4rem;font-size:.62rem;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:650
+}
+@media print{.sechead h2 .anchor{display:none}}
+
+/* ---------------------------- library keyboard cursor --------------- */
+.lgroup ol.index > li.cursor{background:var(--panel)}
+.lgroup ol.index > li.cursor .row::after{transform:scaleX(1)}
+
+/* a tag is a filter, so it looks like something you can press */
+.tag{cursor:pointer;transition:color var(--t-fast) ease,border-color var(--t-fast) ease}
+.tag:hover{color:var(--ink);border-color:var(--ink-2)}
+
+/* ---------------------------- specimen hover ------------------------
+   The lifted figures are stills of interactive documents. Hovering one
+   moves the whole block a fraction toward the reader without a shadow:
+   the rule above it darkens, the title takes the accent, the arrow
+   slides. Editorial, not a card. */
+.spec .frame{transition:border-top-color var(--t-fast) ease}
+.spec:hover .frame{border-top-color:var(--accent)}
+.spec h3{transition:color var(--t-fast) ease}
+.spec:hover h3{color:var(--accent)}
+.spec a.open .arrow,.spec a.open span[aria-hidden]{
+  display:inline-block;transition:transform var(--t-fast) var(--ease-move)
+}
+.spec:hover a.open span[aria-hidden]{transform:translateX(4px)}
+
+@media (prefers-reduced-motion:reduce){
+  .sechead h2 .anchor,.tag,.spec .frame,.spec h3,
+  .spec a.open span[aria-hidden]{transition:none !important}
+}
+
+/* ============================================================
+   Atlas
+   One camera, used twice: six wall labels hold it, then the
+   reader drives it. The canvas is aria-hidden on purpose: the
+   index below is the accessible instrument and the sphere is a
+   way of looking at it.
+   ============================================================ */
+/* A display rule beats the hidden attribute, and every element below that is
+   toggled with `hidden` also sets display. The crumb and the stage key were
+   both visible during the tour for exactly that reason. */
+[hidden]{display:none !important}
+
+.atlas-band{padding-block:clamp(1.25rem,2.5vw,2.25rem) clamp(2.5rem,5vw,4rem)}
+.atlas-grid{display:grid;gap:1.25rem 3rem;align-items:start}
+/* Two headlines were competing on every stop: the page title at 40px and the
+   wall label's own title just under it. The page title introduces, the plate
+   argues, so the plate leads and the stepper comes back above the fold at
+   1440x900 instead of sitting 4px below it. */
+.atlas-h1{font-size:clamp(1.45rem,2.1vw,1.85rem);margin:.25rem 0 .9rem;line-height:1.12;
+  max-width:22em;font-weight:640;letter-spacing:-.012em}
+/* the corpus in one sentence, visible in every state and every figure in it computed */
+.atlas-lede{font-size:.92rem;line-height:1.55;color:var(--ink-2);max-width:30em;margin:.35rem 0 1.1rem}
+
+/* Once the labels have handed over, the headline has said its piece and the
+   sphere is the subject. It steps down rather than going on competing with
+   the thing it introduced. */
+body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
+  margin-bottom:.8rem}
+
+/* ---- the plates ---- */
+.plate{border-top:1px solid var(--ink);padding-top:.85rem;animation:plate-in .45s ease both}
+@keyframes plate-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.plate-n{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.plate-n b{color:var(--accent);font-weight:640}
+.plate-h{font-size:clamp(1.15rem,1.85vw,1.45rem);line-height:1.18;margin:0 0 .7rem;
+  font-weight:650;letter-spacing:-.012em;max-width:20em}
+.plate p{margin:0 0 .7rem;font-size:.92rem;line-height:1.5;color:var(--ink-2);max-width:34em}
+.plate p b{color:var(--ink);font-weight:600}
+.plate p i{font-style:normal;color:var(--ink);border-bottom:1px solid var(--rule)}
+
+/* the whole sequence, always visible: progress, contents and skip at once */
+.guide{margin-top:1.05rem;border-top:1px solid var(--rule);padding-top:.6rem}
+.guide-h{margin:0 0 .45rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-3);font-weight:640;display:flex;justify-content:space-between}
+.guide-c{font-weight:450;letter-spacing:.06em}
+.guide ol{list-style:none;margin:0;padding:0;
+  display:grid;gap:.05rem;font-size:.83rem;font-variant-numeric:tabular-nums}
+.guide a{display:flex;gap:.6rem;color:var(--ink-3);text-decoration:none;padding:.16rem 0}
+.guide a b{font-weight:500;color:var(--ink-3);min-width:1.4rem}
+.guide a:hover{color:var(--accent)}
+.guide a:hover b{color:var(--accent)}
+.guide a[aria-current="step"]{color:var(--ink);font-weight:560}
+.guide a[aria-current="step"] b{color:var(--accent);font-weight:660}
+
+/* The control that advances the sequence stays to hand at every viewport
+   height. At 1280x800 the stepper used to sit sixteen pixels below the fold,
+   which is the same as not being there. */
+.plate-nav{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin:.9rem 0 0;
+  position:sticky;bottom:0;background:var(--paper);padding:.55rem 0 .5rem;
+  border-top:1px solid var(--rule);z-index:2}
+.pbtn{font:inherit;font-size:.85rem;font-weight:560;padding:.5rem .8rem;
+  border:1px solid var(--edge);color:var(--ink);text-decoration:none;background:none;
+  border-radius:var(--radius)}
+.pbtn:hover{border-color:var(--ink);color:var(--ink)}
+.pbtn-go{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* var(--paper) for the same contrast reason as the pressed chip's hover */
+.pbtn-go:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.pbtn[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.pskip{font-size:.82rem;color:var(--ink-3);margin-left:auto}
+.pskip:hover{color:var(--accent)}
+
+/* ---- free mode ---- */
+.atlas-controls{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.atlas-controls input{flex:1 1 12rem;min-width:0;font:inherit;font-size:.92rem;
+  padding:.55rem .75rem;background:var(--paper);color:var(--ink);
+  border:1px solid var(--edge);border-radius:var(--radius)}
+.atlas-controls input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.atlas-modes{display:flex;gap:.35rem}
+/* one passage a day, handed back to the owner and anyone else */
+.atoday{margin:.2rem 0 0;font-size:.82rem;color:var(--ink-3)}
+.atoday a{color:var(--ink-2)}
+.atoday a:hover{color:var(--accent)}
+.atlas-count{font-size:.84rem;color:var(--ink-2);margin:.6rem 0 0}
+.atlas-key{border-top:1px solid var(--rule);padding-top:.85rem;margin-top:1.1rem}
+.akey-list{list-style:none;margin:0 0 .6rem;padding:0;display:flex;gap:.3rem 1.1rem;
+  flex-wrap:wrap;font-size:.85rem;color:var(--ink-2)}
+.akey-list li{display:flex;align-items:center;gap:.4rem}
+.ak{width:.6rem;height:.6rem;border-radius:50%;flex:none;display:inline-block}
+.ak-ind{background:var(--accent)}
+.ak-per{background:var(--accent);opacity:.62}
+.ak-cou{border:1.2px solid var(--ink-3)}
+.ak-vis{background:none;border:1px solid var(--ink-2)}
+/* prose that names a document is live: it lights the territory it names */
+.lw{cursor:pointer;border-bottom:1px dotted var(--rule-strong)}
+.lw:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.lw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ak-too{background:var(--tool)}
+/* the stem swatch is the mark and its stalk, at the scale the sphere draws it */
+.ak-shr{width:.6rem;height:.75rem;border-radius:0;background:none;position:relative}
+.ak-shr::before{content:"";position:absolute;left:50%;top:.06rem;width:.34rem;height:.34rem;
+  border-radius:50%;background:var(--ref);transform:translateX(-50%)}
+.ak-shr::after{content:"";position:absolute;left:50%;top:.36rem;width:1px;height:.36rem;
+  background:var(--ref);transform:translateX(-50%)}
+/* the chord swatch is a shallow arc with its direction tick, as drawn */
+.ak-lnk{width:.85rem;height:.45rem;border-radius:0;background:none;position:relative}
+.ak-lnk::before{content:"";position:absolute;left:0;top:.08rem;width:100%;height:.6rem;
+  border-top:1.5px solid var(--link);border-radius:50% 50% 0 0/100% 100% 0 0}
+.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1.5px;height:.28rem;
+  background:var(--link)}
+/* a document's disc: a hairline ring; the zone parallel: a dashed rule */
+.ak-dsc{background:none;border:1px solid var(--ink-2);width:.7rem;height:.7rem}
+/* the author's anchor: ink, ringed in the chord colour; the corona: its three hues */
+.ak-aut{background:var(--ink);box-shadow:0 0 0 2px var(--paper),0 0 0 3px var(--link)}
+.ak-cor{width:.95rem;height:.6rem;border-radius:2px;background:linear-gradient(90deg,#6d5ce0 0 34%,#2e6fe0 34% 67%,#b98a4c 67%)}
+:root:where(:not([data-theme="dark"])) .ak-cor{background:linear-gradient(90deg,#c9b27a 0 34%,#e6dcbc 34% 67%,#c9bfa6 67%)}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .ak-cor{background:linear-gradient(90deg,#6d5ce0 0 34%,#2e6fe0 34% 67%,#b98a4c 67%)}}
+/* the author's card in the index: a native disclosure */
+.acard{margin:.4rem 0 .2rem;font-size:.85rem}
+.acard summary{cursor:pointer;color:var(--accent);font-weight:560}
+.acard summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.acard-p{margin:.35rem 0 0;color:var(--ink-2);line-height:1.5}
+.ak-zon{width:.85rem;height:0;border-radius:0;background:none;border-top:1px dashed var(--ink-2);margin-top:.3rem}
+/* the one entry that needs a sentence gets its own line and hangs its swatch */
+.akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
+.akey-list li.akey-wide .ak{margin-top:-.05rem}
+.akey-note{font-size:.85rem;color:var(--ink-2);margin:0;line-height:1.5}
+/* Every key row aligns a drawn mark with its named rule and explanation. */
+.akey-list.dossier-key{display:grid;gap:0}
+.dossier-key > li,.dossier-key > li.akey-wide{
+  display:grid;grid-template-columns:1rem minmax(7rem,10rem) minmax(0,1fr);
+  align-items:baseline;gap:.5rem .75rem;padding:.6rem 0;border-bottom:1px solid var(--rule);
+}
+.dossier-key .dossier-term{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);font-weight:var(--meta-weight);
+  line-height:1.5;text-transform:uppercase;color:var(--ink-2);overflow-wrap:anywhere;
+}
+.dossier-key .dossier-detail{min-width:0;line-height:1.5;color:var(--ink-2)}
+@media (max-width:36rem){
+  .dossier-key > li,.dossier-key > li.akey-wide{grid-template-columns:1rem minmax(0,1fr);gap:.3rem .65rem}
+  .dossier-key .dossier-detail{grid-column:2}
+}
+.replay{margin:.9rem 0 0;font-size:.82rem}
+/* Flown into one document, a key for the whole corpus and an invitation to
+   replay the tour are both about somewhere else. */
+body.atlas-indoc .atlas-key,body.atlas-indoc .replay{display:none}
+
+/* ---- search results ---- */
+/* A query used to return a number and an emptier sphere. The hits are a list
+   of real anchors, so a search can be finished from the keyboard. */
+.atlas-results{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.7rem}
+.ares-l{list-style:none;margin:0;padding:0;font-size:.86rem}
+.ares-l li{margin-bottom:.18rem;line-height:1.4}
+.ares-g{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+  font-weight:600;margin:.7rem 0 .3rem;padding-bottom:.2rem;border-bottom:1px solid var(--rule)}
+.ares-l li:first-child.ares-g{margin-top:0}
+.ares-l a{color:var(--ink-2);text-decoration:none}
+.ares-l a:hover{color:var(--accent);text-decoration:underline}
+.ares-l a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ares-more,.ares-empty{font-size:.8rem;color:var(--ink-3);margin:.7rem 0 0;line-height:1.5}
+
+/* ---- the focused document ---- */
+/* The panel that used to be empty from the key down to the footer. Flying in
+   fills it with the whole document, which is where the promise that every
+   section is reachable is actually kept. */
+.atlas-doc{border-top:1px solid var(--ink);padding-top:.8rem;margin-top:.2rem}
+.adoc-h{margin-bottom:.6rem}
+.adoc-t{display:block;font-size:1.08rem;font-weight:650;line-height:1.2;color:var(--ink);
+  text-decoration:none;letter-spacing:-.01em}
+.adoc-t:hover{color:var(--accent);text-decoration:underline}
+.adoc-m{margin:.35rem 0 0;font-size:.71rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-3);font-weight:560}
+.adoc-n{margin:.3rem 0 0;font-size:.8rem;color:var(--ink-2)}
+.adoc-l{list-style:none;margin:.7rem 0 0;padding:0;font-size:.85rem;
+  max-height:26rem;overflow:auto;counter-reset:none}
+.adoc-l li{margin-bottom:.2rem;line-height:1.4}
+.adoc-l li[data-l="1"]{font-size:.93rem;font-weight:600;margin-top:.5rem}
+.adoc-l li[data-l="1"] a{color:var(--ink)}
+.adoc-l li[data-l="2"] a{color:var(--ink)}
+.adoc-l li[data-l="4"]{padding-left:.7rem;font-size:.81rem}
+.adoc-l a{color:var(--ink-2);text-decoration:none}
+.adoc-l a:hover{color:var(--accent);text-decoration:underline}
+.adoc-l a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.adoc-k{margin:0;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ink-3);font-weight:640}
+/* the list scrolls, and says so: a row sliced flat by a container edge reads
+   as a rendering fault rather than as more to come */
+.adoc-r{list-style:none;margin:.6rem 0 0;padding:0;max-height:23rem;overflow:auto;
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 1.6rem),transparent);
+  mask-image:linear-gradient(#000 calc(100% - 1.6rem),transparent)}
+.adoc-r:focus-within{-webkit-mask-image:none;mask-image:none}
+.adoc-b{display:flex;width:100%;gap:.7rem;align-items:baseline;font:inherit;
+  font-size:.85rem;text-align:left;background:none;border:0;cursor:pointer;
+  padding:.28rem 0;color:var(--ink-2);border-bottom:1px solid transparent}
+.adoc-b:hover,.adoc-b:focus-visible{color:var(--accent)}
+.adoc-b:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.adoc-bt{flex:1;min-width:0}
+.adoc-bn{font-size:.74rem;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
+/* the same three surfaces the key names, so the list and the sphere agree */
+.adoc-b[data-surface]::before{content:"";width:.5rem;height:.5rem;border-radius:50%;
+  flex:none;margin-top:.05rem;align-self:center}
+.adoc-b[data-surface="independent"]::before{background:var(--accent)}
+.adoc-b[data-surface="personal"]::before{background:var(--accent);opacity:.62}
+.adoc-b[data-surface="course"]::before{border:1.2px solid var(--ink-3)}
+
+/* ---- the stage ---- */
+.atlas-stagewrap{position:relative}
+.atlas-stage{position:relative;width:100%;aspect-ratio:1/0.84;
+  max-height:min(72vh,42rem);touch-action:none}
+/* The column used to run out well above the stage and leave a band of nothing
+   between the two. The stage is the taller of the pair, so the side column is
+   allowed to reach the same floor and the band closes. */
+.atlas-stage canvas{position:absolute;inset:0;display:block;cursor:grab}
+.atlas-stage.drag canvas{cursor:grabbing}
+.atlas-stage.hot canvas{cursor:pointer}
+.atlas-labels{position:absolute;inset:0;pointer-events:none}
+.alab{position:absolute;top:0;left:0;pointer-events:auto;max-width:12.5rem;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:.76rem;line-height:1.25;color:var(--ink-2);text-decoration:none;
+  padding:.05rem .28rem;opacity:0;transition:opacity .3s ease,color .15s ease;
+  /* a name set over a thousand marks needs more than a hairline of clear air
+     around it, and a halo keeps the page lighter than a filled chip would */
+  text-shadow:0 0 .5rem var(--paper),0 0 .5rem var(--paper),0 0 .4rem var(--paper),
+    0 0 .28rem var(--paper),0 0 .18rem var(--paper),0 0 .1rem var(--paper)}
+.alab.on{opacity:1}
+/* a name that has lost its place goes at once: fading it out leaves the
+   overlap on screen for the length of the fade */
+.alab.off,.arlab.off{opacity:0 !important;transition:none}
+/* the first wall label quotes a whole heading, so the sphere prints the whole
+   heading: the one stop whose job is to show that a mark is a piece of text */
+.alab.full{max-width:15rem;white-space:normal;line-height:1.28;
+  background:var(--paper);border-left:1px solid var(--accent);
+  padding:.18rem .4rem;text-shadow:none}
+.alab.tight{font-size:.71rem;line-height:1.15;padding-block:0;max-width:10rem}
+.alab.lft{text-align:right}
+.alab:hover,.alab:focus-visible{color:var(--accent);text-decoration:underline}
+.arlab{position:absolute;top:0;left:0;pointer-events:auto;white-space:nowrap;
+  font-size:.68rem;font-weight:660;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;padding:.05rem .28rem;opacity:0;
+  transition:opacity .3s ease,color .15s ease;
+  text-shadow:0 0 .55rem var(--paper),0 0 .55rem var(--paper),0 0 .4rem var(--paper),
+    0 0 .26rem var(--paper),0 0 .16rem var(--paper)}
+.arlab.on{opacity:.95}
+.arlab.cur,.arlab:hover,.arlab:focus-visible{color:var(--accent)}
+
+.atlas-card{position:absolute;top:0;left:0;pointer-events:none;max-width:19rem;
+  background:var(--panel);border:1px solid var(--rule-strong);padding:.5rem .65rem}
+.atlas-card .ac-t{margin:0;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3}
+.atlas-card .ac-d{margin:.22rem 0 0;font-size:.72rem;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.07em}
+.atlas-hint{position:absolute;left:0;bottom:0;margin:0;font-size:.76rem;color:var(--ink-3);
+  max-width:26rem;background:var(--paper);padding-right:.4rem}
+.atlas-hint kbd{font:inherit;border:1px solid var(--rule-strong);padding:0 .25rem}
+.atlas-cap{position:absolute;left:0;bottom:1.35rem;margin:0;font-size:.76rem;
+  color:var(--ink-2);background:var(--paper)}
+.arestore{position:absolute;left:0;bottom:1.35rem;font:inherit;font-size:.76rem;
+  background:var(--paper);border:0;border-bottom:1px solid var(--accent);padding:0;
+  color:var(--accent);cursor:pointer}
+.atlas-cap:not(:empty)+.arestore{left:auto;right:0}
+
+.atlas-crumb{position:absolute;left:0;top:0;display:flex;align-items:center;gap:.6rem;
+  font-size:.78rem;background:var(--paper);padding:0 .4rem .1rem 0;z-index:1}
+.crumb-out{font:inherit;font-size:.78rem;background:none;border:0;padding:.1rem 0;
+  color:var(--accent);cursor:pointer;border-bottom:1px solid transparent}
+.crumb-out:hover{border-bottom-color:var(--accent)}
+.crumb-now{color:var(--ink-3)}
+
+.stagekey{position:absolute;right:0;bottom:0;display:grid;gap:.22rem;
+  justify-items:end;font-size:.74rem;color:var(--ink-2);text-align:right;
+  max-width:17rem;background:var(--paper)}
+/* grid rather than a column flex, because a two-line entry used to leave its
+   swatch stranded on the line below the words it belonged to */
+.sk{display:grid;grid-template-columns:auto 1fr;gap:.4rem;align-items:start;
+  text-align:left;justify-items:start}
+.sk::before{content:"";width:.55rem;height:.55rem;border-radius:50%;flex:none;
+  margin-top:.32rem}
+
+/* ---- the index ---- */
+.atlas-list{margin-top:2.25rem;display:grid;gap:1.9rem}
+.areg{scroll-margin-top:5rem}
+.areg.cur .areg-h{border-bottom-color:var(--accent)}
+.areg-h{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin:0 0 .3rem;
+  padding-bottom:.35rem;border-bottom:1px solid var(--rule);font-size:1.02rem;font-weight:640}
+.areg-h a{color:var(--ink);text-decoration:none}
+.areg-h a:hover{color:var(--accent);text-decoration:underline}
+.areg-n{font-size:.76rem;font-weight:450;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.areg-fly{margin-left:auto;font:inherit;font-size:.74rem;font-weight:500;background:none;
+  border:0;padding:0;color:var(--accent);cursor:pointer;border-bottom:1px solid transparent}
+.areg-fly:hover{border-bottom-color:var(--accent)}
+.areg-m{margin:0 0 .7rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-3);font-weight:560}
+.areg-l{list-style:none;margin:0;padding:0;columns:2;column-gap:2.5rem;font-size:.88rem}
+.areg-l li{break-inside:avoid;margin-bottom:.26rem;line-height:1.4}
+/* heading level, carried through to the index so the list has the same
+   hierarchy the sphere encodes in mark size */
+.areg-l li[data-l="1"]{font-size:.97rem;font-weight:600;margin-top:.5rem}
+.areg-l li[data-l="1"] a{color:var(--ink)}
+.areg-l li[data-l="2"]{font-size:.91rem}
+.areg-l li[data-l="2"] a{color:var(--ink)}
+.areg-l li[data-l="4"]{font-size:.84rem;padding-left:.7rem}
+.areg-l li[data-n]::after{content:" ·" attr(data-n);font-size:.7rem;color:var(--ref);
+  letter-spacing:.04em}
+.areg-l a{color:var(--ink-2);text-decoration:none}
+.areg-l a:hover{color:var(--accent);text-decoration:underline}
+.areg-l a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.areg-open{font:inherit;font-size:.78rem;font-weight:500;background:none;
+  border:1px solid var(--edge);padding:.35rem .7rem;margin-top:.5rem;
+  color:var(--ink);cursor:pointer;border-radius:var(--radius);min-height:2.2rem}
+.areg-open[aria-expanded="true"]{border-color:var(--ink)}
+
+@media (min-width:64rem){
+  .atlas-grid{grid-template-columns:minmax(0,25rem) minmax(0,1fr)}
+  .areg-l{columns:3}
+  /* List view has no sphere, so the index takes the whole width rather than
+     leaving two thirds of the page blank beside a narrow column. */
+  body.atlas-listview .atlas-grid{grid-template-columns:minmax(0,25rem) minmax(0,1fr)}
+  body.atlas-listview .atlas-key{display:none}
+}
+@media (max-width:63.99rem){
+  /* the sphere leads on a narrow screen, because the label under it is about
+     the thing above it */
+  .atlas-grid{grid-template-columns:minmax(0,1fr)}
+  .atlas-stagewrap{order:-1}
+  .atlas-stage{aspect-ratio:1/0.90;max-height:46vh;margin-bottom:.35rem;
+    display:flex;flex-direction:column;justify-content:flex-end}
+  .atlas-h1{font-size:clamp(1.5rem,5.2vw,2rem);margin-top:.2rem}
+  body.atlas-free .atlas-h1{font-size:1.12rem;margin-bottom:.7rem}
+  /* order matters: the canvas is absolutely positioned, so a static hint
+     would otherwise flow above the sphere it is describing */
+  /* the stems and rim run a little proud of the sphere on a short stage,
+     so the hint stands on paper rather than on their tips */
+  .atlas-hint{position:static;margin:auto 0 0;text-align:center;max-width:none;
+    padding-top:.2rem;background:var(--paper)}
+  .stagekey,.akey{background:var(--paper)}
+  .atlas-cap,.arestore{position:static;text-align:center;margin:.15rem auto 0}
+  .stagekey{position:static;justify-items:start;text-align:left;
+    grid-auto-flow:row;gap:.15rem;max-width:none;margin-top:.3rem}
+  .atlas-crumb{position:static;order:-1;padding:0 0 .3rem}
+  /* The prose used to run under the sticky bar and get sliced mid-sentence.
+     It scrolls in its own box now, with the bar below it rather than over it. */
+  .plate{display:flex;flex-direction:column;min-height:0}
+  .plate p{margin-bottom:.55rem}
+  .plate-nav{margin-top:1rem;padding:.6rem 0 .5rem}
+  /* the prose ran under the sticky stepper and was cut through the middle of
+     a line, which reads as a rendering fault rather than as more to come */
+  .plate-nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;
+    height:1.4rem;pointer-events:none;
+    background:linear-gradient(transparent,var(--paper))}
+  .plate{padding-bottom:.4rem}
+  .pbtn{flex:1 1 auto;text-align:center;min-height:2.75rem;
+    display:flex;align-items:center;justify-content:center}
+  .pskip{flex-basis:100%;margin:0;text-align:center;padding:.4rem 0}
+  .guide{margin-top:1rem}
+  .atlas-doc{margin-top:1rem}
+  /* no scroll box inside a scrolling page on a phone: tabbing into one means
+     the page and the box both have to move before focus is on screen */
+  .adoc-l,.adoc-r{max-height:none;-webkit-mask-image:none;mask-image:none}
+  .atlas-results{max-height:none}
+  /* the index arrives collapsed to fifty document rows under the sphere */
+  .atlas-list{margin-top:1.4rem}
+  .atlas-list.as-compact{gap:.15rem}
+  .atlas-list.as-compact .areg-m{margin-bottom:.35rem}
+  .atlas-list.as-compact .areg{padding-bottom:.7rem;border-bottom:1px solid var(--rule)}
+  .atlas-list.as-compact .areg-h{border-bottom:0;padding-bottom:.15rem}
+  .atlas-list.as-compact .areg-fly{margin-left:0;flex-basis:100%}
+}
+@media (max-width:52rem){
+  .areg-l{columns:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .alab,.arlab{transition:none}
+  .plate{animation:none}
+  .atlas-stage,.atlas-card{transition:none}
+}
+
+@media print{
+  /* on paper the sphere is a figure, not an instrument: the drag hint and
+     the tour controls print as dead furniture and are dropped */
+  .atlas-hint,.plate-nav,.atlas-controls,.arestore{display:none !important}
+}
+
+/* ==================================================================
+   THE STATEMENT. One grammar for the home page, the four shelves and the
+   chrome inside a piece: a row is a title and three measured figures, a
+   subtotal is an origin, the total is the corpus line. Hairline between
+   line items, a single rule above a subtotal, a double rule under the
+   total, tabular numerals on numeric cells only (Inter's tabular feature
+   also widens the hyphen), and column heads that cite a note. The notes
+   are the colophon renumbered; the Atlas's plates and key take the same
+   type so the sphere and the statement read as one system.
+   ================================================================== */
+.stmt-hero{display:grid;gap:1.4rem;padding-block:1.25rem 1.5rem;grid-template-areas:"id" "stmt" "globe"}
+.stmt-hero .id{grid-area:id}.stmt-hero .stmt{grid-area:stmt}.stmt-hero .globe{grid-area:globe}
+@media (min-width:64rem){.stmt-hero{grid-template-columns:minmax(0,23rem) minmax(0,1fr);grid-template-areas:"id stmt" "globe stmt";gap:1.5rem 4rem;padding-block:3rem 2.5rem;align-content:start}}
+.id .name{font-size:1.65rem;font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0}
+.id p{margin:.45rem 0 0;font-size:.95rem;line-height:1.4;color:var(--ink-2)}
+.id .standing b{color:var(--ink);font-weight:600}
+.id .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.7rem;font-size:.9rem}
+.id .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
+.id .thesis{font-size:1.4rem;font-weight:600;letter-spacing:-.018em;line-height:1.25;margin:1rem 0 0;color:var(--ink);text-wrap:balance}
+.id .thesis em{font-style:normal;color:var(--accent)}
+.id .method{display:block;font-size:.9rem;color:var(--ink-2);margin-top:.7rem;line-height:1.5}
+/* the statement in one line, where a phone reader reaches it: the table's
+   own total row sits a screen and a half further down */
+.id .tot{margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--rule);font-size:.95rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.id .tot b{color:var(--ink);font-weight:700}
+@media (min-width:64rem){.id .name{font-size:2rem}.id .thesis{font-size:1.6rem;margin-top:2rem}}
+.standing .ph{display:none}.standing .dt{display:inline}
+@media (max-width:44rem){.standing .ph{display:inline}.standing .dt{display:none}}
+.stmt h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);margin:0 0 .35rem;display:flex;justify-content:space-between;gap:1rem}
+.stmt h2 span{font-weight:400;text-transform:none;letter-spacing:0;white-space:nowrap}
+.stmt h2 span a{color:var(--accent);text-decoration:none}
+table.st{width:100%;border-collapse:collapse}
+table.st th,table.st td{text-align:left;vertical-align:top;padding:.5rem 0}
+table.st thead th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);border-bottom:1px solid var(--ink);padding-bottom:.4rem}
+table.st thead th a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--edge)}
+table.st thead th .nref{display:none}
+table.st thead th.n,table.st td.n{text-align:right;white-space:nowrap;padding-left:.9rem}
+table.st td.n{font-variant-numeric:tabular-nums;font-size:.9rem;line-height:1.45;color:var(--ink)}
+table.st tr.item th{font-weight:520;font-size:.95rem;line-height:1.3}
+table.st tr.item th a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+table.st tr.item th a:hover{border-bottom-color:var(--accent)}
+table.st tr.item th,table.st tr.item td{border-bottom:1px solid var(--rule)}
+/* the derived figure under the counted one; note 1 says which is which */
+table.st .mins{display:block;font-size:.78rem;font-weight:400;color:var(--ink-3);margin-top:.1rem}
+table.st .s{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2);margin-top:.15rem}
+table.st tr.haslift th,table.st tr.haslift td{border-bottom:0;padding-bottom:.15rem}
+table.st tr.liftrow td{padding-top:0;border-bottom:1px solid var(--rule)}
+.lift{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2);line-height:1.35}
+.lift b{font-weight:640;color:var(--ink);font-variant-numeric:tabular-nums}
+table.st tr.sub th,table.st tr.sub td{border-top:1px solid var(--edge);border-bottom:0;font-weight:600;padding-top:.55rem;padding-bottom:.35rem;font-size:.92rem}
+table.st tr.sub + tr.sub th,table.st tr.sub + tr.sub td{border-top:0}
+table.st tr.sub th a,table.st tr.total th a{color:inherit;text-decoration:none}
+table.st tr.sub th a:hover,table.st tr.total th a:hover{color:var(--accent)}
+table.st tr.sub td,table.st tr.total td{font-variant-numeric:tabular-nums}
+table.st tr.total th,table.st tr.total td{border-top:1px solid var(--ink);border-bottom:3px double var(--ink);font-weight:700;font-size:.98rem;padding:.55rem 0}
+.sub2{font-weight:400}.sub2::before{content:": "}
+.nref{font-size:.68em;vertical-align:super;line-height:0;color:var(--accent);margin-left:.1rem;text-decoration:none}
+/* a note reference is a link the size of a superscript: the box a finger
+   gets is 24px each way, laid over the text without moving it. It is a plain
+   inline, not an inline-block: an atomic inline box carries a break
+   opportunity on both sides even with no space, and at 390px the reference
+   was breaking onto a line of its own under the subtotal label */
+a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0 -.2rem;line-height:0}
+.nref::before{content:"["}.nref::after{content:"]"}
+.sechead h2 .nref{font-size:.5em}
+.tb{display:none}
+@media (min-width:64rem){table.st thead th .nref{display:inline}}
+@media (max-width:44rem){.tb{display:inline}.tbh{display:block}.tbh .dot{display:none}table.st .tab{display:none}table.st tr.item th{font-size:.92rem}table.st td.n{font-size:.88rem}.sub2{display:block;font-size:.82rem;color:var(--ink-2)}.sub2::before,.nref+.sub2::before{content:""}}
+.stmt-hero .globe .tease-globe{aspect-ratio:1/0.9;max-height:min(46vh,26rem);cursor:grab;touch-action:pan-y}
+@media (max-width:44rem){.stmt-hero .globe{margin-top:.5rem}}
+.notes{padding:0 0 2rem;border-top:1px solid var(--rule);margin-top:.5rem}
+.notes h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);margin:1.4rem 0 .6rem}
+.notes ol{margin:0;padding:0;list-style:none;counter-reset:note;display:grid;gap:.9rem}
+@media (min-width:64rem){.notes ol{grid-template-columns:1fr 1fr;gap:1.2rem 3rem}}
+.notes li{counter-increment:note;font-size:.92rem;line-height:1.5;color:var(--ink-2);padding-left:1.6rem;position:relative}
+.notes li::before{content:counter(note);position:absolute;left:0;top:.1em;font-size:.72rem;font-weight:640;color:var(--accent);font-variant-numeric:tabular-nums}
+.notes li b{color:var(--ink);font-weight:600}
+.notes li a{color:var(--accent)}
+/* the colophon's exceptions carry their numbers the same way */
+.excs{margin:0;padding:0;list-style:none;counter-reset:exc;display:grid;gap:.9rem}
+.excs li{counter-increment:exc;padding-left:1.6rem;position:relative}
+.excs li::before{content:counter(exc);position:absolute;left:0;top:.15em;font-size:.72rem;font-weight:640;color:var(--accent);font-variant-numeric:tabular-nums}
+/* shelf rows: the statement filtered, one row per piece with its rule */
+.stmt-list{list-style:none;margin:0;padding:0}
+.stmt-list > li{border-bottom:1px solid var(--rule)}
+.stmt-list .srow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem 1.2rem;padding:.85rem 0;align-items:start}
+.stmt-list .sr-t{min-width:0}
+.stmt-list .sr-t .num{display:inline-block;font-size:.72rem;color:var(--ink-3);letter-spacing:.06em;margin-right:.5rem;vertical-align:.12em}
+.stmt-list h3{display:inline;font-size:1.02rem;font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.3}
+.stmt-list h3 a{color:var(--ink);text-decoration:none}
+.stmt-list h3 a:hover{color:var(--accent)}
+.stmt-list .s{margin:.2rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.4}
+.stmt-list .rule{margin:.4rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.5;max-width:44em}
+.stmt-list .rule.none{color:var(--ink-3);font-style:italic}
+.stmt-list .meta{display:flex;flex-wrap:wrap;gap:.35rem .7rem;align-items:center;margin:.5rem 0 0}
+.stmt-list .sr-n{display:grid;grid-template-columns:repeat(3,auto);gap:.9rem;justify-content:end;text-align:right;font-size:.92rem;color:var(--ink);white-space:nowrap;padding-top:.15rem}
+.stmt-list .sr-n span{min-width:2.6rem}
+.stmt-list .sr-n span:first-child{min-width:4.4rem}
+.stmt-list .sr-head .srow{padding:.3rem 0 .4rem}
+.stmt-list .sr-head .sr-t,.stmt-list .sr-head .sr-n span,.stmt-list .sr-head .sr-f{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3)}
+.stmt-list > li.sr-head{border-bottom:1px solid var(--ink)}
+.stmt-list .sr-sub .srow{padding:.6rem 0 .5rem;font-weight:600}
+.stmt-list > li.sr-sub{border-top:1px solid var(--edge);border-bottom:3px double var(--ink)}
+.stmt-list .sr-sub a{color:inherit;text-decoration:none}
+.stmt-list .spec,.stmt-list .specimen{margin-top:1rem}
+/* Only the whole statement carries the per document figure, so only it takes
+   the third column. The other shelves are excerpts of it and stay as they were. */
+.stmt-fig .srow{grid-template-columns:minmax(0,1fr) auto auto}
+/* The specimen figure carries a min-width floor so its type never shrinks
+   below the size it was drawn at, the same floor the lifted figures carry.
+   The lifted figures scroll inside .frame; the specimen's .fig had no scroll
+   port, so at 390px its 741px floor pushed the whole research page 371px
+   wide and every line of text slid with it. */
+.specimen .fig{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.25rem}
+@media (max-width:44rem){
+  .stmt-list .srow{grid-template-columns:minmax(0,1fr)}
+  .stmt-list .sr-n{justify-content:start;text-align:left;padding-top:0;gap:.3rem 1rem;grid-template-columns:repeat(3,auto)}
+  .stmt-list .sr-n span{min-width:0}
+  .stmt-list .sr-n span:nth-child(1)::after{content:" words";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-n span:nth-child(2)::after{content:" figures";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-n span:nth-child(3)::after{content:" tables";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-head{display:none}
+  /* on a phone the row stacks, but the figure stays on the line of the
+     numbers it was drawn from rather than taking a line of its own: 65 rows
+     of that would be four thousand pixels of scroll for nothing */
+  .stmt-fig .srow{grid-template-columns:minmax(0,1fr) auto}
+  .stmt-fig .sr-t{grid-column:1/-1}
+  .stmt-fig .sr-n{grid-column:1}
+  .stmt-fig .sr-f{grid-column:2;grid-row:2;align-self:end;justify-self:end}
+}
+/* the nav: five entries, and on a phone they wrap under the brand rather
+   than clipping off the right edge, which is what the old strip did */
+@media (max-width:44rem){
+  header.top nav.main{flex-basis:100%;order:3;display:flex;flex-wrap:wrap;gap:.2rem 1rem;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  header.top .bar{flex-wrap:wrap;gap:.3rem 1.25rem}
+}
+
+/* ==================================================================
+   THE DESCENT. The home page's first screens: the identity, the claim,
+   the corpus line and the statement of work in one column, and the sphere
+   beside them, sticky, turning as the reader descends. Source order is the
+   phone order (copy, sphere, statement); at desktop width the sphere takes
+   the right column for the height of both, so it stays in view while the
+   statement's rows pass the reading line and each turns it to face the
+   document's real position. Nothing here moves unless the reader scrolls.
+   ================================================================== */
+.descent{display:grid;grid-template-columns:minmax(0,1fr);column-gap:0}
+.descent > .stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);display:grid;gap:1.1rem 0;align-items:start;
+  /* The reading pool follows this column's measure at every breakpoint. */
+  background:var(--lamp-warm)}
+.descent > .stage .eyeb{justify-self:start;margin:0}
+.descent > .stage .display{margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.descent > .stage .method{margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
+.descent > .stage .corpusline{margin:.35rem 0 0}
+.descent > .statement{padding-top:clamp(1.5rem,3vw,2.5rem)}
+/* the sphere: sticky under the header, on paper so the rows pass beneath it
+   cleanly. The header's height is set by how its rows wrap (89px at 390, 129px
+   at 320, 94px at 768), so the script measures it and hands it over as
+   --pin-top; the block then meets the header's edge with no gap for the rows
+   to show through. Without the script the rem fallbacks hold. */
+.descent-globe{position:sticky;top:var(--pin-top,var(--stick));z-index:3;align-self:start;
+  background:var(--paper);padding-block:.25rem .5rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* The cool field follows the instrument bounds on the inner wrapper.
+   Its transparent perimeter leaves the surrounding paper untouched. */
+.descent-globe .stage-globe{position:relative;isolation:isolate;
+  background:var(--lamp-cool)}
+/* min-height:0, or the canvas's last pixel height holds the box open after
+   the sphere steps back and the square becomes a tall rectangle */
+.descent-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;min-height:0;overflow:hidden;width:100%;max-width:min(100%,42rem);
+  margin-inline:auto;cursor:grab;touch-action:pan-y;transition:max-width var(--t-weight) var(--ease-weight)}
+/* below the two-column layout the block pins above the rows, and once it has
+   pinned the sphere steps back to make room for the rows it is facing */
+@media (max-width:63.99rem){
+  .descent-globe{top:var(--pin-top,6.35rem);border-bottom:1px solid var(--rule)}
+  /* a tablet: the pinned sphere steps back to 17rem so the rows keep more than
+     half the viewport (at 768 x 1024 the full sphere left them 30px) */
+  .descent-globe.stuck .tease-globe.hero-globe{max-width:17rem}
+  .descent-globe.stuck .globe-hint,.descent-globe.stuck .globe-hint-touch,.descent-globe.stuck .globe-key{display:none}
+  .descent-globe.stuck .globe-cap{margin-top:0}
+}
+@media (max-width:44rem){
+  .descent-globe.stuck .tease-globe.hero-globe{max-width:12.5rem}
+}
+@media (min-width:64rem){
+  .descent{grid-template-columns:minmax(0,1fr) minmax(18rem,32rem);column-gap:clamp(3rem,6vw,6rem);align-items:start}
+  .descent > .stage{grid-column:1;grid-row:1;min-height:min(calc(100svh - 7rem),46rem);align-content:center}
+  .descent > .statement{grid-column:1;grid-row:2}
+  .descent-globe{grid-column:2;grid-row:1/3;top:calc(var(--stick) + 1.25rem);background:transparent;padding:0;
+    min-height:min(calc(100svh - 7rem),46rem);display:grid;align-content:center}
+}
+.stage-globe .facing{margin:.55rem auto 0;text-align:center;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3);min-height:1.2em;
+  padding-top:.5rem;border-top:1px solid var(--rule);max-width:22rem}
+.stage-globe .facing b{color:var(--ink);font-weight:640}
+.stage-globe .facing:empty{display:none}
+/* the rule the sphere is drawn by, in one breath, under the caption */
+.stage-globe .globe-key{margin:.55rem auto 0;text-align:center;font-size:.78rem;line-height:1.5;color:var(--ink-3);max-width:36em}
+/* the statement row the sphere is facing */
+table.st tr.item.cur th,table.st tr.item.cur td{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+table.st tr.item.cur th{box-shadow:inset 3px 0 0 var(--accent);padding-left:.6rem}
+table.st tr.item.cur th a{color:var(--accent)}
+table.st tr.item.cur td{color:var(--ink);font-weight:560}
+table.st tr.item.cur th .s{color:var(--ink-2)}
+/* a faced row's lifted figure line is part of the row: same tint, same bar, same nudge */
+table.st tr.item.cur+tr.liftrow td{background:color-mix(in srgb,var(--accent) 9%,transparent);box-shadow:inset 3px 0 0 var(--accent);padding-left:.6rem}
+table.st tr.liftrow td{transition:background 260ms var(--ease-weight),padding 260ms var(--ease-weight)}
+table.st tr.item th,table.st tr.item td{transition:background 260ms var(--ease-weight),padding 260ms var(--ease-weight),color 260ms var(--ease-weight)}
+table.st tr.item th a{transition:color 260ms var(--ease-weight)}
+@media (prefers-reduced-motion:reduce){
+  .descent-globe .tease-globe.hero-globe{transition:none}
+  table.st tr.item th,table.st tr.item td,table.st tr.liftrow td{transition:none}
+}
+/* on paper the sphere is a figure again: a pinned block would float over
+   the page break, so the pin releases and the block prints in its place */
+@media print{
+  .descent-globe{position:static;background:#fff;border-bottom:0}
+  .stage-globe .facing{display:none}
+}
+/* the eyebrow chip: the standing in the accent, the owner's own line after it */
+.eyeb{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.eyeb b{color:var(--accent);font-weight:720;letter-spacing:.1em}
+/* the identity: name, programme, term, address; one contract with .id */
+.ident .name{font-size:clamp(1.55rem,2.2vw,1.9rem);font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0}
+.ident p{margin:.4rem 0 0;font-size:.95rem;line-height:1.45;color:var(--ink-2)}
+.ident .standing .ph{display:none}.ident .standing .dt{display:inline}
+@media (max-width:44rem){.ident .standing .ph{display:inline}.ident .standing .dt{display:none}}
+.ident .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.6rem;font-size:.95rem}
+.ident .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
+/* the sphere at hero scale: a square box, the void inside it */
+.stage-globe{position:relative}
+.stage-globe .globe-cap{text-align:center;margin-top:.2rem}
+/* the hint is for a pointer that can hover; a touch screen never sees it */
+.globe-hint,.globe-hint-touch{display:none}
+@media (pointer:coarse){
+  .globe-hint-touch{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.15rem;max-width:34em;margin-inline:auto}
+}
+@media (hover:hover) and (pointer:fine){
+  .globe-hint{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.15rem;max-width:34em;margin-inline:auto}
+}
+/* the card that names the document under the pointer, set as the Atlas sets its own */
+.globe-card{position:absolute;top:0;left:0;max-width:19rem;z-index:2;
+  background:var(--panel);border:1px solid var(--rule-strong);padding:.5rem .65rem;text-align:left;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  transition:opacity var(--t-fast) var(--ease-weight)}
+/* the card fades up in 180ms when a mark is first pointed at; it moves
+   between marks without delay, because the pointer is already there */
+@starting-style{.globe-card:not([hidden]){opacity:0}}
+@media (prefers-reduced-motion:reduce){.globe-card{transition:none}}
+/* the document's name is the link that opens it; the arrow says so */
+.globe-card .gc-t{display:block;margin:0;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3;text-decoration:none}
+.globe-card .gc-t::after{content:" \2192";color:var(--accent)}
+.globe-card .gc-t:hover,.globe-card .gc-t:focus-visible{color:var(--accent);text-decoration:underline}
+.globe-card .gc-d{display:block;margin:.22rem 0 0;font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.globe-card .gc-d .gc-l{color:var(--link);font-weight:640}
+.globe-hint .gc-l,.globe-hint-touch .gc-l{color:var(--link)}
+.stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
+/* The corpus readout is one instrument bank: four measured cells, one datum
+   edge and the existing calibration ticks. Every response changes value only,
+   so the figures never move when a cell is inspected. */
+.corpusline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--edge);border-top:2px solid var(--ink-2);
+  border-radius:var(--radius);background:var(--panel)
+}
+.corpusline div{padding:.8rem .75rem .75rem;margin:0;background:var(--panel)}
+.corpusline div + div{border-left:1px solid var(--rule-strong)}
+.corpusline div:hover,.corpusline div:focus-within{background:var(--panel-2)}
+.corpusline dt{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:560;color:var(--ink-2)
+}
+.corpusline dd{
+  margin:.18rem 0 0;font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(1.25rem,2vw,1.625rem);font-weight:670;letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;
+  color:var(--ink);line-height:1.05
+}
+@media (max-width:26rem){
+  .corpusline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .corpusline div:nth-child(3){border-left:0}
+  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule-strong)}
+}
+
+/* ---- the composed sections: an index, a title, a note, a count ---- */
+.sechead.hm{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"num count" "h2 count" "note count";align-items:end}
+.sechead.hm .num{grid-area:num;font-size:var(--meta-size);letter-spacing:.14em;font-weight:680;color:var(--accent);margin-bottom:.45rem}
+.sechead.hm h2{grid-area:h2}
+.sechead.hm .note{grid-area:note}
+.sechead.hm .count{grid-area:count;align-self:end}
+@media (max-width:44rem){
+  .sechead.hm{grid-template-columns:minmax(0,1fr);grid-template-areas:"num" "h2" "note" "count"}
+  .sechead.hm .count{justify-self:start;margin-top:.3rem}
+}
+/* a panel: one step above the ground, behind a one-pixel edge */
+.pane{background:var(--panel);border:1px solid var(--rule);padding:clamp(.9rem,2.5vw,1.75rem) clamp(.9rem,2.5vw,1.75rem) clamp(.6rem,2vw,1.25rem);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pane table.st{margin:0}
+/* a band on the panel ground; its panels step up once more */
+section.band.ground{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+section.band.ground + section.band{border-top:0}
+section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-strong)}
+/* two lifted figures, framed */
+.figband{display:grid;gap:var(--gap)}
+@media (min-width:64rem){.figband{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figband .spec{background:var(--paper);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;min-width:0}
+.figband .spec + .spec{border-top:1px solid var(--rule);padding-top:0}
+.figband .spec .frame{border-top:0;padding-top:1.1rem;overscroll-behavior-x:contain}
+@media (max-width:44rem){
+  /* the frame scrolls sideways so the figure's type stays at the size it was
+     drawn at; the fade is the sign that there is more, the same signal the
+     header's link strip uses */
+  .figband .spec .frame{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .figband .spec .frame:focus-within{-webkit-mask-image:none;mask-image:none}
+  .figband .spec{padding-inline:.75rem}
+}
+.figband .spec figcaption{grid-template-columns:minmax(0,1fr)}
+/* the tools as a ledger: one row each, the index, the title and its line,
+   the origin and whether it installs; two columns at desktop width */
+.toolledger{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.toolledger > li{display:grid;grid-template-columns:2.2rem minmax(0,1fr);gap:.2rem .6rem;
+  padding:.8rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.toolledger .num{font-size:.72rem;color:var(--ink-3);letter-spacing:.06em;padding-top:.2rem}
+.toolledger .tl-t{min-width:0}
+.toolledger h3{display:inline;font-size:1.02rem;font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.3}
+.toolledger h3 a{color:var(--ink);text-decoration:none}
+.toolledger h3 a:hover{color:var(--accent)}
+.toolledger .s{margin:.15rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.4}
+.toolledger .tl-m{grid-column:2;margin:.1rem 0 0;display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:center}
+.toolledger .tl-run{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--tool)}
+@media (min-width:44rem){
+  .toolledger > li{grid-template-columns:2.2rem minmax(0,1fr) auto}
+  .toolledger .tl-m{grid-column:3;justify-self:end;text-align:right;margin:0}
+}
+@media (min-width:64rem){
+  .toolledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3rem}
+}
+/* the notes follow the last band, and the note on the material closes them */
+.notes{border-top:0;margin-top:0;padding-top:clamp(2.5rem,5vw,4rem)}
+.notes .sechead.hm{margin-bottom:1.25rem}
+.notes .sechead.hm h2{font-size:clamp(1.45rem,3vw,2.05rem);letter-spacing:-.028em;text-transform:none;color:var(--ink);font-weight:640;margin:0}
+/* The notes run in two columns from 64rem. The closing note used to drop
+   back to the 38rem measure, so the page ended by narrowing to half its
+   width for one paragraph. It now closes on the grid it held. */
+.notes .material{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);max-width:none}
+.notes .material h3{font-size:1.05rem;margin:0 0 .5rem}
+.notes .material p{margin:0}
+@media (min-width:64rem){
+  .notes .material{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 3rem;align-items:start}
+  .notes .material h3{margin:0}
+  .notes .material p{max-width:none}
+}
+@media print{
+  .stage-grid{min-height:0}
+  .pane,section.band.ground{background:#fff}
+}
+
+/* ==================================================================
+   THE SHELL PAGES ON THE HOME GRAMMAR: the eyebrow as a chip, the lifted
+   figures and specimens framed, the plates as tiles, controls in panels.
+   ================================================================== */
+.hero .eyebrow.accent,.atlas-side .eyebrow.accent{
+  display:inline-flex;align-items:center;gap:.55rem;color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;margin:0 0 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.hero .eyebrow.accent .tnum{color:var(--accent);font-weight:720}
+/* a lifted figure or a specimen inside a shelf row: framed, on the ground */
+.stmt-list .spec,.stmt-list .specimen{
+  background:var(--panel);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.stmt-list .spec .frame{border-top:0;padding-top:1rem}
+.stmt-list .specimen .fig{padding-top:1rem}
+.stmt-list .specimen .figcap{margin:.6rem 0 0;font-size:.85rem;color:var(--ink-2);line-height:1.45;max-width:44rem}
+@media (max-width:44rem){
+  .stmt-list .spec .frame,.stmt-list .specimen .fig{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .stmt-list .spec .frame:focus-within,.stmt-list .specimen .fig:focus-within{-webkit-mask-image:none;mask-image:none}
+}
+/* the four plates on the about page as tiles on a hairline grid */
+.caps{gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.caps div{border-top:0;background:var(--paper);padding:1.25rem 1.35rem 1.4rem}
+/* the fact list as a panel */
+.facts.pane{border-top:1px solid var(--rule);padding-block:.4rem .5rem}
+.facts.pane div:last-child{border-bottom:0}
+/* the library's search and filters in a panel */
+.tools-bar{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin-bottom:1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tools-bar input[type=search]{background:var(--paper)}
+/* the coverage table inside its panel keeps its own rules */
+.pane .tw{margin:0}
+.pane .ctab{margin-top:0}
+/* Back to top keeps a tab stop while invisible (WCAG 2.4.7): hidden from
+   the tab order until it is shown */
+.totop{visibility:hidden;transition:opacity var(--t-in) ease,transform var(--t-in) ease,
+  background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
+.totop.on{visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}
+
+/* ------------------------------------------------ course disclosures --
+   Each course on the coursework shelf is a native details element, open
+   by default: the head is its summary, the rows fold under it. */
+details.cgroup > summary.grouphead{list-style:none;cursor:pointer;display:flex}
+details.cgroup > summary.grouphead::-webkit-details-marker{display:none}
+details.cgroup > summary.grouphead::before{content:"\2212";color:var(--ink-3);font-weight:640;margin-right:.6rem;align-self:baseline;font-variant-numeric:tabular-nums}
+details.cgroup:not([open]) > summary.grouphead::before{content:"+"}
+details.cgroup > summary.grouphead:hover h3{color:var(--accent)}
+details.cgroup > summary.grouphead:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details.cgroup + details.cgroup{margin-top:1.75rem}
+
+/* ------------------------------ the register ------------------------- */
+/* Every claim the site makes about itself beside the check that tests it.
+   The status word is the one thing set in a face and a weight of its own:
+   "held" in the ink, "asserted" and "not yet measured" in the third ink,
+   because absence is what a reader should be able to find at a glance. */
+.register .rg-claim{max-width:34rem}
+.register .rg-by{white-space:nowrap;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.register .rg-res{color:var(--ink-2)}
+.register .rg-st{display:inline-block;font-size:.72rem;font-weight:680;letter-spacing:.08em;text-transform:uppercase;
+  padding:.05rem .4rem;border:1px solid var(--rule-strong);margin-right:.35rem;color:var(--ink);vertical-align:.08em}
+.register .rg-asserted .rg-st,.register .rg-open .rg-st{color:var(--ink-3);border-style:dashed}
+.register .rg-failed .rg-st{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+.register .rg-note{display:block;margin-top:.2rem;font-size:.76rem;color:var(--ink-3)}
+.tw > .register{min-width:40rem}
+.audit-line{font-size:.9rem;color:var(--ink-2)}
+.register-line{font-size:.9rem;color:var(--ink-2)}
+/* a lifted figure's key: each colour that carries a meaning, named in words */
+.spec .fkey{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin:.6rem 0 .2rem;font-size:.82rem;color:var(--ink-2)}
+.spec .fk-item{display:inline-flex;align-items:center;gap:.4rem}
+.spec .sw{display:inline-block;width:.7em;height:.7em;border-radius:2px;border:1px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+.spec .fignums{margin:.5rem 0 .6rem;font-size:.8rem;color:var(--ink-3)}
+.spec .fignums summary{cursor:pointer;color:var(--ink-2)}
+.spec .fignums p{margin:.35rem 0 0;line-height:1.5}
+
+.register .rg-when{color:var(--ink-3);font-size:.78rem;max-width:22rem}
+.register .rg-untested .rg-st{color:var(--ink-2);border-style:dotted}
+
+/* The instrument: the records as glyphs, in the code face the site already
+   uses. A glyph is one record; the wall is a table because it is one, so a
+   screen reader gets the page name and the column under every glyph. */
+.inst{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;line-height:1.3;
+  border-collapse:collapse;width:auto;margin:0}
+.inst th,.inst td{padding:.05em .18em;border:0;text-align:center;font-weight:400;vertical-align:middle}
+.inst caption{text-align:left;font-family:inherit;font-size:.82rem;color:var(--ink-2);padding:0 0 .7rem;max-width:44rem;caption-side:top}
+.inst .ip{text-align:left;white-space:nowrap;padding-right:1.1em;color:var(--ink-2)}
+.inst .ip a{color:inherit;text-decoration:none;display:inline-block;min-height:24px;line-height:24px}
+.inst tbody .ip{padding-top:0;padding-bottom:0}
+.inst .ip a:hover{text-decoration:underline}
+.inst .ir-shell .ip{color:var(--ink);font-weight:600}
+.inst .ir-record .ip{font-style:italic}
+.inst thead .ic span{writing-mode:vertical-rl;transform:rotate(180deg);display:inline-block;color:var(--ink-3);padding:.2em 0;letter-spacing:.04em}
+.inst thead .ic-runtime span{color:var(--ink-2)}
+.inst .ic-runtime:first-of-type,.inst td.g:nth-child(32){border-left:0}
+.inst th.ic-runtime~th,.inst thead .ic-runtime{border-left:0}
+.inst .g{width:1.35em;min-width:1.35em;font-variant-numeric:tabular-nums}
+.inst .g-h{color:var(--ink)}
+.inst .g-x{color:var(--paper);background:var(--ink);font-weight:700}
+.inst .g-q{color:var(--ink-3)}
+.inst .g-d{color:var(--ink-2)}
+.inst tbody tr:nth-child(odd) td{background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.inst tfoot .isum td,.inst tfoot .isum th{color:var(--ink-3);font-size:.7rem;border-top:1px solid var(--rule);padding-top:.3em}
+.inst-ledger th,.inst-ledger td{text-align:left}
+.inst-ledger .ig{letter-spacing:.14em;white-space:nowrap}
+.inst-ledger .ig .g{display:inline-block;width:auto;min-width:1em;padding:0 .1em}
+.inst-ledger .is{white-space:nowrap;color:var(--ink-2)}
+.inst-ledger .iw{font-size:.72rem;color:var(--ink-3);max-width:44rem;line-height:1.4}
+.inst-wrap{overflow-x:auto;max-width:100%;margin:1rem 0 1.6rem;padding-bottom:.4rem}
+.inst-key{font-size:.85rem;color:var(--ink-2);max-width:60ch}
+.inst-key code{font-size:.9em}
+#controls-top h1{font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1.15;max-width:26em}
+@media (max-width:48rem){
+  /* the wall scrolls inside its own frame on a narrow screen; nothing in it
+     is clipped, and the page names are set a step smaller so the columns
+     stay in reach */
+  .inst{font-size:.66rem}
+  .inst .ip{font-size:.6rem;padding-right:.7em}
+  .inst-ledger .iw{max-width:none}
+}
+
+/* the pass's own account of its limits */
+.limits ol{padding-left:1.2rem}
+.limits li{margin:.5rem 0;color:var(--ink-2)}
+/* on a narrow screen the register stacks: claim, then the check and its
+   result, rather than scrolling three columns sideways */
+@media (max-width:44rem){
+  .tw > .register{min-width:0}
+  .register thead{display:none}
+  .register,.register tbody,.register tr,.register td,.register th,.register caption{display:block}
+  .register caption{width:auto;margin-bottom:.8rem}
+  .register tr{padding:.55rem 0;border-bottom:1px solid var(--rule)}
+  .register tr.grp th{padding:.9rem 0 .2rem;border:0}
+  .register td{border:0;padding:.1rem 0}
+  .register .rg-claim{max-width:none}
+  .register .rg-by{display:inline;white-space:normal}
+  .register .rg-by::after{content:" · "}
+  .register .rg-res{display:inline}
+  .register .rg-when{display:block;max-width:none;margin-top:.2rem}
+}
+
+/* --------------------------- a number you can open --------------------- */
+/* A counted number carries a dotted underline once the script has made it
+   openable; with scripts off nothing is underlined, because nothing opens.
+   The colophon's design rules name this channel. */
+.js data.m{text-decoration:underline dotted;text-decoration-color:var(--edge);text-underline-offset:.16em;
+  text-decoration-thickness:1px;cursor:help;border-radius:1px}
+.js data.m:hover,.js data.m:focus-visible{text-decoration-color:var(--accent);text-decoration-style:solid}
+.js data.m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+dialog.prov{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem}
+dialog.prov[open]{display:grid;place-items:center}
+dialog.prov::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+dialog.prov{transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open]){opacity:0}
+dialog.prov[open]{opacity:1}
+dialog.prov::backdrop{transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+@starting-style{
+  dialog.prov[open]{opacity:0}
+  dialog.prov[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.prov[open] .prov-panel{transform:translateY(14px)}
+}
+.prov-panel{background:var(--paper);border:1px solid var(--ink);max-width:32rem;width:100%;padding:1.1rem 1.25rem 1rem;
+  transition:transform var(--t-weight) var(--ease-weight)}
+.prov-k{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.prov-panel h2{margin:.2rem 0 .6rem;font-size:1.45rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.prov-def,.prov-src{font-size:.92rem;color:var(--ink-2);margin:0 0 .6rem;line-height:1.5}
+.prov-src{color:var(--ink)}
+.prov-links{font-size:.86rem;margin:0 0 .9rem}
+.prov-links a{color:var(--accent)}
+.prov-panel .close{font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);padding:.45rem .8rem;
+  border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.prov-panel .close:hover{background:var(--ink);color:var(--paper)}
+@media (prefers-reduced-motion:reduce){
+  dialog.prov,dialog.prov::backdrop,.prov-panel{transition:none}
+}
+
+/* ------------------------- selected work ------------------------------
+   A showcase surface, not a system page: more air between entries and a
+   larger title than the shelves carry, inside the same hairline grammar.
+   Each entry is one measured line, the piece's own blurb, and eight slots
+   as a table whose row headers are the slot names. A slot with nothing
+   behind it keeps its row and says so, because the shape of what is
+   missing is the part a reader cannot get from the corpus itself. */
+.casenote{border-top:1px solid var(--rule-strong);padding:1.4rem 0 0;margin:2.4rem 0 0;max-width:44rem}
+.casenote h2{margin:0 0 .7rem;font-size:1.05rem;letter-spacing:-.01em}
+.caselead{margin:0 0 2rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.caselead a{color:var(--accent)}
+.casenote p{margin:0 0 .6rem;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.casenote p:last-child{margin-bottom:0}
+.casenote b{color:var(--ink);font-weight:640}
+.casenote i{font-style:normal;color:var(--ink);border-bottom:1px solid var(--rule-strong)}
+.casenote code{font-size:.86em;color:var(--ink)}
+.ccount{font-variant-numeric:tabular-nums;color:var(--ink-3) !important}
+
+.case{
+  border:1px solid var(--rule-strong);border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);border-radius:var(--radius);
+  padding:1.35rem 1.25rem 1.5rem;margin:0;background:var(--panel)
+}
+.case + .case{margin-top:1rem}
+.casehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem;align-items:start}
+.ceyebrow{grid-column:1;margin:0 0 .35rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3)}
+.ceyebrow .num{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ceyebrow .kind,.ceyebrow .csurf,.ceyebrow .cdate{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .38rem;background:var(--paper);color:var(--ink-2)
+}
+.ctitle{grid-column:1;margin:0 0 .3rem;font-size:clamp(1.35rem,2.6vw,1.9rem);
+  letter-spacing:-.02em;line-height:1.1}
+.ctitle a{color:var(--ink)}
+.ctitle a:hover{color:var(--accent)}
+.csub{grid-column:1;margin:0;font-size:1rem;color:var(--ink-2);max-width:44rem;line-height:1.5}
+.cfig{grid-column:2;grid-row:1 / span 3;align-self:start;justify-self:end;color:var(--ink-3);
+  transition:color 180ms cubic-bezier(.2,.6,.2,1)}
+.case:hover .cfig,.case:focus-within .cfig{color:var(--ink)}
+.cmeasure{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin:.9rem 0 .8rem;
+  padding:.55rem .65rem;background:var(--paper);
+  border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.cblurb{margin:0 0 1.2rem;font-size:.95rem;color:var(--ink-2);max-width:46rem;line-height:1.55}
+
+/* Auto layout, not fixed: under table-layout:fixed Chrome ignored both
+   column widths, an inline !important included, and split the table in
+   half, so every answer began 560px across a 1120px table. The two
+   percentages hold the columns on their own. */
+.ctable{width:100%;border-collapse:collapse;margin:0 0 1rem}
+.csr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}
+.ctable th,.ctable td{text-align:left;vertical-align:top;padding:.5rem .8rem .5rem 0;
+  border-top:1px solid var(--rule);font-weight:400}
+.ctable tr:first-child th,.ctable tr:first-child td{border-top:1px solid var(--rule-strong)}
+.ctable th{width:30%;padding-right:1.2rem}
+.ctable td{width:70%}
+.cslotname{display:block;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink)}
+.cmeaning{display:block;font-size:.8rem;color:var(--ink-3);line-height:1.4;margin-top:.15rem}
+.ctable td{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.cslot{color:var(--ink);border-bottom:1px solid var(--rule-strong)}
+.cslot:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.cwhere{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);white-space:nowrap}
+.cnote{color:var(--ink-2)}
+.cgap{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3)}
+.cempty td,.cempty th .cslotname{color:var(--ink-3)}
+.cread{margin:0;padding-top:.8rem;border-top:1px solid var(--rule-strong);display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center}
+.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center;
+  min-height:2.5rem;padding:.45rem .65rem;border:1px solid var(--edge);background:var(--paper)}
+.cgo .arrow{transition:transform var(--t-fast) var(--ease-move)}
+.cgo:hover .arrow{transform:translateX(3px)}
+.cheld{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-2);font-variant-numeric:tabular-nums;
+  border:1px solid var(--rule-strong);border-radius:var(--radius);padding:.18rem .42rem;background:var(--paper)}
+
+/* A phone has no room for a 12.5rem label column beside a sentence, so the
+   table becomes two stacked blocks per row and the slot name reads as the
+   heading of the answer under it. */
+@media (max-width:640px){
+  .casehead{grid-template-columns:minmax(0,1fr)}
+  .cfig{grid-column:1;grid-row:auto;justify-self:start;margin-top:.7rem}
+  .ctable,.ctable tbody,.ctable tr,.ctable th,.ctable td{display:block;width:auto}
+  .ctable th{padding:.7rem 0 .1rem;border-top:1px solid var(--rule)}
+  .ctable td{padding:0 0 .6rem;border-top:0}
+  .ctable tr:first-child td{border-top:0}
+  .cmeaning{max-width:32rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .cfig,.cgo .arrow{transition:none}
+}
+@media print{
+  .case{break-inside:avoid;border-top:1px solid #999}
+  .cfig{display:none}
+}
+.stmore{margin:1rem 0 0;font-size:.9rem}
+.stmore .inlink{font-weight:640}
+
+/* --------------------- capability evidence ---------------------------
+   The paragraph is the claim and stays exactly as it was. Under it sits a
+   measured line and a disclosure: closed by default, so the page a reader
+   meets is the page that was here before, and the work behind the claim is
+   one press away rather than another wall of links. */
+.capev{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.7rem 0 .5rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.capdet{border-top:0;padding-top:0}
+.capdet > summary{font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight)}
+.caplist{margin:.5rem 0 0;font-size:.86rem;color:var(--ink-2);line-height:1.6}
+.caplist a{color:var(--ink);border-bottom:1px solid var(--rule)}
+.caplist a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.capgap{margin:.6rem 0 0;font-size:.84rem;color:var(--ink-3);line-height:1.5}
+.capnote{margin:1.4rem 0 0;font-size:.88rem;color:var(--ink-3);max-width:44rem;line-height:1.55}
+.capnote code{color:var(--ink-2)}
+
+/* ------------------------- start here --------------------------------
+   Three doorways under the corpus line, one row, at the size of a metadata
+   line. A reader who wants the site as it was passes one line to reach the
+   statement; a reader who does not know where to start has somewhere to go
+   before the depth begins. */
+/* The hero column is 522px at 1440 and 434px at 1100, measured, so three
+   doorways with a description each never fit on one row there and broke into
+   three ragged lines. The labels carry it alone: a caption, then one line. */
+.startrow{margin:1.1rem 0 0;padding-top:.9rem;border-top:1px solid var(--rule)}
+.startlab{margin:0 0 .35rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.startlinks{display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;margin:0}
+.startlinks a{font-size:.92rem;font-weight:640;color:var(--ink);white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);padding-bottom:.1rem}
+.startlinks a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.startlinks a[href="selected.html"]{
+  display:inline-flex;align-items:center;min-height:44px;padding:.6rem .8rem;
+  border:1px solid var(--edge);border-radius:var(--radius);background:var(--panel-2);
+  color:var(--ink);font-weight:640;line-height:1.2
+}
+.startlinks a[href="selected.html"]:hover,.startlinks a[href="selected.html"]:focus-visible{
+  border-color:var(--ink-2);background:var(--panel);color:var(--ink)
+}
+
+/* The Now block reuses the facts grammar of the short version above it, one
+   step quieter, because it is the only part of this page that goes stale. */
+.nowhead{margin-top:2rem}
+.nowpane b{color:var(--ink-2)}
+
+/* --------------------------- resume ----------------------------------
+   A two-column ledger: when on the left, what on the right, the same
+   grammar the statement rows use. It is the print target as well, so the
+   rules that matter on paper are here rather than in a second document
+   that could disagree with the page. */
+.rcontact{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;margin:.9rem 0 0;font-size:.92rem}
+.rcontact a{color:var(--accent)}
+.rprint{margin:.7rem 0 0;font-size:.84rem;color:var(--ink-3);max-width:44rem;line-height:1.5}
+.rsec{padding-top:1.6rem}
+/* The text column used to be minmax(0,1fr), which at 1440 ran it to 918px:
+   1.51 times the site's own --measure and 1.30 times the cap on .rprint
+   three rules above. It is now held to the measure, and the width that
+   recovers becomes a figures column, so the page reads as the ledger it is
+   rather than as one long line. A row with nothing measurable leaves the
+   column empty rather than printing a zero. */
+.rrow{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:.2rem 1.6rem;
+  padding:.85rem 0;border-top:1px solid var(--rule)}
+@media (min-width:64rem){
+  .rrow{grid-template-columns:11rem minmax(0,var(--measure)) minmax(0,1fr)}
+  .rrow > .rmeasure{grid-column:3;grid-row:1;justify-content:flex-end;text-align:right;margin:0}
+}
+.rrow:first-of-type{border-top:1px solid var(--rule-strong)}
+.rwhen{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.rwhat h3{margin:0 0 .15rem;font-size:1.02rem;letter-spacing:-.01em;font-weight:640}
+.rwhat h3 a{color:var(--ink)}
+.rwhat h3 a:hover{color:var(--accent)}
+.rwhere{margin:0 0 .3rem;font-size:.9rem;color:var(--ink-2)}
+.rnote,.rlist{margin:.25rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.rlist a{color:var(--ink);border-bottom:1px solid var(--rule)}
+.rlist a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.rlines{margin:.3rem 0 0;padding-left:1.1rem;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.rmeasure{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.2rem 0 0;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+@media (max-width:640px){
+  .rrow{grid-template-columns:minmax(0,1fr);gap:.3rem}
+}
+
+/* ---- availability, on a dated axis ------------------------------------
+   The lede carries the one number a co-op recruiter reads first and sets it
+   as the last clause of a sentence. The axis puts the degree, the terms
+   already worked and the window that is open on one scale. Ink only: a
+   filled block has been worked, an outlined block is open, so the reading
+   never rests on colour. Nothing here moves and nothing listens. */
+.rtwrap{border-top:1px solid var(--ink);padding-top:.6rem}
+.rt-h{
+  margin:0 0 .4rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.rtl{display:block;width:100%;height:auto;max-width:17rem}
+.rtl .rt-base{stroke:var(--rule-strong);stroke-width:1.5}
+.rtl .rt-tick{stroke:var(--rule-strong);stroke-width:1}
+.rtl .rt-y{fill:var(--ink-3);font-size:9px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.rtl .rt-done{fill:var(--ink-2);stroke:var(--ink-2);stroke-width:1}
+.rtl .rt-open{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-dasharray:3 2}
+.rtl .rt-now{stroke:var(--ink);stroke-width:1}
+.rtl .rt-nowh{fill:var(--ink)}
+.rtspan{margin:.4rem 0 0;font-size:.76rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.rtkey{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.2rem;font-size:.76rem;color:var(--ink-2)}
+.rtkey li{display:flex;align-items:center;gap:.45rem}
+.rtkey b{margin-left:auto;color:var(--ink);font-weight:640;font-variant-numeric:tabular-nums}
+.rtkey .rt-s{display:inline-block;width:11px;height:9px;flex:0 0 auto}
+.rt-k-done .rt-s{background:var(--ink-2);border:1px solid var(--ink-2)}
+.rt-k-open .rt-s{background:none;border:1px dashed var(--ink)}
+@media print{ .rtwrap{break-inside:avoid} }
+@media print{
+  .rsec{padding-top:.8rem}
+  .rrow{break-inside:avoid;border-top:1px solid #999}
+  .rprint{display:none}
+}
+
+/* The archival container: existing panel values form the folder edge,
+   while the working sheet and both measured light boxes remain on paper.
+   The wide-screen gutter sits outside the existing shell measure. Small
+   screens keep their full reading width; print keeps the existing sheet. */
+@media screen and (min-width:84rem){
+  body > main#main:not(.doc):not(:has(> .doc)){
+    max-width:calc(var(--shell) + 2rem);margin-inline:auto;
+    border-inline:1rem solid var(--panel);outline:1px solid var(--rule-strong);
+  }
+}
+/* A stronger upper rule records the front edge of each existing panel. */
+@media screen{
+  .pane,.tools-bar,.figband .spec,.figband .spec + .spec,
+  .stmt-list .spec,.stmt-list .specimen{border-top-color:var(--rule-strong)}
+}
+
+
+/* ==================================================================
+   DESIGN ELEVATION REVIEW MODULE
+   Surface 1: homepage astrolabe and instrument controls.
+   Surface 2: selected-work capability triptych.
+
+   The selected-work rules require the generated DOM and the
+   html.selected-review page class documented in DESIGN_ELEVATION_SPEC.md.
+   No timer, keyframe animation or new colour token is introduced here.
+   ================================================================== */
+
+/* ---------------- homepage astrolabe harmonization ---------------- */
+/* Keep the first screen compact while giving the title slightly more poise. */
+.descent > .stage{gap:.94rem 0}
+.descent > .stage .display{
+  line-height:.96;
+  letter-spacing:-.052em;
+  text-wrap:balance;
+}
+.descent > .stage .method{max-width:33rem}
+.descent > .stage .eyeb{
+  border-left:2px solid var(--accent);
+  background:var(--panel);
+}
+
+/* One calibrated numerical faceplate. Values sit against a common right datum. */
+.corpusline{
+  position:relative;
+  border-color:var(--edge);
+  border-top-color:var(--ink-2);
+  background:var(--panel);
+  box-shadow:inset 0 -1px 0 var(--rule);
+}
+.corpusline div{
+  position:relative;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  min-height:4.9rem;
+  padding:.72rem .68rem .62rem;
+}
+.corpusline div::after{
+  content:"";
+  position:absolute;
+  right:.5rem;
+  bottom:.42rem;
+  width:.48rem;
+  height:1px;
+  background:var(--rule-strong);
+}
+.corpusline dt{padding-top:.5rem;line-height:1}
+.corpusline dt::before{
+  height:4px;
+  background:repeating-linear-gradient(90deg,var(--edge) 0 1px,transparent 1px 6px);
+  opacity:.72;
+}
+.corpusline dt::after{height:8px;background:var(--ink-2)}
+.corpusline dd{
+  align-self:end;
+  margin:.28rem 0 0;
+  padding-right:.62rem;
+  text-align:right;
+  font-size:clamp(1.3rem,2vw,1.7rem);
+  letter-spacing:-.035em;
+}
+.corpusline div:hover,.corpusline div:focus-within{
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+
+/* The three doorways become a single segmented control bank. */
+.startrow{margin:.74rem 0 0;padding-top:.68rem;border-top:1px solid var(--rule)}
+.startlab{
+  display:block;
+  width:max-content;
+  margin:0 0 -1px;
+  padding:.24rem .48rem .2rem;
+  border:1px solid var(--edge);
+  border-bottom-color:var(--panel);
+  background:var(--panel);
+  color:var(--ink-2);
+  font-size:.66rem;
+  letter-spacing:.11em;
+}
+.startlinks{
+  counter-reset:door;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;
+  margin:0;
+  border:1px solid var(--edge);
+  border-top:2px solid var(--ink-2);
+  background:var(--panel);
+}
+.startlinks a,
+.startlinks a[href="selected.html"]{
+  counter-increment:door;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:.45rem;
+  min-width:0;
+  min-height:3.2rem;
+  padding:.5rem .58rem;
+  border:0;
+  border-radius:var(--radius);
+  background:var(--panel);
+  color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:clamp(.66rem,.78vw,.75rem);
+  font-weight:600;
+  line-height:1.22;
+  letter-spacing:.015em;
+  white-space:normal;
+  text-decoration:none;
+  box-shadow:none;
+  position:relative;
+  padding-right:1.18rem;
+}
+.startlinks a::before{
+  content:"0" counter(door);
+  color:var(--ink-3);
+  font-size:.62rem;
+  font-weight:650;
+  letter-spacing:.08em;
+  align-self:start;
+  padding-top:.08rem;
+}
+.startlinks a + a{border-left:1px solid var(--rule-strong)}
+.startlinks a > span[aria-hidden="true"]{
+  position:absolute;
+  right:.46rem;
+  bottom:.38rem;
+  color:var(--accent);
+  font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif;
+  font-size:.78rem;
+  line-height:1;
+}
+.startlinks a[href="selected.html"]{
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+.startlinks a:hover,
+.startlinks a:focus-visible,
+.startlinks a[href="selected.html"]:hover,
+.startlinks a[href="selected.html"]:focus-visible{
+  color:var(--ink);
+  border-color:var(--rule-strong);
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+
+/* A static astrolabe around the live canvas: limb, graduations and cardinal datums. */
+.descent-globe .tease-globe.hero-globe{
+  position:relative;
+  isolation:isolate;
+  background:
+    linear-gradient(var(--ink-2),var(--ink-2)) center 1.6%/1px 16px no-repeat,
+    linear-gradient(var(--ink-2),var(--ink-2)) center 98.4%/1px 16px no-repeat,
+    linear-gradient(90deg,var(--ink-2),var(--ink-2)) 1.6% center/16px 1px no-repeat,
+    linear-gradient(90deg,var(--ink-2),var(--ink-2)) 98.4% center/16px 1px no-repeat;
+}
+.descent-globe .tease-globe.hero-globe::before{
+  content:"";
+  position:absolute;
+  inset:4.6%;
+  z-index:3;
+  border:1px solid var(--edge);
+  opacity:.72;
+  border-radius:50%;
+  pointer-events:none;
+}
+.descent-globe .tease-globe.hero-globe::after{
+  content:"";
+  position:absolute;
+  inset:1.9%;
+  z-index:4;
+  border-radius:50%;
+  background:repeating-conic-gradient(from -.28deg,
+    var(--ink-2) 0 .42deg,
+    transparent .42deg 7.5deg);
+  -webkit-mask:radial-gradient(circle at center,
+    transparent 0 46.6%,#000 46.8% 49.1%,transparent 49.3%);
+  mask:radial-gradient(circle at center,
+    transparent 0 46.6%,#000 46.8% 49.1%,transparent 49.3%);
+  pointer-events:none;
+  opacity:.7;
+}
+.stage-globe .globe-cap{
+  max-width:25rem;
+  margin:.2rem auto 0;
+  padding:.55rem .75rem .58rem;
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule);
+  background:var(--panel);
+}
+.stage-globe .globe-cap > a{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.69rem;
+  font-weight:620;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+.stage-globe .globe-hint,.stage-globe .globe-hint-touch{
+  margin-top:.28rem;
+  font-size:.72rem;
+  line-height:1.44;
+}
+.stage-globe .globe-key{
+  max-width:39em;
+  margin-top:.62rem;
+  padding-top:.62rem;
+  border-top:1px solid var(--rule);
+}
+
+@media (max-width:44rem){
+  .descent > .stage{gap:.86rem 0}
+  .descent > .stage .display{letter-spacing:-.047em}
+  .corpusline div{min-height:4.6rem;padding:.66rem .62rem .58rem}
+  .corpusline dd{padding-right:.5rem}
+  .startlinks a,.startlinks a[href="selected.html"]{
+    min-height:3.45rem;
+    padding:.46rem .42rem;
+    gap:.32rem;
+    font-size:.64rem;
+  }
+  .startlinks a::before{font-size:.57rem}
+  .stage-globe .globe-cap{max-width:22rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .corpusline div,.startlinks a{transition:none}
+}
+
+/* ---------------- recruiter capability triptych ------------------- */
+html.selected-review .hero.tight{
+  padding-block:clamp(2rem,3.7vw,3.2rem) 1.35rem;
+}
+
+html.selected-review .hero.tight .herowrap{
+  align-items:start;
+}
+
+html.selected-review .hero.tight .h1{
+  max-width:16ch;
+}
+
+html.selected-review .slotwrap{
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  padding:.72rem .78rem .68rem;
+  position:relative;
+}
+
+html.selected-review .slotcount{
+  position:absolute;
+  right:.78rem;
+  top:.62rem;
+  margin:0;
+  color:var(--ink-3);
+  font:560 .62rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+html.selected-review .slotwrap .slots-h{
+  padding-right:8.8rem;
+  color:var(--ink-2);
+}
+
+html.selected-review .stack-end{
+  padding-bottom:clamp(3rem,6vw,5rem);
+}
+
+.review-console{
+  margin-top:.35rem;
+  border-top:1px solid var(--ink);
+  padding-top:.7rem;
+}
+
+.review-console-head,
+.support-console-head{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(19rem,.85fr);
+  gap:clamp(1.5rem,4vw,4.25rem);
+  align-items:end;
+  margin:0 0 1.15rem;
+}
+
+.review-label,
+.support-label,
+.priority-sequence,
+.priority-domain,
+.support-sequence,
+.support-domain,
+.audit-label{
+  margin:0;
+  color:var(--ink-2);
+  font:560 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.review-label,
+.support-label{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  color:var(--accent);
+}
+
+.review-label::before,
+.support-label::before{
+  content:"";
+  width:1.4rem;
+  height:2px;
+  background:currentColor;
+}
+
+.review-title,
+.support-title{
+  margin:.35rem 0 0;
+  max-width:23ch;
+  color:var(--ink);
+  font-size:clamp(1.45rem,2.3vw,2.15rem);
+  font-weight:670;
+  letter-spacing:-.025em;
+  line-height:1.04;
+}
+
+.review-intent,
+.support-intent{
+  margin:0;
+  max-width:39rem;
+  color:var(--ink-2);
+  font-size:.92rem;
+  line-height:1.55;
+}
+
+.primary-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.8rem;
+  counter-reset:priority;
+}
+
+.priority-card{
+  min-width:0;
+  min-height:25rem;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);
+  padding:1rem 1rem .95rem;
+}
+
+.priority-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--rule),var(--rule)) 1rem 4.2rem / 2.1rem 1px no-repeat,
+    linear-gradient(var(--rule),var(--rule)) calc(100% - 3.1rem) 4.2rem / 2.1rem 1px no-repeat,
+    linear-gradient(var(--rule),var(--rule)) 50% 0 / 1px .42rem no-repeat;
+}
+
+.priority-card:hover,
+.priority-card:focus-within{
+  background:var(--panel-2);
+  border-color:var(--edge);
+  border-top-color:var(--accent);
+}
+
+.priority-sequence{
+  display:flex;
+  justify-content:space-between;
+  gap:.75rem;
+  padding-bottom:.78rem;
+  border-bottom:1px solid var(--rule-strong);
+  color:var(--ink-2);
+}
+
+.priority-sequence b{
+  color:var(--accent);
+  font-weight:680;
+}
+
+.priority-signal{
+  color:var(--ink-3);
+  white-space:nowrap;
+}
+
+.priority-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 4.25rem;
+  gap:.65rem;
+  align-items:start;
+  padding-top:1rem;
+}
+
+.priority-domain{
+  color:var(--ink-3);
+  min-height:1.8rem;
+}
+
+.priority-title{
+  margin:.32rem 0 .38rem;
+  color:var(--ink);
+  font-size:clamp(1.32rem,1.7vw,1.72rem);
+  font-weight:680;
+  line-height:1.06;
+  letter-spacing:-.025em;
+}
+
+.priority-title a{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px solid var(--rule-strong);
+}
+
+.priority-title a:hover,
+.priority-title a:focus-visible{
+  border-bottom-color:var(--accent);
+}
+
+.priority-subtitle{
+  margin:0;
+  color:var(--ink-2);
+  font-size:.87rem;
+  line-height:1.47;
+}
+
+.priority-fingerprint{
+  width:4.25rem;
+  min-width:3.5rem;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  color:var(--ink-2);
+  border:1px solid var(--rule-strong);
+  background:
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--rule) 50%,transparent calc(50% + .5px)),
+    linear-gradient(transparent calc(50% - .5px),var(--rule) 50%,transparent calc(50% + .5px)),
+    var(--paper);
+}
+
+.priority-fingerprint > svg{
+  flex:none;
+}
+
+.priority-proof{
+  min-height:3.65rem;
+  display:flex;
+  align-items:center;
+  margin:1rem 0 0;
+  padding:.58rem .62rem;
+  color:var(--ink);
+  background:var(--paper);
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  font:600 .69rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.065em;
+  text-transform:uppercase;
+}
+
+.priority-proof::before{
+  content:"[";
+  color:var(--accent);
+  margin-right:.38rem;
+}
+
+.priority-proof::after{
+  content:"]";
+  color:var(--accent);
+  margin-left:.38rem;
+}
+
+.priority-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin:.78rem 0 0;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+
+.priority-metric{
+  min-width:0;
+  padding:.5rem .35rem .48rem 0;
+  border-right:1px solid var(--rule);
+}
+
+.priority-metric + .priority-metric{
+  padding-left:.5rem;
+}
+
+.priority-metric:last-child{
+  border-right:0;
+}
+
+.priority-metric b,
+.priority-metric span{
+  display:block;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+
+.priority-metric b{
+  color:var(--ink);
+  font-size:.96rem;
+  font-weight:670;
+  line-height:1.15;
+}
+
+.priority-metric span{
+  margin-top:.18rem;
+  color:var(--ink-3);
+  font:560 .62rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.priority-note{
+  margin:.78rem 0 1rem;
+  color:var(--ink-2);
+  font-size:.84rem;
+  line-height:1.52;
+}
+
+.priority-action{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:2.75rem;
+  margin-top:auto;
+  padding:.55rem .68rem;
+  background:var(--paper);
+  border:1px solid var(--edge);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:660;
+  text-decoration:none;
+}
+
+.priority-action span{
+  color:var(--accent);
+  font-size:1rem;
+}
+
+.priority-action:hover,
+.priority-action:focus-visible{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+.support-console{
+  margin-top:clamp(2.8rem,6vw,5rem);
+  padding-top:.7rem;
+  border-top:1px solid var(--ink);
+}
+
+.support-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:2px solid var(--ink-2);
+  border-left:1px solid var(--rule-strong);
+}
+
+.support-card{
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 3.7rem;
+  gap:.65rem 1rem;
+  align-content:start;
+  position:relative;
+  padding:1rem;
+  background:var(--panel);
+  border-right:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+}
+
+.support-card:hover,
+.support-card:focus-within{
+  background:var(--panel-2);
+}
+
+.support-sequence{
+  grid-column:1;
+  display:flex;
+  gap:.55rem;
+  color:var(--ink-3);
+}
+
+.support-sequence b{
+  color:var(--ink-2);
+  font-weight:670;
+}
+
+.support-title-card{
+  grid-column:1;
+  margin:.1rem 0 0;
+  color:var(--ink);
+  font-size:1.13rem;
+  font-weight:660;
+  line-height:1.13;
+  letter-spacing:-.015em;
+}
+
+.support-title-card a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.support-title-card a::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
+.support-subtitle{
+  grid-column:1;
+  margin:0;
+  color:var(--ink-2);
+  font-size:.84rem;
+  line-height:1.45;
+}
+
+.support-fingerprint{
+  grid-column:2;
+  grid-row:1 / span 3;
+  color:var(--ink-3);
+  justify-self:end;
+}
+
+.support-fingerprint > svg{
+  display:block;
+}
+
+.support-proof{
+  grid-column:1 / -1;
+  margin:.2rem 0 0;
+  padding-top:.62rem;
+  border-top:1px solid var(--rule);
+  color:var(--ink-2);
+  font:560 .67rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.support-measures{
+  grid-column:1 / -1;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.2rem .8rem;
+  margin:0;
+  color:var(--ink-3);
+  font:560 .65rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-variant-numeric:tabular-nums;
+}
+
+.support-open{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:space-between;
+  margin:.15rem 0 0;
+  padding-top:.58rem;
+  border-top:1px solid var(--rule-strong);
+  color:var(--accent);
+  font-size:.8rem;
+  font-weight:660;
+}
+
+.full-audit{
+  margin-top:2rem;
+  border-top:1px solid var(--rule-strong);
+  border-bottom:3px solid var(--edge);
+  background:var(--panel);
+}
+
+.full-audit > summary{
+  list-style:none;
+  min-height:4.25rem;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem;
+  align-items:center;
+  padding:.8rem 1rem;
+  cursor:pointer;
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+}
+
+.full-audit > summary::-webkit-details-marker{
+  display:none;
+}
+
+.audit-label{
+  color:var(--ink-2);
+}
+
+.audit-label b{
+  color:var(--ink);
+  font-weight:670;
+}
+
+.audit-open{
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:650;
+}
+
+.full-audit[open] > summary{
+  border-bottom-color:var(--edge);
+}
+
+.full-audit-inner{
+  padding:1rem;
+  border-left:1px solid var(--rule-strong);
+  border-right:1px solid var(--rule-strong);
+}
+
+.full-audit-inner .caselead{
+  margin:.35rem 0 1rem;
+}
+
+@media (max-width:63.99rem){
+  .review-console-head,
+  .support-console-head{
+    grid-template-columns:1fr;
+    gap:.65rem;
+  }
+  .primary-grid{
+    grid-template-columns:1fr;
+  }
+  .priority-card{
+    min-height:0;
+  }
+}
+
+@media (min-width:48rem) and (max-width:63.99rem){
+  .priority-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(14rem,.7fr);
+    gap:0 1.2rem;
+  }
+  .priority-sequence,
+  .priority-head{
+    grid-column:1;
+  }
+  .priority-proof,
+  .priority-metrics,
+  .priority-note,
+  .priority-action{
+    grid-column:2;
+  }
+  .priority-proof{
+    margin-top:1rem;
+  }
+}
+
+@media (max-width:640px){
+  html.selected-review .hero.tight{
+    padding-block:1.55rem .9rem;
+  }
+  html.selected-review .slotwrap{
+    margin-top:1rem;
+  }
+  html.selected-review .slotcount{
+    position:static;
+    display:block;
+    margin-top:.55rem;
+  }
+  html.selected-review .slotwrap .slots-h{
+    padding-right:0;
+  }
+  .review-console{
+    margin-top:.15rem;
+  }
+  .review-console-head,
+  .support-console-head{
+    margin-bottom:.85rem;
+  }
+  .review-title,
+  .support-title{
+    font-size:1.5rem;
+    max-width:18ch;
+  }
+  .review-intent,
+  .support-intent{
+    font-size:.85rem;
+  }
+  .primary-grid{
+    gap:.65rem;
+  }
+  .priority-card{
+    padding:.85rem;
+  }
+  .priority-head{
+    grid-template-columns:minmax(0,1fr) 3.75rem;
+  }
+  .priority-fingerprint{
+    width:3.75rem;
+  }
+  .priority-domain{
+    min-height:0;
+  }
+  .priority-proof{
+    min-height:0;
+  }
+  .priority-note{
+    font-size:.82rem;
+  }
+  .support-console{
+    margin-top:2.8rem;
+  }
+  .support-grid{
+    grid-template-columns:1fr;
+  }
+  .support-card{
+    grid-template-columns:minmax(0,1fr) 3.6rem;
+    padding:.85rem;
+  }
+  .full-audit > summary{
+    grid-template-columns:1fr;
+    gap:.15rem;
+    align-content:center;
+  }
+  .full-audit-inner{
+    padding:.65rem;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .priority-card,
+  .support-card,
+  .priority-action{
+    transition:none;
+  }
+}
+
+
+/* ---------------- the handoff, and the resume's one figure -------- */
+/* What a reader who has read enough does next. Every value in it is one the
+   site already records, so the block cannot outlive the field behind it. */
+.review-handoff{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem clamp(1.5rem,4vw,3rem);
+  align-items:center;
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  padding:1rem 1.1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);
+}
+
+.handoff-label{
+  margin:0;
+  color:var(--accent);
+  font:560 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.handoff-line{
+  margin:.38rem 0 0;
+  color:var(--ink-2);
+  font-size:.92rem;
+  line-height:1.5;
+  max-width:46rem;
+}
+
+.handoff-line b{color:var(--ink);font-weight:660}
+
+.handoff-who{
+  margin:.3rem 0 0;
+  color:var(--ink-3);
+  font:560 .68rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.handoff-acts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin:0;
+}
+
+.handoff-go{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  min-height:2.75rem;
+  padding:.55rem .85rem;
+  background:var(--paper);
+  border:1px solid var(--edge);
+  border-radius:var(--radius);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:660;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.handoff-go:hover,
+.handoff-go:focus-visible{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+/* The one figure from paid work, where a recruiter reads first. */
+.rproof{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.75rem 1.1rem;
+  align-items:start;
+  margin:1.1rem 0 0;
+  padding:.85rem 1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+}
+
+.rproof-fig{margin:0}
+
+.rproof-fig b{
+  display:block;
+  color:var(--ink);
+  font-size:clamp(1.5rem,2.6vw,2rem);
+  font-weight:680;
+  line-height:1;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+
+.rproof-fig span{
+  display:block;
+  max-width:9rem;
+  margin-top:.32rem;
+  color:var(--ink-3);
+  font:560 .62rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.rproof-what p{margin:0;color:var(--ink-2);font-size:.88rem;line-height:1.5}
+.rproof-role{color:var(--ink);font-weight:640}
+.rproof-what p + p{margin-top:.25rem}
+
+@media (max-width:640px){
+  .review-handoff{grid-template-columns:1fr;padding:.85rem}
+  .handoff-acts{gap:.5rem}
+  .handoff-go{flex:1 1 auto;justify-content:space-between}
+  .rproof{grid-template-columns:1fr;gap:.5rem}
+  .rproof-fig span{max-width:none}
+}
+
+@media print{
+  .review-handoff{break-inside:avoid}
+  .rproof{background:none;border-color:#ddd9cf}
+}

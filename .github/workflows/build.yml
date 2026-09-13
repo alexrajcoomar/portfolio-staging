@@ -1,0 +1,142 @@
+# Builds the site, checks it, falsifies its checks, audits it in a browser,
+# proves the build idempotent, and only then deploys it to GitHub Pages.
+#
+# Nothing here touches design. It reads content/pieces.json, measures any
+# piece whose file changed, regenerates the generated pages, runs the tests
+# of controls the register requires, audits in a browser what the pages
+# claim about themselves, writes the records back, and deploys the tree
+# that passed. A failure anywhere in the chain leaves the last good site
+# live: the deploy job runs only when the build job succeeded. The
+# commit-back carries [skip ci] so it cannot set itself off again.
+name: Build, check and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rebuild
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Work out what needs measuring
+        id: plan
+        run: python3 build/measure_plan.py
+
+      # Opening pages in a real browser is the slow part, so it only happens
+      # when a piece's own file changed or a runtime record is stale.
+      - name: Install a browser
+        if: steps.plan.outputs.needs == '1'
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Measure the pieces that changed
+        if: steps.plan.outputs.measure == '1'
+        run: node build/measure.js
+
+      # The link-preview card carries the piece's title, so a title edit makes
+      # a card stale without changing any piece file. Tracked separately.
+      - name: Draw the link-preview cards that changed
+        if: steps.plan.outputs.cards == '1'
+        run: node build/cards.js
+
+      # Fails the run if any check fails. A red mark here means the site was
+      # not deployed broken.
+      - name: Rebuild the generated pages and check them
+        run: python3 build/build_site.py
+
+      # Tests of controls: for every check, a falsification applied to a copy
+      # of the tree, after which the build must refuse naming that check. Run
+      # when the record in content/negatives.json is missing or was taken
+      # against other code; a falsification the checks miss fails the run.
+      - name: Falsify every check and record what caught it
+        if: steps.plan.outputs.negatives == '1'
+        run: python3 build/negatives.py --jobs 3
+
+      # What the pages claim about themselves at runtime (nothing external,
+      # nothing moving while idle, focus visible, printing, fitting a phone,
+      # the offline copy surviving a publish) is measured in the same browser
+      # and recorded in content/audit.json, for the pages whose inputs moved;
+      # then each runtime claim is falsified on a copy of a page and the
+      # measurement must fail it.
+      - name: Audit the rendered pages and falsify the audit
+        if: steps.plan.outputs.audit == '1'
+        run: node build/audit.js && node build/audit.js --falsify
+
+      # Every run leaves a line in the record, whether the audit ran or its
+      # records were kept, so the register can say how old its measurements
+      # are rather than fall silent.
+      - name: Record this run
+        run: python3 build/claims.py --record-run "${{ steps.plan.outputs.audit }}"
+
+      # The register and the controls page print the records, so the pages
+      # are written once more from them. Nothing else changes.
+      - name: Print the records on the pages
+        run: python3 build/build_site.py
+
+      # The build claims to be idempotent, so the workflow holds it to that:
+      # one more run must rewrite nothing, or the deploy does not happen.
+      - name: A further build rewrites nothing
+        run: |
+          python3 build/build_site.py | tee /tmp/build-again.log
+          grep -q "rewrote: nothing" /tmp/build-again.log
+
+      - name: Commit anything that changed
+        run: |
+          git config user.name  "site build"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -r --cached --quiet --ignore-unmatch node_modules package.json package-lock.json || true
+          git add -A
+          if git diff --cached --quiet; then
+            echo "site already up to date"
+          else
+            git commit -m "Rebuild site [skip ci]"
+            git push
+          fi
+
+      # The tree that passed, without the repository's own machinery and
+      # without the author's private working files. applications/ holds the
+      # co-op material: the candidate brief, the targeting strategy and the
+      # compiled resumes. It was being published, because this step copied
+      # everything it was not told to leave behind. It is excluded here as
+      # well as untracked, so a copy that reappears in the working tree is
+      # still not served.
+      - name: Package the site
+        run: |
+          mkdir -p /tmp/site
+          rsync -a --exclude .git --exclude .github --exclude node_modules --exclude __pycache__ --exclude applications ./ /tmp/site/
+          test ! -e /tmp/site/applications
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/site
+
+  # Deploys only what the build job passed. A red build leaves the last good
+  # site live; nothing is served that a check refused.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deployment
+        uses: actions/deploy-pages@v4

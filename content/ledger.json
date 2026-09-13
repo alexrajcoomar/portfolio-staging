@@ -1,0 +1,1726 @@
+{
+ "note": "Written by build/ledger.py from the files and build/ledger-notes.json. The class of every piece is computed against content/invariants.json; the build refuses to run when this file's classes are stale. The colophon's sentence about this pass is printed from the summary below.",
+ "pass": {
+  "name": "content/pass-1",
+  "started": "2026-09-02",
+  "baseline": "0f31bdb",
+  "baseline_note": "redesign/statement at 0f31bdb, the tree delivered as portfolio-redesign-statement.zip, not yet on live main."
+ },
+ "summary": {
+  "copy": 50,
+  "styling": 8,
+  "untouched": 3,
+  "new": 6,
+  "pieces": 67
+ },
+ "pieces": {
+  "flagged-in-hindsight": {
+   "url": "flagged-in-hindsight.html",
+   "title": "Flagged in Hindsight",
+   "class": "copy",
+   "changes": [
+    "key",
+    "em dashes",
+    "built_from",
+    "measure"
+   ],
+   "count_fixes": [
+    {
+     "from": "Three labels are in use.",
+     "to": "Four labels are in use."
+    }
+   ],
+   "additions": [
+    {
+     "text": "FROM MEMORY, used once, in § 6, for a general concept stated with no paragraph cited.",
+     "chips": [
+      "FROM MEMORY"
+     ]
+    }
+   ],
+   "notes": [
+    "The key in § 1 declared three provenance labels and the piece uses a fourth, FROM MEMORY, once in § 6. The fourth is now declared in the key, in the piece's own words for it (a general concept, no paragraph cited); the sentence that carries it is untouched, and the key's count sentence reads four instead of three.",
+    "Em dashes: 46 replaced by rule (commas 6, parentheses 5, colon 12, colon in a heading 9, comma 14); 4 kept (a nil placeholder standing alone 4).",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "crucible-cockpit": {
+   "url": "crucible-cockpit.html",
+   "title": "Crucible Cockpit",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Em dashes: 6 replaced by rule (parentheses 2, comma 4); 0 kept (none).",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "crucible-run-0": {
+   "url": "crucible-run-0.html",
+   "title": "Crucible Run 0: the Bank of Canada backtest",
+   "class": "untouched",
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run 0 — The Bank of Canada backtest”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "crucible-run-b": {
+   "url": "crucible-run-b.html",
+   "title": "Crucible Run B: the maturity-wall thesis",
+   "class": "untouched",
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run B — The maturity-wall thesis”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "crucible-run-c": {
+   "url": "crucible-run-c.html",
+   "title": "Crucible Run C: the goodwill-impairment thesis",
+   "class": "untouched",
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run C — The goodwill-impairment thesis”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "epistemic-quality-directive": {
+   "url": "epistemic-quality-directive.html",
+   "title": "Epistemic Quality Directive",
+   "class": "new",
+   "changes": [
+    "new",
+    "converted"
+   ],
+   "notes": [
+    "Converted from pending/epistemic-quality-directive-v1.3.md by scripts/md2piece.py in the session's scratchpad (reproduced in LEDGER.md), in the conventions of the converted notes: site header and document bar, contents rail, masthead with chips, heading anchors in the Atlas's slug rule, the build-owned conversion sentence, footer and search block. No text was changed; the phrase \"claim-audit engine build\" in the header paragraph is linked to crucible-cockpit.html so the Atlas draws the edge. Placed on the independent shelf as Reference, after the three Crucible runs."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "brittle-network": {
+   "url": "brittle-network.html",
+   "title": "The Brittle Network",
+   "class": "copy",
+   "changes": [
+    "built_from",
+    "measure",
+    "em dashes"
+   ],
+   "notes": [
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
+    "Measure: .disc-note, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch).",
+    "Em dashes, this phase: 87 replaced by rule (commas 3, parentheses 5, colon 4, colon in a heading 9, comma 64, dropped at a line end 2); 9 kept (a nil placeholder standing alone 9). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "price-of-divergence": {
+   "url": "price-of-divergence.html",
+   "title": "The Price of Divergence",
+   "class": "copy",
+   "changes": [
+    "built_from",
+    "measure",
+    "em dashes"
+   ],
+   "notes": [
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
+    "Em dashes, this phase: 104 replaced by rule (commas 5, parentheses 4, colon 28, colon in a heading 15, comma 52). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "ifrs15-judgment-trainer": {
+   "url": "ifrs15-judgment-trainer.html",
+   "title": "IFRS 15 Judgment Trainer",
+   "class": "styling",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 0 replaced by rule (); 1 kept (a nil placeholder standing alone 1).",
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-ifrs15-judgment-trainer-400.woff2 (10,672 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-ifrs15-judgment-trainer-500.woff2 (10,928 bytes, 110 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-ifrs15-judgment-trainer.woff2 (48,232 bytes, 110 codepoints); Spectral: Spectral-Regular.ttf -> fonts/spectral-ifrs15-judgment-trainer-400.woff2 (26,996 bytes, 109 codepoints); Spectral: Spectral-Medium.ttf -> fonts/spectral-ifrs15-judgment-trainer-500.woff2 (28,400 bytes, 109 codepoints); Spectral: Spectral-SemiBold.ttf -> fonts/spectral-ifrs15-judgment-trainer-600.woff2 (28,824 bytes, 109 codepoints); Spectral: Spectral-Italic.ttf -> fonts/spectral-ifrs15-judgment-trainer-400-italic.woff2 (28,084 bytes, 109 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --ink-3 #6b7571 to #656c68 (4.78:1 on #f0f2ef, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "ifrs15-verification-memo": {
+   "url": "ifrs15-verification-memo.html",
+   "title": "IFRS 15 Item Bank: Verification and Backfill",
+   "class": "copy",
+   "changes": [
+    "strikes",
+    "built_from"
+   ],
+   "strikes": [
+    {
+     "text": "The IE paragraph numbers exist in Part I and could be added if you want that level of pinpoint.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "five-shall-paragraphs": {
+   "url": "five-shall-paragraphs.html",
+   "title": "The Five Shall Paragraphs",
+   "class": "copy",
+   "changes": [
+    "built_from",
+    "fonts",
+    "contrast",
+    "spacing"
+   ],
+   "notes": [
+    "Typefaces self-hosted: Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-five-shall-paragraphs.woff2 (154,764 bytes, 116 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-five-shall-paragraphs-italic.woff2 (130,668 bytes, 116 codepoints); Libre Franklin: LibreFranklin[wght].ttf -> fonts/librefranklin-five-shall-paragraphs.woff2 (20,592 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-five-shall-paragraphs-400.woff2 (10,976 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-five-shall-paragraphs-500.woff2 (11,220 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-five-shall-paragraphs-600.woff2 (11,840 bytes, 114 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --ink-faint #7a8296 to #656c7e (4.65:1 on #edf1fc, 1 uses).",
+    "Stray space before punctuation removed in 1 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "zakaria-putin-audited": {
+   "url": "zakaria-putin-audited.html",
+   "title": "Zakaria's Putin, Audited",
+   "class": "styling",
+   "changes": [
+    "built_from",
+    "fonts",
+    "main landmark",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-zakaria-putin-audited-400.woff2 (11,088 bytes, 112 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-zakaria-putin-audited-500.woff2 (11,404 bytes, 112 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-zakaria-putin-audited-600.woff2 (12,044 bytes, 112 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-zakaria-putin-audited.woff2 (49,956 bytes, 112 codepoints); Spectral: Spectral-Regular.ttf -> fonts/spectral-zakaria-putin-audited-400.woff2 (27,536 bytes, 111 codepoints); Spectral: Spectral-SemiBold.ttf -> fonts/spectral-zakaria-putin-audited-600.woff2 (29,372 bytes, 111 codepoints); Spectral: Spectral-Bold.ttf -> fonts/spectral-zakaria-putin-audited-700.woff2 (29,456 bytes, 111 codepoints); Spectral: Spectral-Italic.ttf -> fonts/spectral-zakaria-putin-audited-400-italic.woff2 (28,720 bytes, 111 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3).",
+    "Colour contrast: variable --ink-3 #79837e to #6a6e6a (4.72:1 on #f3f5f1, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "predictive-history": {
+   "url": "predictive-history.html",
+   "title": "Predictive History",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "accessibility"
+   ],
+   "notes": [
+    "Em dashes: 8 replaced by rule (commas 1, comma 6, dropped after punctuation 1); 1 kept (inside a quotation 1).",
+    "Heading order: 12 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h5 read as level 2, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h4 read as level 3).",
+    "The 15 map nodes' aria-labels now begin with the text each node shows (the name and its fraction), so the accessible name contains the visible label; the rest of each label is unchanged.",
+    "The map aside's two script-written headings carry aria-level 3.",
+    "Each map node's count label (15 of them) is aria-hidden: the node's accessible name already states the count and the resolved share, and the audit's name-mismatch rule reads the two text runs as one word.",
+    "Two last audit items: 12 bare h5 tags the map aside's script writes carry aria-level 3 (the aside sits under a section heading), and a space now separates each map node's name from its count so the visible text reads as two words, which is what the node's accessible name states.",
+    "Em dashes, this phase: 1 replaced by rule (comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "predictive-history-archive": {
+   "url": "predictive-history-archive.html",
+   "title": "Predictive History: the withdrawn first edition",
+   "class": "styling",
+   "changes": [
+    "title",
+    "built_from",
+    "contrast",
+    "heading order"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “The Prophet and the Record · an adjudication of the Predictive History corpus”.",
+    "Styling only, as the freeze allows: the supersession banner's amber token is darker (#b8730f to #9a5f0c) so its white tag and the amber figures clear contrast, and the banner's table headers no longer sit at opacity .7. No text changed.",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Styling only: the muted text token is darker (#6f6d68 to #63615c) so the pattern and mental-model labels clear 4.5:1 on their tinted asides."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "the-trillion-dollar-vintage": {
+   "url": "the-trillion-dollar-vintage.html",
+   "title": "The Trillion-Dollar Vintage",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "heading order",
+    "spacing"
+   ],
+   "spellings": [
+    {
+     "from": "center",
+     "to": "centre"
+    },
+    {
+     "from": "favor",
+     "to": "favour"
+    },
+    {
+     "from": "favorable",
+     "to": "favourable"
+    },
+    {
+     "from": "favorite",
+     "to": "favourite"
+    },
+    {
+     "from": "favors",
+     "to": "favours"
+    },
+    {
+     "from": "fiber",
+     "to": "fibre"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    },
+    {
+     "from": "modeled",
+     "to": "modelled"
+    },
+    {
+     "from": "modeling",
+     "to": "modelling"
+    },
+    {
+     "from": "rumor",
+     "to": "rumour"
+    }
+   ],
+   "notes": [
+    "Em dashes: 209 replaced by rule (commas 19, parentheses 17, colon 30, comma 142, dropped after punctuation 1); 1 kept (inside a quotation 1).",
+    "Canadian spelling: 17 words changed (center to centre 2, favor to favour 1, favorable to favourable 1, favorite to favourite 2, favors to favours 2, fiber to fibre 4, labeled to labelled 2, modeled to modelled 1, modeling to modelling 1, rumor to rumour 1).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Stray space before punctuation removed in 6 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name).",
+    "Em dashes, this phase: 1 replaced by rule (colon 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "whose-losses-count": {
+   "url": "whose-losses-count.html",
+   "title": "Whose Losses Count",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "table headers",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 30 replaced by rule (commas 4, parentheses 2, colon 6, comma 11, dropped after punctuation 7); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
+    "Heading order: 7 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3).",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 8 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --outside #e34948 to #db2928 (4.69:1 on #fcfcfb, 1 uses); variable --inside #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses).",
+    "Em dashes, this phase: 4 replaced by rule (comma 4); 1 kept (a nil placeholder standing alone 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "not-significant": {
+   "url": "not-significant.html",
+   "title": "Not Significant",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 38 replaced by rule (commas 9, parentheses 2, colon 2, colon in a heading 1, comma 20, dropped after punctuation 4); 2 kept (a nil placeholder standing alone 2).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --text-muted #8a8780 to #746f6e (4.74:1 on #fbfaf7, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "global-spending-and-wealth": {
+   "url": "global-spending-and-wealth.html",
+   "title": "Global Spending and Wealth",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark"
+   ],
+   "notes": [
+    "Em dashes: 4 replaced by rule (parentheses 1, comma 2, dropped after punctuation 1); 18 kept (a nil placeholder standing alone 18).",
+    "One em dash remains inside a data-tip-op attribute (a tooltip the page's script shows on a figure cell); attributes other than alt, title, aria-label and placeholder were not edited, though the entity &mdash; there was normalised to the character.",
+    "Main landmark: role=\"main\" on div class=\"wrap\"."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "heartbeat-budget": {
+   "url": "heartbeat-budget.html",
+   "title": "Does chronic caffeine spend your heartbeat budget faster?",
+   "class": "styling",
+   "changes": [
+    "title",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Does caffeine spend your heartbeat budget?”.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --text-muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "exam-day-final-load": {
+   "url": "exam-day-final-load.html",
+   "title": "Exam Day Final Load",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Exam Day — Final Load”.",
+    "Em dashes: 10 replaced by rule (colon 2, colon in a heading 2, comma 4, dropped after punctuation 2); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --s1 #2a78d6 to #226aba (4.71:1 on #eeeeeb, 1 uses); variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses); chip background #4a8cdc to #2a74d3 (4.63:1 on #ffffff, 0 uses); variable --s2 #eb6834 to #bb4214 (4.63:1 on #eeeeeb, 1 uses). Not resolved here: #dfebf9 on #2a78d6 (1).",
+    "The corner box's label reads at full strength (opacity .85 removed) and its highlighted terms sit on a darker tint of the box rather than a lighter one."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "daily-learning-cockpit": {
+   "url": "daily-learning-cockpit.html",
+   "title": "Daily Learning Cockpit",
+   "class": "styling",
+   "changes": [
+    "built_from",
+    "contrast",
+    "heading order"
+   ],
+   "notes": [
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #236cbe (4.66:1 on #ebf1f8, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses).",
+    "The 2 h3 headings the page's script writes carry aria-level=\"2\", the level the outline needs under the page's h1."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "the-delayed-test": {
+   "url": "the-delayed-test.html",
+   "title": "The Delayed Test",
+   "class": "styling",
+   "changes": [
+    "built_from",
+    "heading order"
+   ],
+   "notes": [
+    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "the-calibrated-mind": {
+   "url": "the-calibrated-mind.html",
+   "title": "The Calibrated Mind",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 27 replaced by rule (commas 2, colon 3, colon in a heading 3, comma 19); 3 kept (inside a quotation 3).",
+    "Table headers: in 1 tables whose header row opens with an empty cell, 3 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 2 replaced by rule (commas 1, comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291": {
+   "url": "afm291.html",
+   "title": "AFM 291 Vault",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from"
+   ],
+   "strikes": [
+    {
+     "text": "Anything unlabelled is sourced from your textbook.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the chapter.",
+     "residue": ""
+    },
+    {
+     "text": "Upload those pages.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the pages or lecture slides.",
+     "residue": ""
+    },
+    {
+     "text": "Re-upload the exhibit images.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the pages.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the Appendix.",
+     "residue": ""
+    },
+    {
+     "text": "Upload if your syllabus covers it.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "Em dashes: 29 replaced by rule (colon 11, colon in a heading 3, comma 15); 7 kept (a nil placeholder standing alone 7).",
+    "8 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 3 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "us-canada-legal-architecture": {
+   "url": "us-canada-legal-architecture.html",
+   "title": "US and Canada Legal Architecture",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 32 replaced by rule (parentheses 2, colon 3, colon in a heading 7, comma 20); 2 kept (a nil placeholder standing alone 2)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "business-law-primer": {
+   "url": "business-law-primer.html",
+   "title": "Business Law for Accountants",
+   "class": "styling",
+   "changes": [
+    "built_from",
+    "heading order",
+    "measure"
+   ],
+   "notes": [
+    "Heading order: 7 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 3, h5 read as level 4).",
+    "Measure: .meta, the widest text block the survey found on the page, is held to the reading measure (max-width:70ch)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "law-arena": {
+   "url": "law-arena.html",
+   "title": "Law Arena",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 5 replaced by rule (comma 5); 0 kept (none).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses). Not resolved here: #cc8287 on #fbfbf9 (9); #bbbab6 on #fbfbf9 (9).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "skill-forge": {
+   "url": "skill-forge.html",
+   "title": "Skill Forge",
+   "class": "styling",
+   "changes": [
+    "title",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 · Skill Forge”.",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses). Not resolved here: #87b2e5 on #fbfbf9 (11); #bbbab6 on #fbfbf9 (11).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-study-system": {
+   "url": "afm291-study-system.html",
+   "title": "AFM 291 Interactive Study System",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "contrast",
+    "accessibility",
+    "target size",
+    "type floor",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Interactive Visual Study System”.",
+    "Em dashes: 3 replaced by rule (colon in a heading 1, comma 2); 0 kept (none).",
+    "Colour contrast: variable --muted #898781 to #706c6c (4.67:1 on #f3f3f1, 1 uses); variable --acc #2a78d6 to #2168b6 (4.73:1 on #e4ecf4, 1 uses); variable --t1 #2a78d6 to #2168b6 (4.73:1 on #e4ecf4, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses). Not resolved here: #b46546 on #f8eee9 (10); #9a6f13 on #f9f0dc,#fcf3e0 (4); #a85f42 on #f7ebe4 (1).",
+    "The view-mode switch's role=\"tablist\" became role=\"group\": its buttons are not tabs, and a tab list may not hold plain buttons.",
+    "Breadcrumb buttons (.crumb) are at least 24 px tall: padding 4px 10px and min-height 24px, at 11 px instead of 10.5 px.",
+    "Every declared text size under 11 px (10, 10.5, 9.5 px) is now 11 px, in the stylesheet and in the font shorthands; the SVG micro-labels included.",
+    "The conflict badge mixes 48% of its accent into the ink instead of 70%, clearing contrast like the verify badge and the warning leaf.",
+    "Every diagram the page's script draws with role=\"img\" carries the accessible name \"Diagram, drawn by this page\": the helper that builds them is shared, so a truer per-diagram name would need each caller to pass one, which is listed for the owner. An attribute, not readable text.",
+    "Measure: .blnote, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "practice-arena": {
+   "url": "practice-arena.html",
+   "title": "AFM 291 Practice Arena",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Practice Arena”.",
+    "Em dashes: 4 replaced by rule (comma 4); 0 kept (none).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses). Not resolved here: #87b2e5 on #fbfbf9 (11); #bbbab6 on #fbfbf9 (11).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "econ102-exam-trainer": {
+   "url": "econ102-exam-trainer.html",
+   "title": "ECON 102 Interactive Exam Trainer",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Interactive Exam Trainer”.",
+    "Em dashes: 32 replaced by rule (commas 1, colon in a heading 1, comma 30); 38 kept (a nil placeholder standing alone 38).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --s1 #2a78d6 to #226aba (4.71:1 on #eeeeeb, 1 uses); variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); variable --s3 #1baf7a to #0e7653 (4.84:1 on #eeeeeb, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses); variable --s2 #eb6834 to #c54614 (4.8:1 on #fcfcfb, 1 uses). Not resolved here: #c0c0be on #f2f2f0 (1)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "revenue-recognition": {
+   "url": "revenue-recognition.html",
+   "title": "Revenue Recognition",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "contrast",
+    "measure"
+   ],
+   "notes": [
+    "Em dashes: 113 replaced by rule (commas 5, colon 37, colon in a heading 16, comma 55); 2 kept (a nil placeholder standing alone 2).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-revenue-recognition.woff2 (36,328 bytes, 115 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-revenue-recognition.woff2 (152,012 bytes, 118 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-revenue-recognition-italic.woff2 (128,432 bytes, 118 codepoints); JetBrains Mono: JetBrainsMono[wght].ttf -> fonts/jetbrainsmono-revenue-recognition.woff2 (34,320 bytes, 117 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --gold #c8952a to #d4a032 (4.64:1 on #363e3d, 1 uses); variable --teal #2a8a7a to #2e9a86 (4.63:1 on #16232e, 1 uses); variable --rust #b84a2a to #d66b4d (4.62:1 on #16232e, 1 uses).",
+    "Measure: .cp-a, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+   ],
+   "kept": [
+    "No dark palette added: set on a navy ground by design: it is a dark page already, and its own design is stronger than a derived light one."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-field-manual": {
+   "url": "afm291-field-manual.html",
+   "title": "AFM 291 Midterm Field Manual",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — MIDTERM 01 FIELD MANUAL · MT1-FM REV C”.",
+    "Em dashes: 84 replaced by rule (colon 51, colon in a heading 4, comma 29); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>; 1 'body > *' selectors now also match 'main > *'.",
+    "Heading order: 2 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 2, h4 read as level 3)."
+   ],
+   "kept": [
+    "No dark palette added: a print sheet: white sheets on a grey desk, built for paper; a dark scheme would fight the design it was made for."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-journal-entries": {
+   "url": "afm291-journal-entries.html",
+   "title": "AFM 291 Journal Entry Reference",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "strikes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "table headers",
+    "contrast",
+    "dark palette"
+   ],
+   "strikes": [
+    {
+     "text": "Dollar figures are illustrations from your reference; confirm them against the matching problem (see Verification Pass at the end).",
+     "residue": ""
+    },
+    {
+     "text": "Account names and entry forms are taken directly from your uploaded reference and the exam appendix.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Midterm 1 Journal Entry Reference”.",
+    "Em dashes: 26 replaced by rule (colon 10, colon in a heading 2, comma 14); 0 kept (none).",
+    "2 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Typefaces self-hosted: Fraunces: Fraunces[SOFT,WONK,opsz,wght].ttf -> fonts/fraunces-afm291-journal-entries.woff2 (82,980 bytes, 110 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-afm291-journal-entries.woff2 (151,624 bytes, 113 codepoints); Bricolage Grotesque: BricolageGrotesque[opsz,wdth,wght].ttf -> fonts/bricolagegrotesque-afm291-journal-entries.woff2 (117,916 bytes, 111 codepoints); JetBrains Mono: JetBrainsMono[wght].ttf -> fonts/jetbrainsmono-afm291-journal-entries.woff2 (34,340 bytes, 113 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 8 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --ink-muted #8a857d to #6d6867 (4.7:1 on #f2ede0, 1 uses); variable --ifrs #a66e2c to #925f27 (4.74:1 on #ecf2e8, 1 uses).",
+    "Dark palette: 20 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#1c1911); 37 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 366 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-inventory-gap-map": {
+   "url": "afm291-inventory-gap-map.html",
+   "title": "AFM 291 Inventory and Gap Map",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "accessibility"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Inventory & Gap Map”.",
+    "Em dashes: 66 replaced by rule (commas 5, colon 5, colon in a heading 21, comma 35); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --tm #84837c to #6c6b68 (4.76:1 on #f3f2ef, 1 uses); variable --good #0ca30c to #0c7b0c (4.86:1 on #e7f6e7, 1 uses); variable --crit #d03b3b to #c32f2f (4.62:1 on #fae5e5, 1 uses); variable --ser #ec835a to #b44b16 (4.74:1 on #fdf1d8, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 1 uses). Not resolved here: #49ba49 on #edf8ed (38).",
+    "The three filter selects and the search box carry aria-labels (Filter by week, Filter by verdict, Filter by category, Search file names and notes); no visible text changed."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm274-capital-structure": {
+   "url": "afm274-capital-structure.html",
+   "title": "AFM 274 Chapter 17",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 274 · Chapter 17 — Capital Structure in a Perfect Market (Exam Sheet)”.",
+    "Em dashes: 23 replaced by rule (colon 2, colon in a heading 8, comma 13); 2 kept (a nil placeholder standing alone 2).",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "A dark palette: the page's eight tokens are redeclared for a dark scheme and for data-theme=\"dark\", the body background becomes a token (--paper), and a print block restores the light tokens so the printed sheet is unchanged.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 41 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 411 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm274-financial-distress": {
+   "url": "afm274-financial-distress.html",
+   "title": "AFM 274 Chapter 19",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "table headers",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 274 · Chapter 19 — Financial Distress, Agency Costs & Information (Exam Sheet)”.",
+    "Em dashes: 28 replaced by rule (colon 1, colon in a heading 10, comma 17); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 5 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "A dark palette: the page's eight tokens are redeclared for a dark scheme and for data-theme=\"dark\", the body background becomes a token (--paper), and a print block restores the light tokens so the printed sheet is unchanged.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 191 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm241-study-reference": {
+   "url": "afm241-study-reference.html",
+   "title": "AFM 241 Exam Study Reference",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "spellings": [
+    {
+     "from": "defense",
+     "to": "defence"
+    }
+   ],
+   "notes": [
+    "Em dashes: 84 replaced by rule (colon 22, colon in a heading 2, comma 60); 1 kept (inside a quotation 1).",
+    "Canadian spelling: 1 words changed (defense to defence 1).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --disr #0e7c86 to #0e747c (4.84:1 on #e4f3f4, 1 uses); variable --num #b45309 to #aa4f09 (4.62:1 on #efe9fa, 1 uses). Not resolved here: #dbebed on #0e7c86 (1); #ddebe3 on #1f7a44 (1).",
+    "4 section-header sub-labels no longer sit at opacity .85 on their coloured band; the white text reads at full strength.",
+    "Dark palette: 15 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#211a2c); 51 literal colour declarations re-emitted under the same selectors with the literal mapped; 3 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 620 elements checked, 0 below the AA floor; light scheme 0 below the floor.",
+    "Em dashes, this phase: 1 replaced by rule (colon 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm241-cheat-sheet": {
+   "url": "afm241-cheat-sheet.html",
+   "title": "AFM 241 Two-Page Cheat Sheet",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 11 replaced by rule (colon 1, comma 10); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --amber #f59e0b to #9c680a (4.77:1 on #ffffff, 1 uses); variable --emer #059669 to #05825d (4.66:1 on #fffafa, 1 uses); variable --mut #64748b to #5c6b7f (4.78:1 on #f3eefe, 1 uses); chip background #059669 to #05825d (4.82:1 on #ffffff, 1 uses); chip background #0d9488 to #0d8078 (4.8:1 on #ffffff, 11 uses); chip background #f59e0b to #9c680a (4.77:1 on #ffffff, 0 uses).",
+    "Dark palette: 15 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221c2f); 46 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 164 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "hype-cycle": {
+   "url": "hype-cycle.html",
+   "title": "The Gartner Hype Cycle",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 21 replaced by rule (colon 1, colon in a heading 3, comma 17); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --red #dc2626 to #d62222 (4.67:1 on #fef2f2, 1 uses).",
+    "Dark palette: 12 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#211b2e); 40 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 133 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "econ102-visual-reference": {
+   "url": "econ102-visual-reference.html",
+   "title": "ECON 102 Master Visual Reference",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Master Visual Reference”.",
+    "Em dashes: 103 replaced by rule (commas 1, parentheses 1, colon 11, colon in a heading 24, comma 66); 4 kept (a nil placeholder standing alone 4).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); variable --s3 #1baf7a to #0f7b56 (4.78:1 on #f4f4f2, 1 uses); variable --s1 #2a78d6 to #246ec2 (4.67:1 on #f4f4f2, 1 uses); variable --s2 #eb6834 to #c04414 (4.68:1 on #f4f4f2, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "positive-vs-normative": {
+   "url": "positive-vs-normative.html",
+   "title": "Positive vs Normative",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "table headers",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Positive vs Normative [Slides 5–6]”.",
+    "Em dashes: 12 replaced by rule (parentheses 1, colon in a heading 2, comma 9); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Table headers: in 1 tables whose header row opens with an empty cell, 7 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --pos #1f6feb to #1465e2 (4.67:1 on #eaf2fe, 1 uses); variable --norm #a8600b to #a35d0b (4.63:1 on #fdf3e3, 1 uses)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch1-theory-and-analytics": {
+   "url": "afm291-ch1-theory-and-analytics.html",
+   "title": "AFM 291 Chapter 1",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "This guide is built directly from the Chapter 1 text you uploaded and the four exhibit images you provided (the Sailing/Accounting/Textbook-structure table, Exhibit 1-1, Exhibit 1-2, and Exhibit 1-3).",
+     "residue": ""
+    },
+    {
+     "text": "If your version of the chapter has those missing pages, upload them and I can tighten that section to match the authors' exact wording and examples.",
+     "residue": ""
+    },
+    {
+     "text": "Reminder of the one open item: if you have access to chapter pages ~14–21 (the detailed LO 1-7/1-8/1-9 material), share them and I'll rebuild that portion of Part E from the authors' actual text rather than the supplementary framework used here.",
+     "residue": ""
+    },
+    {
+     "text": "Remaining gaps: pages 14–21 (LO 1-7, 1-8, 1-9) , upload to close.",
+     "residue": "Remaining gaps: pages 14–21 (LO 1-7, 1-8, 1-9)."
+    }
+   ],
+   "spellings": [
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ],
+   "notes": [
+    "Em dashes: 204 replaced by rule (commas 10, parentheses 4, colon 13, colon in a heading 52, comma 125); 6 kept (inside a quotation 6).",
+    "Canadian spelling: 2 words changed (labeled to labelled 2).",
+    "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 3 tables whose header row opens with an empty cell, 13 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 6 replaced by rule (colon 1, comma 4, dropped at a line end 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 6 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch2-conceptual-frameworks": {
+   "url": "afm291-ch2-conceptual-frameworks.html",
+   "title": "AFM 291 Chapter 2",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "This guide is built from the complete Chapter 2 text you uploaded (which runs intact from the Learning Objectives through \"H. Answers to Checkpoint Questions\") plus the ten exhibit images you provided (2-1, 2-2, 2-3, 2-7, 2-8, 2-9, 2-10, 2-11, 2-12, 2-13, and the References table).",
+     "residue": ""
+    },
+    {
+     "text": "Open item: if you have access to this chapter's actual Appendix (the full capital-maintenance narrative behind Exhibits 2-12/2-13), share it and I'll fold in the authors' own explanation alongside my reconstruction above.",
+     "residue": ""
+    }
+   ],
+   "spellings": [
+    {
+     "from": "fulfill",
+     "to": "fulfil"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    }
+   ],
+   "notes": [
+    "Em dashes: 280 replaced by rule (commas 5, parentheses 3, colon 32, colon in a heading 71, comma 169); 12 kept (a nil placeholder standing alone 3, inside a quotation 9).",
+    "Canadian spelling: 15 words changed (fulfill to fulfil 1, fulfillment to fulfilment 14).",
+    "2 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 6 tables whose header row opens with an empty cell, 17 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 8 replaced by rule (colon in a heading 1, comma 7); 4 kept (a nil placeholder standing alone 4). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 22 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch3-accrual-accounting": {
+   "url": "afm291-ch3-accrual-accounting.html",
+   "title": "AFM 291 Chapter 3",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "Your uploaded file (and your Week 5 class plan) both confirm this excerpt intentionally starts at Section E and runs through Section I , matching your syllabus's assigned reading (\"pages 91–120, Section E Periodicity to and including Section H Substantive Differences\"; Section I on IFRS 18 is a bonus beyond that range).",
+     "residue": ""
+    },
+    {
+     "text": "If you want the actual detailed figures for Exhibits 3-21 through 3-26 (total assets, total equity, net income, EPS, OCI breakdown, etc.), the reliable path is to either re-upload the specific exhibit images so I can read the numbers directly, or, since Canadian Tire Corporation is a real public company (TSX: CTC.A), pull its FY2022 audited consolidated financial statements from a verified source (SEDAR+ or Canadian Tire's investor relations site) rather than relying on anyone's memory of the figures.",
+     "residue": ""
+    },
+    {
+     "text": "Open items: (1) send Exhibits 3-25/3-26 (Canadian Tire's full detailed cash flow and equity statements) or 3-28/3-29 (Illustrator Ltd. under IFRS 18) if you have them: I only had condensed or no data for these, as flagged above; (2) if your course also assigns Sections A–D (cash vs. accrual basics, the three cash cycles) or the chapter's Appendix, upload those and I'll extend this guide to match.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "Em dashes: 263 replaced by rule (commas 6, parentheses 2, colon 28, colon in a heading 79, comma 148); 37 kept (a nil placeholder standing alone 31, inside a quotation 6).",
+    "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 10 tables whose header row opens with an empty cell, 129 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 5 replaced by rule (commas 1, comma 4); 31 kept (a nil placeholder standing alone 31). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 15 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch4-revenue-recognition": {
+   "url": "afm291-ch4-revenue-recognition.html",
+   "title": "AFM 291 Chapter 4",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "Built from your complete Chapt 4.txt upload (runs intact from Section A through Section L: References) plus ~20 exhibit images and your Weeks 2–4 class-plan screenshots.",
+     "residue": ""
+    },
+    {
+     "text": "If you want that covered, upload that chapter separately.",
+     "residue": ""
+    },
+    {
+     "text": "If you have the actual Kennedy Construction numbers (from lecture slides or the missing textbook pages), send them and I'll rebuild this section properly with the real worked example.",
+     "residue": ""
+    },
+    {
+     "text": "Two open items: (1) the Kennedy Construction onerous-contract worked example (Exhibits 4-23–4-27), send those pages/slides and I'll rebuild Week 4's gap section properly; (2) the \"Liabilities & Contingencies\" material in your Weeks 3–4 syllabus isn't part of Chapter 4, upload that chapter if you'd like the same treatment for it.",
+     "residue": ""
+    }
+   ],
+   "spellings": [
+    {
+     "from": "fulfill",
+     "to": "fulfil"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    }
+   ],
+   "notes": [
+    "Em dashes: 273 replaced by rule (commas 8, parentheses 4, colon 42, colon in a heading 53, comma 166); 18 kept (a nil placeholder standing alone 14, inside a quotation 4).",
+    "Canadian spelling: 3 words changed (fulfill to fulfil 1, fulfillment to fulfilment 2).",
+    "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 6 tables whose header row opens with an empty cell, 19 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 3 replaced by rule (colon 2, comma 1); 15 kept (a nil placeholder standing alone 15). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 21 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch6-inventories": {
+   "url": "afm291-ch6-inventories.html",
+   "title": "AFM 291 Chapter 6",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "Open items: (1) if your instructor confirms the exact intended scope of \"Manufactured Goods to Section C\" differently from my reading (see the Note on Sources at the top), let me know and I'll adjust; (2) I don't have Chapter 5, which your Week 6 class plan pairs with this chapter, upload it if you'd like a matching guide before Midterm #1 on Tuesday, June 16.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "Em dashes: 307 replaced by rule (commas 6, parentheses 3, colon 29, colon in a heading 106, comma 163); 8 kept (a nil placeholder standing alone 3, inside a quotation 5).",
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 13 tables whose header row opens with an empty cell, 80 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 5 replaced by rule (colon 1, comma 4); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 37 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch9-intangibles-and-goodwill": {
+   "url": "afm291-ch9-intangibles-and-goodwill.html",
+   "title": "AFM 291 Chapter 9",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "strikes": [
+    {
+     "text": "A naming mismatch I'm flagging, not silently fixing: your message's opening instruction says \"create a comprehensive summary of Chapter 6,\" but the uploaded file is named Chapt 9.txt , its title is \"Chapter 9: Intangible Assets, Goodwill, Mineral Resources, and Government Grants,\" every exhibit number is in the 9-series (9-4, 9-6, 9-7, 9-8, 9-13–9-16), your Week 11 class plan image explicitly says \"Parts of Ch. 9,\" and your own objective sentence at the end of the message says \"fully understand Chapter 9.\"",
+     "residue": ""
+    },
+    {
+     "text": "I've built this guide for Chapter 9 ; let me know if I've misread your intent.",
+     "residue": ""
+    },
+    {
+     "text": "Open items: (1) confirm with your instructor whether \"Chapter 6\" in your message was indeed a copy-paste slip, as I've assumed; (2) if you want the literal six IAS 38 ¶57 development-cost criteria (rather than Airbus's four-bullet paraphrase), that's worth checking directly against the standard or your course notes, since my source material doesn't enumerate them; (3) if your course later circles back to Sections F/G in more depth, or if Exhibits 9-1–9-3 turn out to matter for an assignment, upload the relevant pages and I'll extend this guide.",
+     "residue": ""
+    }
+   ],
+   "spellings": [
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ],
+   "notes": [
+    "Em dashes: 314 replaced by rule (commas 5, parentheses 4, colon 48, colon in a heading 80, comma 177); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
+    "Canadian spelling: 2 words changed (labeled to labelled 2).",
+    "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 8 tables whose header row opens with an empty cell, 30 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 4 replaced by rule (colon in a heading 1, comma 3); 1 kept (a nil placeholder standing alone 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 41 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-ch10-fair-value": {
+   "url": "afm291-ch10-fair-value.html",
+   "title": "AFM 291 Chapter 10",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers",
+    "spacing"
+   ],
+   "strikes": [
+    {
+     "text": "Scheduling clarity: your message calls this \"Week 10,\" but your Chapter 9 guide's Week 11 checklist image showed Chapter 9 assigned for Week 11 (July 20–24).",
+     "residue": ""
+    },
+    {
+     "text": "Chapter 10 logically follows in Week 12 (July 27–31) , next week, not a past week.",
+     "residue": ""
+    },
+    {
+     "text": "I'm treating \"Week 10\" as shorthand for \"the Chapter 10 week,\" not literally the course's 10th week.",
+     "residue": ""
+    },
+    {
+     "text": "This also explains why you have no PBL/lecture notes yet: Week 12 hasn't happened, so those materials presumably haven't been distributed yet.",
+     "residue": ""
+    },
+    {
+     "text": "Nothing to worry about, just flagging so the labelling doesn't confuse you later.",
+     "residue": ""
+    },
+    {
+     "text": "If your Week 12 lecture or PBL scenario (once released) emphasizes anything not covered above, or uses different terminology/examples, let me know and I'll fold it in.",
+     "residue": ""
+    }
+   ],
+   "spellings": [
+    {
+     "from": "color",
+     "to": "colour"
+    },
+    {
+     "from": "labeling",
+     "to": "labelling"
+    }
+   ],
+   "notes": [
+    "Em dashes: 381 replaced by rule (commas 8, parentheses 6, colon 36, colon in a heading 111, comma 220); 13 kept (a nil placeholder standing alone 4, inside a quotation 9).",
+    "Canadian spelling: 2 words changed (color to colour 1, labeling to labelling 1).",
+    "6 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 22 tables whose header row opens with an empty cell, 89 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Stray space before punctuation removed in 20 places: the dash rules had left a space before the colon in the Instructor's Note callout titles.",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 20 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 8 replaced by rule (commas 1, colon in a heading 1, comma 6); 4 kept (a nil placeholder standing alone 4). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 48 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-key-takeaways": {
+   "url": "afm291-key-takeaways.html",
+   "title": "AFM 291 Key Takeaways",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from"
+   ],
+   "spellings": [
+    {
+     "from": "behavior",
+     "to": "behaviour"
+    },
+    {
+     "from": "favorite",
+     "to": "favourite"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ],
+   "notes": [
+    "Em dashes: 327 replaced by rule (commas 30, parentheses 12, colon 24, colon in a heading 72, comma 189); 9 kept (a nil placeholder standing alone 2, inside a quotation 7).",
+    "Canadian spelling: 4 words changed (behavior to behaviour 1, favorite to favourite 1, fulfillment to fulfilment 1, labeled to labelled 1).",
+    "Em dashes, this phase: 7 replaced by rule (colon 1, colon in a heading 1, comma 5); 2 kept (a nil placeholder standing alone 2). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-study-plan": {
+   "url": "afm291-study-plan.html",
+   "title": "AFM 291 Study Plan",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from"
+   ],
+   "strikes": [
+    {
+     "text": "Bring me the scores and I will re-weight the four weeks; the plan below assumes a flat profile until you do.",
+     "residue": "The plan below assumes a flat profile."
+    }
+   ],
+   "notes": [
+    "Em dashes: 86 replaced by rule (commas 2, colon 15, colon in a heading 21, comma 48); 4 kept (a nil placeholder standing alone 3, inside a quotation 1).",
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Em dashes, this phase: 1 replaced by rule (colon 1); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-reconciliation": {
+   "url": "afm291-reconciliation.html",
+   "title": "AFM 291 Reconciliation",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 72 replaced by rule (commas 2, parentheses 3, colon 12, colon in a heading 17, comma 38); 12 kept (a nil placeholder standing alone 3, inside a quotation 9).",
+    "Em dashes, this phase: 9 replaced by rule (colon 2, colon in a heading 1, comma 4, dropped at a line end 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 4 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w7-financial-assets": {
+   "url": "afm291-w7-financial-assets.html",
+   "title": "AFM 291 Financial Assets I",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order"
+   ],
+   "notes": [
+    "Em dashes: 114 replaced by rule (commas 1, parentheses 1, colon 11, colon in a heading 38, comma 63); 5 kept (a nil placeholder standing alone 3, inside a quotation 2).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3).",
+    "Em dashes, this phase: 1 replaced by rule (commas 1); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w7-cases": {
+   "url": "afm291-w7-cases.html",
+   "title": "AFM 291 Case Guide: Equity Investments",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 81 replaced by rule (commas 1, colon 10, colon in a heading 40, comma 30); 11 kept (a nil placeholder standing alone 8, inside a quotation 3).",
+    "Em dashes, this phase: 3 replaced by rule (colon 2, comma 1); 8 kept (a nil placeholder standing alone 8). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w8-financial-assets": {
+   "url": "afm291-w8-financial-assets.html",
+   "title": "AFM 291 Financial Assets II",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 130 replaced by rule (commas 4, parentheses 1, colon 8, colon in a heading 68, comma 49); 6 kept (a nil placeholder standing alone 6)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w8-cases": {
+   "url": "afm291-w8-cases.html",
+   "title": "AFM 291 Case Guide: Debt Investments",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 94 replaced by rule (commas 1, parentheses 2, colon 8, colon in a heading 41, comma 42); 5 kept (a nil placeholder standing alone 5)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w9-ppe": {
+   "url": "afm291-w9-ppe.html",
+   "title": "AFM 291 Property, Plant and Equipment",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 130 replaced by rule (commas 4, parentheses 1, colon 15, colon in a heading 51, comma 59); 2 kept (a nil placeholder standing alone 2)."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-w9-cases": {
+   "url": "afm291-w9-cases.html",
+   "title": "AFM 291 Case Guide: AceSpin Inc.",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 153 replaced by rule (colon 27, colon in a heading 73, comma 53); 1 kept (inside a quotation 1).",
+    "Em dashes, this phase: 1 replaced by rule (comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-workbook": {
+   "url": "afm291-workbook.html",
+   "title": "AFM 291 Watch-Along Workbook",
+   "class": "new",
+   "changes": [
+    "new",
+    "viewport",
+    "screen layout",
+    "em dashes",
+    "fonts",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Taken from pending/afm291-workbook.html unchanged in text. Added a viewport meta, a screen-only stylesheet block (the print layout is untouched and applies under print), a one-line companion link to the PDF on the cover, and lang en-CA. The PDF is copied beside it as afm291-workbook.pdf and joins the offline manifest by the existing rule. Course Reference under AFM 291.",
+    "Em dashes: 166 replaced by rule (colon 5, colon in a heading 21, comma 140); 0 kept (none).",
+    "Typefaces self-hosted: Bricolage Grotesque: BricolageGrotesque[opsz,wdth,wght].ttf -> fonts/bricolagegrotesque-afm291-workbook.woff2 (119,132 bytes, 115 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-afm291-workbook.woff2 (152,724 bytes, 116 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-afm291-workbook-italic.woff2 (129,320 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-afm291-workbook-400.woff2 (11,096 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-afm291-workbook-500.woff2 (11,348 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-afm291-workbook-600.woff2 (12,024 bytes, 116 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: literal #6e7a77 to #6c7774 (4.64:1 on #ffffff, 3 uses); literal #8d9891 to #6b786f (4.62:1 on #ffffff, 2 uses)."
+   ],
+   "kept": [
+    "No dark palette added: a print-first workbook whose screen layout is a document view of the sheets; kept light so the screen matches the paper."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "kennedy-dossier": {
+   "url": "kennedy-dossier.html",
+   "title": "The Kennedys",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 8 replaced by rule (commas 1, colon 1, comma 6); 0 kept (none).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-kennedy-dossier.woff2 (35,904 bytes, 110 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-kennedy-dossier.woff2 (48,232 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-kennedy-dossier-400.woff2 (10,672 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-kennedy-dossier-500.woff2 (10,928 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-kennedy-dossier-600.woff2 (11,584 bytes, 110 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --gold #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --muted #82806d to #615f57 (4.75:1 on #e4dec9, 1 uses).",
+    "Dark palette: 10 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221f15); 37 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 106 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "monroe-case-file": {
+   "url": "monroe-case-file.html",
+   "title": "Case file: 4 to 5 August 1962",
+   "class": "copy",
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Case file — Aug 4–5, 1962”.",
+    "Em dashes: 6 replaced by rule (parentheses 1, comma 5); 0 kept (none).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-monroe-case-file.woff2 (36,124 bytes, 111 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-monroe-case-file.woff2 (48,300 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-monroe-case-file-400.woff2 (10,868 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-monroe-case-file-500.woff2 (11,052 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-monroe-case-file-600.woff2 (11,748 bytes, 111 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --contested #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --gold #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --muted #82806d to #615f57 (4.75:1 on #e4dec9, 1 uses); chip background #82806d to #767465 (4.71:1 on #ffffff, 0 uses).",
+    "Dark palette: 13 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221f15); 35 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 42 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "how-to-judge-a-president": {
+   "url": "how-to-judge-a-president.html",
+   "title": "How to Judge a President",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 120 replaced by rule (commas 8, parentheses 13, colon 12, colon in a heading 18, comma 69); 6 kept (inside a quotation 6).",
+    "Em dashes, this phase: 6 replaced by rule (colon 1, comma 5). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "leadership-evaluation-kit": {
+   "url": "leadership-evaluation-kit.html",
+   "title": "The Portable Kit",
+   "class": "copy",
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "heading order"
+   ],
+   "spellings": [
+    {
+     "from": "behavior",
+     "to": "behaviour"
+    },
+    {
+     "from": "defense",
+     "to": "defence"
+    },
+    {
+     "from": "favor",
+     "to": "favour"
+    },
+    {
+     "from": "favorable",
+     "to": "favourable"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    },
+    {
+     "from": "labeling",
+     "to": "labelling"
+    }
+   ],
+   "notes": [
+    "Em dashes: 102 replaced by rule (commas 8, parentheses 2, colon 4, colon in a heading 41, comma 47); 2 kept (inside a quotation 2).",
+    "Canadian spelling: 12 words changed (behavior to behaviour 1, defense to defence 2, favor to favour 2, favorable to favourable 3, labeled to labelled 2, labeling to labelling 2).",
+    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3).",
+    "Em dashes, this phase: 2 replaced by rule (comma 2). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "transformers-study-guide": {
+   "url": "transformers-study-guide.html",
+   "title": "Attention, Worked on Paper",
+   "class": "new",
+   "changes": [
+    "new",
+    "strikes",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette",
+    "heading order"
+   ],
+   "strikes": [
+    {
+     "text": "Study guide · built from your uploaded digest",
+     "residue": "Study guide"
+    },
+    {
+     "text": "Carry these corrections into your notes, not the original wording",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "Taken from pending/transformers-study-guide.html. Two sentences an assistant addressed to the owner are struck and replaced by the built_from line; declared below. Personal Reference. Its Google Fonts link is replaced by self-hosted faces in the font commits.",
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-transformers-study-guide-400.woff2 (10,992 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-transformers-study-guide-500.woff2 (11,180 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-transformers-study-guide-600.woff2 (11,924 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Regular.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-400.woff2 (13,844 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Medium.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-500.woff2 (14,068 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-SemiBold.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-600.woff2 (13,888 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Bold.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-700.woff2 (13,512 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-Regular.ttf -> fonts/ibmplexserif-transformers-study-guide-400.woff2 (14,212 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-SemiBold.ttf -> fonts/ibmplexserif-transformers-study-guide-600.woff2 (14,844 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-Italic.ttf -> fonts/ibmplexserif-transformers-study-guide-400-italic.woff2 (15,232 bytes, 114 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: chip background #a7696d to #a36367 (4.63:1 on #ffffff, 0 uses); chip background #a8722a to #9c6927 (4.7:1 on #ffffff, 1 uses).",
+    "Dark palette: 10 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#151e14); 46 literal colour declarations re-emitted under the same selectors with the literal mapped; 5 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 290 elements checked, 0 below the AA floor; light scheme 1 below the floor (one matrix cell: white on a translucent rust tint at 4.31:1, part of the guide's heat-map colouring, left as it is).",
+    "The mask grids' 1 h4 headings, written by the page's own script under the h2, carry aria-level 3."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "french-a1-cafe": {
+   "url": "french-a1-cafe.html",
+   "title": "Unité 1: Au Café",
+   "class": "new",
+   "changes": [
+    "new",
+    "converted",
+    "em dashes",
+    "table headers"
+   ],
+   "notes": [
+    "Converted from pending/french-a1-unit01-cafe-interactions.md by scripts/md2piece.py: blockquotes became callouts (the warning sign became a Watch out callout), the answer key's twelve blocks became collapsed details in the checkpoint style, tables are wrapped for horizontal scrolling. French dialogue tirets (the dash that opens a line of dialogue) are kept as French punctuation; em dashes in the English prose follow the site rule. Personal Reference.",
+    "Em dashes: 82 replaced by rule (commas 1, colon 10, colon in a heading 26, comma 44, comma (other) 1); 19 kept (a dialogue tiret opening a line 14, a nil placeholder standing alone 3, inside a quotation 2).",
+    "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 16 replaced by rule (colon 13, colon in a heading 1, comma 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "spanish-a1-cafe": {
+   "url": "spanish-a1-cafe.html",
+   "title": "Unidad 1: En el Café",
+   "class": "new",
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "canadian-dcf-cca": {
+   "url": "canadian-dcf-cca.html",
+   "title": "The tax base nobody discloses",
+   "class": "new",
+   "changes": [
+    "recorded valuation lineage"
+   ],
+   "additions": [
+    {
+     "text": "The recorded roots of the tax base\nRead upward from the audited filing through four transcribed inputs, the tax-base reconciliation and both recorded readings. Amounts are CAD thousands; the rate is a percentage. This is the ancestry of the tax-base figure, not the complete valuation model. The original evidence tables and source disclosure follow.\nFiling, inputs, reconciliation and two tax-base readings The filed statements supply owned property, right of use assets, the deferred tax liability and the statutory rate. Liability divided by rate gives the temporary difference. Owned property less that difference gives the negative reading. Adding right of use assets gives the other reading. All eight nodes name their source record. Audited filing 2026-02-01 Owned property book value 1,258,499 Right of use book value 2,397,209 Deferred tax liability 739,329 Statutory tax rate 26.5% Reconciliation temporary difference 2,789,921 Owned only negative balance -1,531,422 With right of use assets 865,787",
+     "ids": [
+      "fs-vroot",
+      "vroot-title",
+      "vroot-desc"
+     ]
+    }
+   ],
+   "notes": [
+    "Added a static tree of the recorded tax-base reconstruction before the original source tables: one filed ancestor, four transcribed inputs, the temporary-difference reconciliation and both tax-base readings. All original text, tables and drawings remain. The new figure is substantive content and is included in the piece measurements. No dependency claim is made for the complete per-share valuation."
+   ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  }
+ }
+}
